@@ -52,6 +52,8 @@ export const SRS_CONFIG = {
   } as Record<Difficulty, { mult: number; floor: number }>,
   /** Max interval in days. */
   maxIntervalDays: 365,
+  /** Non-hard ratings required to clear a card after a "hard" (re-learn steps). */
+  hardRelearnClears: 2,
   /** How many positions ahead to re-insert a card within the session. */
   reinsertOffset: { trivial: Infinity, easy: 10, normal: 6, hard: 3 } as Record<
     Difficulty,
@@ -61,24 +63,71 @@ export const SRS_CONFIG = {
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
+/** Outcome of grading a card, as far as the current session queue is concerned. */
+export interface ReinsertDecision {
+  /** Whether the card is re-queued in the current session. */
+  stays: boolean;
+  /** Non-hard clears still required before it may leave. */
+  clearsRemaining: number;
+  /** Direction to use for the re-queued presentation. */
+  direction: Direction;
+  /** Updated "no longer a first encounter" flag. */
+  repeatQueued: boolean;
+}
+
 /**
- * Whether a graded card should be re-queued in the current session.
+ * Decide how a graded card re-enters (or leaves) the current session.
  *
- * - Trivial: never (a new trivial card is replaced with a fresh one elsewhere).
- * - Hard: always re-shown before the session ends (new or review).
- * - New + easy/normal: shown exactly once more, and only on the first encounter,
- *   so it finalises after that single mandatory repeat.
- * - Review + easy/normal: leaves the session.
+ * - Trivial: leaves (a new trivial card is replaced with a fresh one elsewhere).
+ * - Hard: re-arms the re-learn requirement (`hardRelearnClears` non-hard clears)
+ *   and always comes back English-front so you drill recall.
+ * - While re-learning (clearsRemaining > 0): each non-hard rating clears one step,
+ *   staying English-front until the steps run out, then it leaves.
+ * - New + easy/normal (not re-learning): shown exactly once more on first
+ *   encounter, then finalises.
+ * - Review + easy/normal (not re-learning): leaves immediately.
  */
-export function staysInSession(
-  origin: Origin,
+export function resolveReinsertion(
+  item: SessionItem,
   difficulty: Difficulty,
   isFirstEncounter: boolean,
-): boolean {
-  if (difficulty === 'trivial') return false;
-  if (difficulty === 'hard') return true;
-  if (origin === 'new') return isFirstEncounter;
-  return false;
+  rng: () => number = Math.random,
+): ReinsertDecision {
+  if (difficulty === 'trivial') {
+    return {
+      stays: false,
+      clearsRemaining: 0,
+      direction: item.direction,
+      repeatQueued: true,
+    };
+  }
+  if (difficulty === 'hard') {
+    return {
+      stays: true,
+      clearsRemaining: SRS_CONFIG.hardRelearnClears,
+      direction: 'en-no', // hard cards always come back English-front
+      repeatQueued: true,
+    };
+  }
+  // easy or normal
+  if (item.clearsRemaining > 0) {
+    const clearsRemaining = item.clearsRemaining - 1;
+    return {
+      stays: clearsRemaining > 0,
+      clearsRemaining,
+      direction: 'en-no', // stay English-front for the rest of the re-learn
+      repeatQueued: true,
+    };
+  }
+  if (item.origin === 'new' && isFirstEncounter) {
+    return {
+      stays: true,
+      clearsRemaining: 0,
+      direction: pickDirection(rng),
+      repeatQueued: true,
+    };
+  }
+  return { stays: false, clearsRemaining: 0, direction: item.direction, repeatQueued: true };
 }
 
 /** Compute the next persisted CardState after grading. */
@@ -145,7 +194,13 @@ function makeItem(
   origin: Origin,
   rng: () => number,
 ): SessionItem {
-  return { entry, origin, direction: pickDirection(rng), repeatQueued: false };
+  return {
+    entry,
+    origin,
+    direction: pickDirection(rng),
+    repeatQueued: false,
+    clearsRemaining: 0,
+  };
 }
 
 export interface BuildSessionArgs {

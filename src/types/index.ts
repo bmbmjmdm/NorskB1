@@ -69,10 +69,15 @@ export interface SessionItem {
   origin: Origin;
   direction: Direction;
   /**
-   * For new cards: becomes true once the user has graded it non-trivially at
-   * least once this session (so its mandatory repeat has been queued).
+   * For new cards: becomes true once the user has graded it at least once this
+   * session (so it is no longer a "first encounter").
    */
   repeatQueued: boolean;
+  /**
+   * Non-hard ratings still required before the card may leave the session. A
+   * "hard" rating arms this (re-learn steps); reaches 0 to let the card exit.
+   */
+  clearsRemaining: number;
 }
 
 /** Per-session progress counters. */
@@ -93,6 +98,7 @@ export interface PersistedSessionItem {
   origin: Origin;
   direction: Direction;
   repeatQueued: boolean;
+  clearsRemaining: number;
 }
 
 /** Snapshot of an in-progress session so it can be resumed after the app closes. */

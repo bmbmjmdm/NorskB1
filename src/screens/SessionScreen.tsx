@@ -90,7 +90,7 @@ export function SessionScreen() {
           resetKey={`${current.entry.id}-${stats.graded}`}
         />
       </View>
-      <DifficultyButtons onGrade={session.grade} />
+      <DifficultyButtons onGrade={session.grade} previews={session.previews} />
     </Screen>
   );
 }

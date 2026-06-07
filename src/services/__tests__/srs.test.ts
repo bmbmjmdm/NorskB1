@@ -3,11 +3,11 @@ import {
   buildSession,
   gradeCard,
   reinsertIndex,
+  resolveReinsertion,
   reviewTargetForBacklog,
   shuffle,
-  staysInSession,
 } from '@/services/srs';
-import type { CardState, VocabEntry } from '@/types';
+import type { CardState, Origin, SessionItem, VocabEntry } from '@/types';
 
 const DAY = 24 * 60 * 60 * 1000;
 const NOW = 1_700_000_000_000;
@@ -72,25 +72,56 @@ describe('gradeCard', () => {
   });
 });
 
-describe('staysInSession', () => {
-  it('repeats a new card once on first encounter', () => {
-    expect(staysInSession('new', 'easy', true)).toBe(true);
-    expect(staysInSession('new', 'normal', true)).toBe(true);
-    expect(staysInSession('new', 'hard', true)).toBe(true);
-    expect(staysInSession('new', 'trivial', true)).toBe(false);
+describe('resolveReinsertion', () => {
+  const item = (
+    origin: Origin,
+    over: Partial<SessionItem> = {},
+  ): SessionItem => ({
+    entry: entry('x'),
+    origin,
+    direction: 'no-en',
+    repeatQueued: false,
+    clearsRemaining: 0,
+    ...over,
   });
-  it('finalises a new card after its repeat, except on hard', () => {
-    expect(staysInSession('new', 'easy', false)).toBe(false);
-    expect(staysInSession('new', 'normal', false)).toBe(false);
-    expect(staysInSession('new', 'trivial', false)).toBe(false);
-    // Hard keeps drilling even on the repeat.
-    expect(staysInSession('new', 'hard', false)).toBe(true);
+
+  it('repeats a new card once on first encounter, then finalises', () => {
+    expect(resolveReinsertion(item('new'), 'easy', true).stays).toBe(true);
+    expect(resolveReinsertion(item('new'), 'normal', true).stays).toBe(true);
+    // The mandatory repeat (not first encounter) leaves on easy/normal.
+    expect(resolveReinsertion(item('new'), 'easy', false).stays).toBe(false);
+    expect(resolveReinsertion(item('new'), 'normal', false).stays).toBe(false);
   });
+
   it('keeps reviews only when hard', () => {
-    expect(staysInSession('review', 'hard', false)).toBe(true);
-    expect(staysInSession('review', 'normal', false)).toBe(false);
-    expect(staysInSession('review', 'easy', false)).toBe(false);
-    expect(staysInSession('review', 'trivial', false)).toBe(false);
+    expect(resolveReinsertion(item('review'), 'normal', false).stays).toBe(false);
+    expect(resolveReinsertion(item('review'), 'easy', false).stays).toBe(false);
+    expect(resolveReinsertion(item('review'), 'trivial', false).stays).toBe(false);
+  });
+
+  it('hard arms a 2-clear re-learn and forces English-front', () => {
+    const d = resolveReinsertion(item('review'), 'hard', false);
+    expect(d.stays).toBe(true);
+    expect(d.clearsRemaining).toBe(SRS_CONFIG.hardRelearnClears);
+    expect(d.direction).toBe('en-no');
+  });
+
+  it('requires two non-hard clears before a hard card leaves', () => {
+    // After hard: clearsRemaining = 2.
+    const first = resolveReinsertion(item('review', { clearsRemaining: 2 }), 'easy', false);
+    expect(first.stays).toBe(true);
+    expect(first.clearsRemaining).toBe(1);
+    expect(first.direction).toBe('en-no');
+    // Second clear -> leaves.
+    const second = resolveReinsertion(item('review', { clearsRemaining: 1 }), 'normal', false);
+    expect(second.stays).toBe(false);
+    expect(second.clearsRemaining).toBe(0);
+  });
+
+  it('re-arms to 2 clears if marked hard again mid-re-learn', () => {
+    const d = resolveReinsertion(item('review', { clearsRemaining: 1 }), 'hard', false);
+    expect(d.clearsRemaining).toBe(SRS_CONFIG.hardRelearnClears);
+    expect(d.stays).toBe(true);
   });
 });
 

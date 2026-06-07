@@ -45,12 +45,12 @@ The header shows the **total number of cards remaining in the queue** plus how m
 
 ### Grading
 
-Each card is graded with one of four buttons, which sets its next review date and decides whether it reappears in the current session.
+Each card is graded with one of four buttons, which sets its next review date and decides whether it reappears in the current session. Each button also **previews its outcome** right on the button: the number of days the card would be scheduled (e.g. "4 days", "120 days"), or "↻ review" when that grade would keep the card in the current session instead of scheduling it.
 
-Next review date is computed as:
+The next review date is computed from the interval the card had at the **start of the session**:
 
 ```
-newInterval = min(365 days, max(currentInterval × mult, floor))
+newInterval = min(365 days, max(startOfSessionInterval × mult, floor))
 ```
 
 | Button  | mult | floor | First-time interval | In-session behaviour |
@@ -58,14 +58,17 @@ newInterval = min(365 days, max(currentInterval × mult, floor))
 | Trivial | ×4   | 120   | 120 days            | Leaves; if it was a *new* card it's swapped for a fresh unseen word |
 | Easy    | ×2.5 | 4     | 4 days              | *New* card shows once more, then done; *review* leaves |
 | Normal  | ×1.6 | 2     | 2 days              | *New* card shows once more, then done; *review* leaves |
-| Hard    | ×0   | 1     | 1 day               | Re-shown repeatedly this session until you give it a non-hard rating |
+| Hard    | ×0   | 1     | 1 day               | Re-learn: re-shown (English-front) until cleared — see below |
 
 Key rules:
 
-- **New** cards rated anything but *trivial* are shown exactly once more before the session ends, then finalize (unless rated hard). Trivial new cards don't count toward your 10 and are replaced with fresh words, so consistently-easy material keeps the queue moving toward 10 genuinely-new words.
+- **New** cards rated anything but *trivial* are shown exactly once more before the session ends, then finalize. Trivial new cards don't count toward your 10 and are replaced with fresh words, so consistently-easy material keeps the queue moving toward 10 genuinely-new words.
 - **Review** cards re-enter the session only when rated *hard*.
-- **Hard** is a relearn loop: it both collapses the interval to 1 day and keeps re-showing the card (≈3 cards later each time) until you clear it with a non-hard rating. The last non-hard rating is what actually sets its next-day schedule.
+- **Hard is a re-learn loop.** Rating a card hard requires it to be cleared with **two non-hard ratings** before it may leave the session, and every time it comes back it's shown **English-front** so you practice recalling the Norwegian. Hitting hard again at any point re-arms the two-clear requirement. Within the session it re-shows ≈3 cards later each time.
+- **Only the grade that lets a card *leave* sets its next review date.** While a card is bouncing around the session (re-learn steps or a new card's repeat) its stored schedule is frozen at its start-of-session value, so repeated markings never compound — a hard → easy → easy sequence schedules purely off that final easy, not off the intermediate marks.
 - Within a session, the harder the rating the sooner the re-show (hard ≈ 3 cards ahead, normal ≈ 6, easy ≈ 10).
+
+Cards are shown English-front **75%** of the time and Norwegian-front the rest (re-learning hard cards are always English-front, as noted above).
 
 > Note: each card also stores a `weight` (an EMA of your ratings). It's currently computed but not read by anything — review order is driven purely by how overdue a card is. It's a hook for a future feature (e.g. flagging "leech" cards) rather than active behavior.
 
@@ -77,7 +80,7 @@ An **↶ Undo** button in the header (placed away from the grading buttons) reve
 
 Every grade is written to device storage (AsyncStorage): per-card scheduling plus a snapshot of the live session (queue order, reserve, counters), stored compactly by card id. Close the app mid-queue and reopening **resumes exactly where you left off**, including pending repeats and hard re-shows. The saved session is cleared when it completes; "Start new session" and "Reset all progress" always build fresh.
 
-The engine is fully unit-tested (15 tests) — see `src/services/__tests__/srs.test.ts`.
+The engine is fully unit-tested (17 tests) — see `src/services/__tests__/srs.test.ts`.
 
 ## Project structure
 

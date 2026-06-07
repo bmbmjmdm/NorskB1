@@ -13,13 +13,24 @@ import {
   gradeCard,
   pickDirection,
   reinsertIndex,
-  staysInSession,
+  resolveReinsertion,
 } from '@/services/srs';
 import { clearState, loadState, saveState } from '@/services/storage';
+import { DIFFICULTIES } from '@/types';
 
 export type { SessionStats } from '@/types';
 
 type Phase = 'loading' | 'active' | 'done';
+
+/** What pressing a given button will do to the current card. */
+export interface GradePreview {
+  /** True if the card will be reviewed again this session instead of scheduled. */
+  stays: boolean;
+  /** Days until next review if the card leaves the session on this grade. */
+  days: number;
+}
+
+export type GradePreviews = Record<Difficulty, GradePreview>;
 
 /** Full mutable session state captured before a grade, for undo. */
 interface Snapshot {
@@ -39,6 +50,8 @@ export interface UseSession {
   remaining: number;
   stats: SessionStats;
   grade: (difficulty: Difficulty) => void;
+  /** Per-button outcome for the current card (days scheduled, or "review again"). */
+  previews: GradePreviews | null;
   /** Revert the most recent grade. No-op when there is nothing to undo. */
   undo: () => void;
   /** Whether an undo is currently available. */
@@ -74,6 +87,7 @@ function serializeSession(
       origin: i.origin,
       direction: i.direction,
       repeatQueued: i.repeatQueued,
+      clearsRemaining: i.clearsRemaining,
     })),
     reserve: reserve.map(e => e.id),
     stats,
@@ -94,6 +108,7 @@ function rehydrateSession(
         origin: it.origin,
         direction: it.direction,
         repeatQueued: it.repeatQueued,
+        clearsRemaining: it.clearsRemaining ?? 0,
       });
     }
   }
@@ -228,10 +243,21 @@ export function useSession(entries: readonly VocabEntry[]): UseSession {
       const rest = prevQueue.slice(1);
       const now = Date.now();
       const firstEncounter = item.origin === 'new' && !item.repeatQueued;
+      const decision = resolveReinsertion(item, difficulty, firstEncounter);
 
-      // 1. Update persisted card state.
+      // 1. Update card scheduling. While a card stays in the session (re-learn
+      // steps or the new-card repeat), keep its existing schedule untouched so
+      // only the final, leaving grade sets the next interval — repeated markings
+      // (e.g. hard then two clears) never compound the future-queuing.
       const prevState = cardsRef.current[item.entry.id];
-      const nextState = gradeCard(prevState, difficulty, now, item.entry.id);
+      let nextState = gradeCard(prevState, difficulty, now, item.entry.id);
+      if (decision.stays) {
+        nextState = {
+          ...nextState,
+          interval: prevState?.interval ?? 0,
+          due: prevState?.due ?? now,
+        };
+      }
       cardsRef.current = { ...cardsRef.current, [item.entry.id]: nextState };
 
       // 2. Update session stats.
@@ -244,14 +270,15 @@ export function useSession(entries: readonly VocabEntry[]): UseSession {
             : statsRef.current.newLearned,
       };
 
-      // 3. Decide how the card re-enters (or leaves) the session.
+      // 3. Re-enter or leave the session per the decision above.
       let nextQueue = rest;
 
-      if (staysInSession(item.origin, difficulty, firstEncounter)) {
+      if (decision.stays) {
         const repeatItem: SessionItem = {
           ...item,
-          repeatQueued: true,
-          direction: pickDirection(),
+          direction: decision.direction,
+          repeatQueued: decision.repeatQueued,
+          clearsRemaining: decision.clearsRemaining,
         };
         const idx = reinsertIndex(difficulty, rest.length);
         nextQueue = insertAt(rest, idx, repeatItem);
@@ -269,6 +296,7 @@ export function useSession(entries: readonly VocabEntry[]): UseSession {
           origin: 'new',
           direction: pickDirection(),
           repeatQueued: false,
+          clearsRemaining: 0,
         };
         const idx = Math.floor(Math.random() * (rest.length + 1));
         nextQueue = insertAt(rest, idx, replacementItem);
@@ -326,15 +354,36 @@ export function useSession(entries: readonly VocabEntry[]): UseSession {
     clearState().then(state => begin(state, { resume: false }));
   }, [begin]);
 
+  const current = queue[0] ?? null;
+  const previews = current
+    ? buildPreviews(current, cardsRef.current[current.entry.id])
+    : null;
+
   return {
     phase,
-    current: queue[0] ?? null,
+    current,
     remaining: queue.length,
     stats,
     grade,
+    previews,
     undo,
     canUndo,
     startNewSession,
     resetAllProgress,
   };
+}
+
+/** Compute, for each button, what grading the current card would do. */
+function buildPreviews(
+  item: SessionItem,
+  prevState: CardState | undefined,
+): GradePreviews {
+  const firstEncounter = item.origin === 'new' && !item.repeatQueued;
+  const result = {} as GradePreviews;
+  for (const d of DIFFICULTIES) {
+    const decision = resolveReinsertion(item, d, firstEncounter);
+    const days = Math.round(gradeCard(prevState, d, 0, item.entry.id).interval);
+    result[d] = { stays: decision.stays, days };
+  }
+  return result;
 }

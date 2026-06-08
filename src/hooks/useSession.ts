@@ -9,6 +9,7 @@ import type {
   VocabEntry,
 } from '@/types';
 import {
+  applyGrade,
   buildSession,
   gradeCard,
   pickDirection,
@@ -245,19 +246,20 @@ export function useSession(entries: readonly VocabEntry[]): UseSession {
       const firstEncounter = item.origin === 'new' && !item.repeatQueued;
       const decision = resolveReinsertion(item, difficulty, firstEncounter);
 
-      // 1. Update card scheduling. While a card stays in the session (re-learn
-      // steps or the new-card repeat), keep its existing schedule untouched so
-      // only the final, leaving grade sets the next interval — repeated markings
-      // (e.g. hard then two clears) never compound the future-queuing.
+      // 1. Update card scheduling. A "hard" rating is a real lapse: it resets the
+      // interval (to 1 day) and that reset stands even though the card stays for
+      // re-learning. Other *intermediate* stays — a re-learn clear or a new card's
+      // single repeat — keep the schedule frozen at its current value, so repeated
+      // markings (e.g. hard then two clears) never compound: only the final,
+      // leaving grade advances the schedule, applied to the post-lapse interval.
       const prevState = cardsRef.current[item.entry.id];
-      let nextState = gradeCard(prevState, difficulty, now, item.entry.id);
-      if (decision.stays) {
-        nextState = {
-          ...nextState,
-          interval: prevState?.interval ?? 0,
-          due: prevState?.due ?? now,
-        };
-      }
+      const nextState = applyGrade(
+        prevState,
+        difficulty,
+        now,
+        item.entry.id,
+        decision.stays,
+      );
       cardsRef.current = { ...cardsRef.current, [item.entry.id]: nextState };
 
       // 2. Update session stats.

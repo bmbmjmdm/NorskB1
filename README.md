@@ -37,9 +37,9 @@ npx tsc --noEmit        # typecheck
 When you open the app it builds a session of:
 
 - **Up to 10 new** (never-seen) words.
-- **Reviews that are due**, ordered by how long overdue they are (most overdue first; ties broken randomly).
+- **Reviews whose due date has actually passed**, ordered by how long overdue they are (most overdue first; ties broken randomly).
 
-The review count scales with your backlog so it never balloons unbounded but still keeps up: base **30**, plus **10 for every 100 cards currently due**. So <100 due → 30 reviews, 100 → 40, 200 → 50, 300 → 60, and so on. A backlog larger than the target drains over multiple sessions, always taking the most-overdue cards first. Early on, when you have few learned cards, you simply get however many exist.
+Only genuinely-due cards are reviewed — cards scheduled into the future are **never pulled forward** to pad a thin session, so a card you rated "trivial" really does disappear for months. The review count scales with your backlog so it never balloons unbounded but still keeps up: base **30**, plus **10 for every 100 cards currently due**. So <100 due → 30 reviews, 100 → 40, 200 → 50, 300 → 60, and so on. A backlog larger than the target drains over multiple sessions, always taking the most-overdue cards first. Early on, when little is due, the session is simply smaller.
 
 The header shows the **total number of cards remaining in the queue** plus how many new words you've learned this session, and a progress bar.
 
@@ -47,10 +47,10 @@ The header shows the **total number of cards remaining in the queue** plus how m
 
 Each card is graded with one of four buttons, which sets its next review date and decides whether it reappears in the current session. Each button also **previews its outcome** right on the button: the number of days the card would be scheduled (e.g. "4 days", "120 days"), or "↻ review" when that grade would keep the card in the current session instead of scheduling it.
 
-The next review date is computed from the interval the card had at the **start of the session**:
+The next review date is computed from the card's current interval:
 
 ```
-newInterval = min(365 days, max(startOfSessionInterval × mult, floor))
+newInterval = min(365 days, max(currentInterval × mult, floor))
 ```
 
 | Button  | mult | floor | First-time interval | In-session behaviour |
@@ -58,14 +58,14 @@ newInterval = min(365 days, max(startOfSessionInterval × mult, floor))
 | Trivial | ×4   | 120   | 120 days            | Leaves; if it was a *new* card it's swapped for a fresh unseen word |
 | Easy    | ×2.5 | 4     | 4 days              | *New* card shows once more, then done; *review* leaves |
 | Normal  | ×1.6 | 2     | 2 days              | *New* card shows once more, then done; *review* leaves |
-| Hard    | ×0   | 1     | 1 day               | Re-learn: re-shown (English-front) until cleared — see below |
+| Hard    | ×0   | 1     | 1 day               | Lapse + re-learn: resets interval to 1 and re-shows (English-front) until cleared — see below |
 
 Key rules:
 
 - **New** cards rated anything but *trivial* are shown exactly once more before the session ends, then finalize. Trivial new cards don't count toward your 10 and are replaced with fresh words, so consistently-easy material keeps the queue moving toward 10 genuinely-new words.
 - **Review** cards re-enter the session only when rated *hard*.
-- **Hard is a re-learn loop.** Rating a card hard requires it to be cleared with **two non-hard ratings** before it may leave the session, and every time it comes back it's shown **English-front** so you practice recalling the Norwegian. Hitting hard again at any point re-arms the two-clear requirement. Within the session it re-shows ≈3 cards later each time.
-- **Only the grade that lets a card *leave* sets its next review date.** While a card is bouncing around the session (re-learn steps or a new card's repeat) its stored schedule is frozen at its start-of-session value, so repeated markings never compound — a hard → easy → easy sequence schedules purely off that final easy, not off the intermediate marks.
+- **Hard is a lapse + re-learn loop.** It immediately resets the card's interval to 1 day, then requires **two non-hard ratings** to clear before the card may leave the session, showing **English-front** each time so you practice recalling the Norwegian. Hitting hard again re-arms the two-clear requirement and re-applies the reset. Within the session it re-shows ≈3 cards later each time.
+- **Only the grade that lets a card *leave* sets its next review date**, and it's applied to the card's interval as of its last lapse (a hard resets that to 1). Intermediate stays — re-learn clears or a new card's single repeat — keep the schedule frozen, so repeated markings never compound: a hard → normal → normal sequence schedules off the post-lapse interval (≈2 days), not off the original interval and not compounded across the two clears.
 - Within a session, the harder the rating the sooner the re-show (hard ≈ 3 cards ahead, normal ≈ 6, easy ≈ 10).
 
 Cards are shown English-front **75%** of the time and Norwegian-front the rest (re-learning hard cards are always English-front, as noted above).
@@ -80,7 +80,7 @@ An **↶ Undo** button in the header (placed away from the grading buttons) reve
 
 Every grade is written to device storage (AsyncStorage): per-card scheduling plus a snapshot of the live session (queue order, reserve, counters), stored compactly by card id. Close the app mid-queue and reopening **resumes exactly where you left off**, including pending repeats and hard re-shows. The saved session is cleared when it completes; "Start new session" and "Reset all progress" always build fresh.
 
-The engine is fully unit-tested (17 tests) — see `src/services/__tests__/srs.test.ts`.
+The engine is fully unit-tested (18 tests) — see `src/services/__tests__/srs.test.ts`.
 
 ## Project structure
 

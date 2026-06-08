@@ -1,5 +1,6 @@
 import {
   SRS_CONFIG,
+  applyGrade,
   buildSession,
   gradeCard,
   reinsertIndex,
@@ -69,6 +70,34 @@ describe('gradeCard', () => {
       id: 'w1', weight: 0, reps: 9, interval: 300, due: NOW, lastSeen: NOW, introduced: true,
     };
     expect(gradeCard(base, 'trivial', NOW, 'w1').interval).toBe(SRS_CONFIG.maxIntervalDays);
+  });
+});
+
+describe('applyGrade (per-grade scheduling)', () => {
+  it('does not compound easy ratings within or across sessions', () => {
+    // Session 1: a new card is shown twice — first stays (frozen), repeat leaves.
+    let s = applyGrade(undefined, 'easy', NOW, 'w', true); // first encounter, stays
+    expect(s.interval).toBe(0); // frozen — no schedule advance yet
+    s = applyGrade(s, 'easy', NOW, 'w', false); // repeat, leaves
+    expect(s.interval).toBe(4);
+    // Subsequent review sessions (×2.5 each): 4 -> 10 -> 25.
+    s = applyGrade(s, 'easy', NOW, 'w', false);
+    expect(s.interval).toBe(10);
+    s = applyGrade(s, 'easy', NOW, 'w', false);
+    expect(s.interval).toBe(25);
+  });
+
+  it('hard lapses to 1 day even while the card stays, then a clear schedules off 1', () => {
+    const base: CardState = {
+      id: 'w', weight: 1, reps: 5, interval: 30,
+      due: NOW, lastSeen: NOW, introduced: true,
+    };
+    const lapsed = applyGrade(base, 'hard', NOW, 'w', true); // stays for re-learn
+    expect(lapsed.interval).toBe(1); // reset applied despite staying
+    const clear1 = applyGrade(lapsed, 'normal', NOW, 'w', true); // first clear, frozen
+    expect(clear1.interval).toBe(1);
+    const leaves = applyGrade(clear1, 'normal', NOW, 'w', false); // final clear
+    expect(leaves.interval).toBe(2); // max(1 × 1.6, 2)
   });
 });
 
@@ -165,6 +194,29 @@ describe('buildSession', () => {
     expect(ids.has('w10')).toBe(true); // 30th most overdue (boundary)
     expect(ids.has('w9')).toBe(false); // 31st — pushed to a later session
     expect(ids.has('w0')).toBe(false); // least overdue
+  });
+
+  it('never pulls not-yet-due cards into reviews', () => {
+    const entries = makeEntries(50);
+    const cards: Record<string, CardState> = {};
+    // 8 cards due (overdue), 20 scheduled into the future.
+    for (let i = 0; i < 8; i++) {
+      cards[`w${i}`] = {
+        id: `w${i}`, weight: 1, reps: 1, interval: 1,
+        due: NOW - DAY, lastSeen: NOW - DAY, introduced: true,
+      };
+    }
+    for (let i = 8; i < 28; i++) {
+      cards[`w${i}`] = {
+        id: `w${i}`, weight: 1, reps: 1, interval: 30,
+        due: NOW + 10 * DAY, lastSeen: NOW, introduced: true,
+      };
+    }
+    const built = buildSession({ entries, cards, now: NOW, rng: seeded(8) });
+    const reviews = built.queue.filter(i => i.origin === 'review');
+    // Only the 8 due cards are reviewed; the 20 future cards are left alone.
+    expect(reviews).toHaveLength(8);
+    expect(built.reviewCount).toBe(8);
   });
 
   it('breaks ties between equally-overdue cards randomly', () => {

@@ -35,7 +35,7 @@ export const SRS_CONFIG = {
   reviewBacklogStep: 100,
   reviewBacklogBonus: 10,
   /** Probability a card is shown English-front (else Norwegian-front). */
-  enFrontProbability: 0.75,
+  enFrontProbability: 0.85,
   /** Difficulty -> numeric value feeding the weight EMA. */
   weightValue: { trivial: 0, easy: 1, normal: 2.5, hard: 4 } as Record<
     Difficulty,
@@ -161,6 +161,32 @@ export function gradeCard(
 }
 
 /**
+ * Compute the next CardState given the grade AND whether the card stays in the
+ * session. This is what actually persists per grade:
+ *
+ * - A "hard" rating always applies (a lapse: interval resets to 1), even though
+ *   the card stays for re-learning.
+ * - Any other rating that keeps the card in the session (a re-learn clear or a
+ *   new card's single repeat) freezes the schedule at its current value, so
+ *   repeated in-session markings never advance/compound the interval.
+ * - A rating that lets the card leave applies normally, using the card's current
+ *   interval (which a prior hard will have reset to 1).
+ */
+export function applyGrade(
+  prev: CardState | undefined,
+  difficulty: Difficulty,
+  now: number,
+  id: string,
+  stays: boolean,
+): CardState {
+  const next = gradeCard(prev, difficulty, now, id);
+  if (stays && difficulty !== 'hard') {
+    return { ...next, interval: prev?.interval ?? 0, due: prev?.due ?? now };
+  }
+  return next;
+}
+
+/**
  * Number of reviews to serve given how many cards are currently due.
  *
  * Stays at the base target until the backlog reaches a full `reviewBacklogStep`
@@ -219,14 +245,13 @@ export interface BuiltSession {
 }
 
 /**
- * Assemble the initial session: up to `newPerSession` new cards plus a number of
- * reviews that scales with the due backlog (see `reviewTargetForBacklog` — base
- * 30, +10 per 100 due). Reviews are prioritised by how long overdue they are
- * (most overdue first), with ties broken randomly, so an oversized backlog is
- * still drained over multiple sessions. If too few are due, the soonest-due
- * introduced cards fill the remaining slots so a session is never needlessly
- * thin. When the user is early on and has introduced very few cards, the review
- * set is simply whatever exists — `min(target, available)` handles this.
+ * Assemble the initial session: up to `newPerSession` new cards plus the due
+ * reviews. Only cards whose due date has passed are eligible — future-scheduled
+ * cards are never pulled forward, so a "trivial" card really does disappear for
+ * months. The review count scales with the due backlog (see
+ * `reviewTargetForBacklog` — base 30, +10 per 100 due) and the most-overdue
+ * cards are taken first (ties random), so an oversized backlog drains over
+ * multiple sessions. Early on, when little is due, the session is simply smaller.
  */
 export function buildSession({
   entries,
@@ -253,23 +278,20 @@ export function buildSession({
     SRS_CONFIG.maxNewPerSession,
   );
 
-  // Pick reviews by how long overdue they are (most overdue first). Ties are
-  // broken randomly via a per-card random key, so equally-overdue cards don't
-  // always appear in the same order. Sorting by `due` ascending also naturally
-  // places truly-due cards (due <= now) ahead of any not-yet-due fillers.
-  const dueFirst = introduced
+  // Only cards that are actually due (due <= now) are eligible for review — a
+  // card scheduled into the future (e.g. one you rated "trivial") must wait until
+  // its due date and is never pulled forward to pad a thin session. Among the due
+  // cards, the most overdue come first, with ties broken randomly.
+  const dueEntries = introduced
+    .filter(entry => cards[entry.id]!.due <= now)
     .map(entry => ({ entry, due: cards[entry.id]!.due, rnd: rng() }))
     .sort((a, b) => a.due - b.due || a.rnd - b.rnd)
     .map(d => d.entry);
 
   // Grow the review target when the due backlog is large (+10 per 100 due).
-  const dueCount = introduced.reduce(
-    (n, e) => n + (cards[e.id]!.due <= now ? 1 : 0),
-    0,
-  );
-  const reviewTarget = reviewTargetForBacklog(dueCount);
+  const reviewTarget = reviewTargetForBacklog(dueEntries.length);
 
-  const reviewItems = dueFirst
+  const reviewItems = dueEntries
     .slice(0, reviewTarget)
     .map(entry => makeItem(entry, 'review', rng));
 

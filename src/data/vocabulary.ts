@@ -2,7 +2,8 @@ import type { VocabEntry } from '@/types';
 
 /**
  * Norwegian B1 oral-exam vocabulary.
- * 1146 entries across 18 topics. Auto-generated; edit freely.
+ * 1648 entries. Auto-generated base set plus entries imported from
+ * personal notes (fact-checked and de-duplicated).
  * Nouns: indefinite singular w/ article; forms = def.sg, indef.pl, def.pl.
  * Verbs: infinitive w/ å; forms = present, past, present perfect.
  * Adjectives: base form; forms = neuter, plural/def, comparative, superlative.
@@ -9175,6 +9176,4022 @@ export const VOCABULARY: VocabEntry[] = [
     "forms": "løser, løste, har løst",
     "pos": "verb",
     "topic": "common_verbs"
+  },
+  {
+    "id": "general-0001",
+    "en": "most (people, places)",
+    "no": "fleste",
+    "forms": "",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "personality-0072",
+    "en": "authentic",
+    "no": "autentisk",
+    "forms": "autentisk, autentiske, mer autentisk, mest autentisk",
+    "pos": "adj",
+    "topic": "personality"
+  },
+  {
+    "id": "emotions-0061",
+    "en": "calm",
+    "no": "rolig",
+    "forms": "rolig, rolige, roligere, roligst",
+    "pos": "adj",
+    "topic": "emotions"
+  },
+  {
+    "id": "general-0002",
+    "en": "accurate",
+    "no": "korrekt",
+    "forms": "korrekt, korrekte, mer korrekt, mest korrekt",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "general-0003",
+    "en": "correct",
+    "no": "korrekt",
+    "forms": "korrekt, korrekte, mer korrekt, mest korrekt",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "seasons_weather-0062",
+    "en": "degrees",
+    "no": "en grad",
+    "forms": "graden, grader, gradene",
+    "pos": "noun",
+    "topic": "seasons_weather"
+  },
+  {
+    "id": "emotions-0062",
+    "en": "I'm bored",
+    "no": "jeg kjeder meg",
+    "forms": "",
+    "pos": "expr",
+    "topic": "emotions"
+  },
+  {
+    "id": "family-0065",
+    "en": "to grow up",
+    "no": "å vokse opp",
+    "forms": "vokser opp, vokste opp, har vokst opp",
+    "pos": "verb",
+    "topic": "family"
+  },
+  {
+    "id": "health-0065",
+    "en": "I'm getting stressed",
+    "no": "jeg blir stresset",
+    "forms": "",
+    "pos": "expr",
+    "topic": "health"
+  },
+  {
+    "id": "general-0004",
+    "en": "known; familiar",
+    "no": "kjent",
+    "forms": "kjent, kjente, mer kjent, mest kjent",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "phrases-0001",
+    "en": "I'm familiar with",
+    "no": "jeg er kjent med",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "common_verbs-0058",
+    "en": "became (past tense of 'to become')",
+    "no": "å bli",
+    "forms": "blir, ble, har blitt",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "health-0066",
+    "en": "stressful",
+    "no": "stressende",
+    "forms": "stressende, stressende, mer stressende, mest stressende",
+    "pos": "adj",
+    "topic": "health"
+  },
+  {
+    "id": "body-0001",
+    "en": "the back (body part)",
+    "no": "en rygg",
+    "forms": "ryggen, rygger, ryggene",
+    "pos": "noun",
+    "topic": "body"
+  },
+  {
+    "id": "body-0002",
+    "en": "shoulder",
+    "no": "en skulder",
+    "forms": "skulderen, skuldre, skuldrene",
+    "pos": "noun",
+    "topic": "body"
+  },
+  {
+    "id": "general-0005",
+    "en": "terribly",
+    "no": "fryktelig",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "housing-0061",
+    "en": "comfort",
+    "no": "en komfort",
+    "forms": "komforten, komforter, komfortene",
+    "pos": "noun",
+    "topic": "housing"
+  },
+  {
+    "id": "common_verbs-0059",
+    "en": "forgot; forgotten",
+    "no": "å glemme",
+    "forms": "glemmer, glemte, har glemt",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "general-0006",
+    "en": "opposite",
+    "no": "motsatt",
+    "forms": "motsatt, motsatte, mer motsatt, mest motsatt",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "common_verbs-0060",
+    "en": "empty (verb: to empty)",
+    "no": "å tømme",
+    "forms": "tømmer, tømte, har tømt",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "general-0007",
+    "en": "full",
+    "no": "full",
+    "forms": "fullt, fulle, fullere, fullest",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "housing-0062",
+    "en": "dresser (furniture)",
+    "no": "en kommode",
+    "forms": "kommoden, kommoder, kommodene",
+    "pos": "noun",
+    "topic": "housing"
+  },
+  {
+    "id": "general-0008",
+    "en": "quite",
+    "no": "ganske",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "general-0009",
+    "en": "heavy",
+    "no": "tung",
+    "forms": "tungt, tunge, tyngre, tyngst",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "general-0010",
+    "en": "light (not heavy)",
+    "no": "lett",
+    "forms": "lett, lette, lettere, lettest",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "directions-0001",
+    "en": "back (behind); at the back",
+    "no": "bak",
+    "forms": "",
+    "pos": "prep",
+    "topic": "directions"
+  },
+  {
+    "id": "directions-0002",
+    "en": "back (returning to a place)",
+    "no": "tilbake",
+    "forms": "",
+    "pos": "adv",
+    "topic": "directions"
+  },
+  {
+    "id": "personality-0073",
+    "en": "pretty",
+    "no": "pen",
+    "forms": "pent, pene, penere, penest",
+    "pos": "adj",
+    "topic": "personality"
+  },
+  {
+    "id": "personality-0074",
+    "en": "ugly",
+    "no": "stygg",
+    "forms": "stygt, stygge, styggere, styggest",
+    "pos": "adj",
+    "topic": "personality"
+  },
+  {
+    "id": "emotions-0063",
+    "en": "sure; certain (positive)",
+    "no": "sikker",
+    "forms": "sikkert, sikre, sikrere, sikrest",
+    "pos": "adj",
+    "topic": "emotions"
+  },
+  {
+    "id": "emotions-0064",
+    "en": "unsure; uncertain",
+    "no": "usikker",
+    "forms": "usikkert, usikre, mer usikker, mest usikker",
+    "pos": "adj",
+    "topic": "emotions"
+  },
+  {
+    "id": "personality-0075",
+    "en": "gentle; cheerful",
+    "no": "blid",
+    "forms": "blidt, blide, blidere, blidest",
+    "pos": "adj",
+    "topic": "personality"
+  },
+  {
+    "id": "emotions-0065",
+    "en": "in a bad/shitty mood; sour",
+    "no": "sur",
+    "forms": "surt, sure, surere, surest",
+    "pos": "adj",
+    "topic": "emotions"
+  },
+  {
+    "id": "general-0011",
+    "en": "dirty",
+    "no": "skitten",
+    "forms": "skittent, skitne, skitne, skittest",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "general-0012",
+    "en": "clean",
+    "no": "ren",
+    "forms": "rent, rene, renere, renest",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "general-0013",
+    "en": "wide; broad",
+    "no": "bred",
+    "forms": "bredt, brede, bredere, bredest",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "time-0001",
+    "en": "late",
+    "no": "sen",
+    "forms": "sent, seine, senere, senest",
+    "pos": "adj",
+    "topic": "time"
+  },
+  {
+    "id": "work-0064",
+    "en": "available; free; vacant",
+    "no": "ledig",
+    "forms": "ledig, ledige, mer ledig, mest ledig",
+    "pos": "adj",
+    "topic": "work"
+  },
+  {
+    "id": "work-0065",
+    "en": "busy; occupied",
+    "no": "opptatt",
+    "forms": "opptatt, opptatte, mer opptatt, mest opptatt",
+    "pos": "adj",
+    "topic": "work"
+  },
+  {
+    "id": "general-0014",
+    "en": "(un)necessary",
+    "no": "nødvendig",
+    "forms": "nødvendig, nødvendige, mer nødvendig, mest nødvendig",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "general-0015",
+    "en": "(un)lucky",
+    "no": "heldig",
+    "forms": "heldig, heldige, heldigere, heldigst",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "general-0016",
+    "en": "cause; reason",
+    "no": "en årsak",
+    "forms": "årsaken, årsaker, årsakene",
+    "pos": "noun",
+    "topic": "general"
+  },
+  {
+    "id": "general-0017",
+    "en": "consequence",
+    "no": "en konsekvens",
+    "forms": "konsekvensen, konsekvenser, konsekvensene",
+    "pos": "noun",
+    "topic": "general"
+  },
+  {
+    "id": "general-0018",
+    "en": "therefore; so",
+    "no": "derfor",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "phrases-0002",
+    "en": "Now it's time for...",
+    "no": "Nå er det på tide med",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "general-0019",
+    "en": "quite; rather",
+    "no": "nokså",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "work-0066",
+    "en": "full-time job",
+    "no": "en heltidsjobb",
+    "forms": "heltidsjobbene, heltidsjobber, heltidsjobbene",
+    "pos": "noun",
+    "topic": "work"
+  },
+  {
+    "id": "work-0067",
+    "en": "part-time job",
+    "no": "en deltidsjobb",
+    "forms": "deltidsjobben, deltidsjobber, deltidsjobbene",
+    "pos": "noun",
+    "topic": "work"
+  },
+  {
+    "id": "general-0020",
+    "en": "mainly; mostly; generally",
+    "no": "stort sett",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "housing-0063",
+    "en": "sink (noun)",
+    "no": "en vask",
+    "forms": "vasken, vasker, vaskene",
+    "pos": "noun",
+    "topic": "housing"
+  },
+  {
+    "id": "general-0021",
+    "en": "plan",
+    "no": "en plan",
+    "forms": "planen, planer, planene",
+    "pos": "noun",
+    "topic": "general"
+  },
+  {
+    "id": "common_verbs-0061",
+    "en": "to close (a door)",
+    "no": "å lukke",
+    "forms": "lukker, lukket, har lukket",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "sports-0070",
+    "en": "to climb/jump over",
+    "no": "å hoppe over",
+    "forms": "hopper over, hoppet over, har hoppet over",
+    "pos": "verb",
+    "topic": "sports"
+  },
+  {
+    "id": "family-0066",
+    "en": "adult",
+    "no": "en voksen",
+    "forms": "voksne, voksne, voksne",
+    "pos": "noun",
+    "topic": "family"
+  },
+  {
+    "id": "general-0022",
+    "en": "actually; in fact",
+    "no": "faktisk",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "personality-0076",
+    "en": "careful; cautious",
+    "no": "forsiktig",
+    "forms": "forsiktig, forsiktige, mer forsiktig, mest forsiktig",
+    "pos": "adj",
+    "topic": "personality"
+  },
+  {
+    "id": "personality-0077",
+    "en": "rude; cheeky",
+    "no": "frekk",
+    "forms": "frekkt, frekke, frekkere, frekkest",
+    "pos": "adj",
+    "topic": "personality"
+  },
+  {
+    "id": "health-0067",
+    "en": "accident; mishap",
+    "no": "et uhell",
+    "forms": "uhellet, uhell, uhellene",
+    "pos": "noun",
+    "topic": "health"
+  },
+  {
+    "id": "general-0023",
+    "en": "allowed; permitted",
+    "no": "lov",
+    "forms": "",
+    "pos": "expr",
+    "topic": "general"
+  },
+  {
+    "id": "common_verbs-0062",
+    "en": "passes; gets over",
+    "no": "å gå over",
+    "forms": "går over, gikk over, har gått over",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "phrases-0003",
+    "en": "it'll pass quickly / they'll get over it quickly",
+    "no": "det går fort over",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "sports-0071",
+    "en": "to throw",
+    "no": "å kaste",
+    "forms": "kaster, kastet, har kastet",
+    "pos": "verb",
+    "topic": "sports"
+  },
+  {
+    "id": "sports-0072",
+    "en": "to kick",
+    "no": "å sparke",
+    "forms": "sparker, sparket, har sparket",
+    "pos": "verb",
+    "topic": "sports"
+  },
+  {
+    "id": "general-0024",
+    "en": "away; gone",
+    "no": "borte",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "opinions-0052",
+    "en": "option; alternative",
+    "no": "et alternativ",
+    "forms": "alternativet, alternativer, alternativene",
+    "pos": "noun",
+    "topic": "opinions"
+  },
+  {
+    "id": "opinions-0053",
+    "en": "advantage",
+    "no": "en fordel",
+    "forms": "fordelen, fordeler, fordelene",
+    "pos": "noun",
+    "topic": "opinions"
+  },
+  {
+    "id": "opinions-0054",
+    "en": "disadvantage",
+    "no": "en ulempe",
+    "forms": "ulempen, ulemper, ulempene",
+    "pos": "noun",
+    "topic": "opinions"
+  },
+  {
+    "id": "general-0025",
+    "en": "extra",
+    "no": "ekstra",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "phrases-0004",
+    "en": "I don't know if...",
+    "no": "Jeg vet ikke om...",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "time-0002",
+    "en": "the sixties (1960s)",
+    "no": "sekstitallet",
+    "forms": "",
+    "pos": "expr",
+    "topic": "time"
+  },
+  {
+    "id": "general-0026",
+    "en": "especially; particularly",
+    "no": "spesielt",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "food-0061",
+    "en": "restaurant",
+    "no": "en restaurant",
+    "forms": "restauranten, restauranter, restaurantene",
+    "pos": "noun",
+    "topic": "food"
+  },
+  {
+    "id": "phrases-0005",
+    "en": "anything else; something else",
+    "no": "noe annet",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "technology-0071",
+    "en": "phone (mobile)",
+    "no": "en mobil",
+    "forms": "mobilen, mobiler, mobilene",
+    "pos": "noun",
+    "topic": "technology"
+  },
+  {
+    "id": "technology-0072",
+    "en": "computer",
+    "no": "en datamaskin",
+    "forms": "datamaskinen, datamaskiner, datamaskinene",
+    "pos": "noun",
+    "topic": "technology"
+  },
+  {
+    "id": "general-0027",
+    "en": "to save (money)",
+    "no": "å spare",
+    "forms": "sparer, sparte, har spart",
+    "pos": "verb",
+    "topic": "general"
+  },
+  {
+    "id": "general-0028",
+    "en": "money",
+    "no": "penger",
+    "forms": "",
+    "pos": "noun",
+    "topic": "general"
+  },
+  {
+    "id": "freetime-0065",
+    "en": "bonfire",
+    "no": "et bål",
+    "forms": "bålet, bål, bålene",
+    "pos": "noun",
+    "topic": "freetime"
+  },
+  {
+    "id": "phrases-0006",
+    "en": "make sure; watch out; take care",
+    "no": "pass på",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "general-0029",
+    "en": "probably",
+    "no": "nok",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "general-0030",
+    "en": "enough",
+    "no": "nok",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "general-0031",
+    "en": "almost; nearly",
+    "no": "nesten",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "phrases-0007",
+    "en": "will (going to...)",
+    "no": "kommer til",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "food-0062",
+    "en": "sweet pastries (brownies, cakes, etc.)",
+    "no": "en kake",
+    "forms": "kaken, kaker, kakene",
+    "pos": "noun",
+    "topic": "food"
+  },
+  {
+    "id": "food-0063",
+    "en": "semi-sweet yeast pastries (boller, etc.)",
+    "no": "et gjærbakst",
+    "forms": "gjærbaksten, gjærbakster, gjærbakstene",
+    "pos": "noun",
+    "topic": "food"
+  },
+  {
+    "id": "housing-0064",
+    "en": "backyard",
+    "no": "en bakgård",
+    "forms": "bakgården, bakgårder, bakgårdene",
+    "pos": "noun",
+    "topic": "housing"
+  },
+  {
+    "id": "common_verbs-0063",
+    "en": "happens; occurs",
+    "no": "å skje",
+    "forms": "skjer, skjedde, har skjedd",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "general-0032",
+    "en": "short",
+    "no": "kort",
+    "forms": "kort, korte, kortere, kortest",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "general-0033",
+    "en": "actually; really",
+    "no": "egentlig",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "emotions-0066",
+    "en": "surprised",
+    "no": "overrasket",
+    "forms": "overrasket, overraskede, mer overrasket, mest overrasket",
+    "pos": "adj",
+    "topic": "emotions"
+  },
+  {
+    "id": "time-0003",
+    "en": "during (a period of time)",
+    "no": "i løpet av",
+    "forms": "",
+    "pos": "expr",
+    "topic": "time"
+  },
+  {
+    "id": "general-0034",
+    "en": "around; approximately",
+    "no": "omkring",
+    "forms": "",
+    "pos": "prep",
+    "topic": "general"
+  },
+  {
+    "id": "freetime-0066",
+    "en": "to light / to ignite (a fire)",
+    "no": "å tenne",
+    "forms": "tenner, tente, har tent",
+    "pos": "verb",
+    "topic": "freetime"
+  },
+  {
+    "id": "freetime-0067",
+    "en": "to enjoy; to savour",
+    "no": "å nyte",
+    "forms": "nyter, nøt, har nytt",
+    "pos": "verb",
+    "topic": "freetime"
+  },
+  {
+    "id": "work-0068",
+    "en": "busy; hectic (schedule)",
+    "no": "travel",
+    "forms": "travelt, travle, travlere, travlest",
+    "pos": "adj",
+    "topic": "work"
+  },
+  {
+    "id": "food-0064",
+    "en": "to lick",
+    "no": "å slikke",
+    "forms": "slikker, slikket, har slikket",
+    "pos": "verb",
+    "topic": "food"
+  },
+  {
+    "id": "common_verbs-0064",
+    "en": "to fall",
+    "no": "å falle",
+    "forms": "faller, falt, har falt",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "food-0065",
+    "en": "to pour",
+    "no": "å helle",
+    "forms": "heller, helte, har helt",
+    "pos": "verb",
+    "topic": "food"
+  },
+  {
+    "id": "food-0066",
+    "en": "dishes (food courses)",
+    "no": "en rett",
+    "forms": "retten, retter, rettene",
+    "pos": "noun",
+    "topic": "food"
+  },
+  {
+    "id": "housing-0065",
+    "en": "fridge; refrigerator",
+    "no": "et kjøleskap",
+    "forms": "kjøleskapet, kjøleskap, kjøleskapene",
+    "pos": "noun",
+    "topic": "housing"
+  },
+  {
+    "id": "directions-0003",
+    "en": "behind; at the back",
+    "no": "bak",
+    "forms": "",
+    "pos": "prep",
+    "topic": "directions"
+  },
+  {
+    "id": "directions-0004",
+    "en": "in front of",
+    "no": "foran",
+    "forms": "",
+    "pos": "prep",
+    "topic": "directions"
+  },
+  {
+    "id": "directions-0005",
+    "en": "bottom / lowest",
+    "no": "nederst",
+    "forms": "",
+    "pos": "adv",
+    "topic": "directions"
+  },
+  {
+    "id": "directions-0006",
+    "en": "middle",
+    "no": "midte",
+    "forms": "",
+    "pos": "noun",
+    "topic": "directions"
+  },
+  {
+    "id": "general-0035",
+    "en": "important",
+    "no": "viktig",
+    "forms": "viktig, viktige, viktigere, viktigst",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "directions-0007",
+    "en": "far away",
+    "no": "langt unna",
+    "forms": "",
+    "pos": "expr",
+    "topic": "directions"
+  },
+  {
+    "id": "general-0036",
+    "en": "short / long",
+    "no": "kort/lang",
+    "forms": "",
+    "pos": "expr",
+    "topic": "general"
+  },
+  {
+    "id": "general-0037",
+    "en": "type / kind",
+    "no": "slags",
+    "forms": "",
+    "pos": "noun",
+    "topic": "general"
+  },
+  {
+    "id": "health-0068",
+    "en": "healthy (neuter/adverbial form)",
+    "no": "sunt",
+    "forms": "",
+    "pos": "adj",
+    "topic": "health"
+  },
+  {
+    "id": "common_verbs-0065",
+    "en": "to take care of",
+    "no": "å ta vare på",
+    "forms": "",
+    "pos": "expr",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "environment-0047",
+    "en": "the environment",
+    "no": "et miljø",
+    "forms": "miljøet, miljøer, miljøene",
+    "pos": "noun",
+    "topic": "environment"
+  },
+  {
+    "id": "general-0038",
+    "en": "interesting",
+    "no": "interessant",
+    "forms": "interessant, interessante, mer interessant, mest interessant",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "opinions-0055",
+    "en": "what do you think",
+    "no": "hva tenker du",
+    "forms": "",
+    "pos": "expr",
+    "topic": "opinions"
+  },
+  {
+    "id": "opinions-0056",
+    "en": "what's your opinion",
+    "no": "hva mener du",
+    "forms": "",
+    "pos": "expr",
+    "topic": "opinions"
+  },
+  {
+    "id": "seasons_weather-0063",
+    "en": "autumn (season)",
+    "no": "en høst",
+    "forms": "høsten, høster, høstene",
+    "pos": "noun",
+    "topic": "seasons_weather"
+  },
+  {
+    "id": "phrases-0008",
+    "en": "Sorry, I don't know that word. What does it mean?",
+    "no": "Jeg beklager, jeg kjenner ikke ordet. Hva betyr det?",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "family-0067",
+    "en": "child raising / upbringing",
+    "no": "en barneoppdragelse",
+    "forms": "barneoppdragelsen, barneoppdragelser, barneoppdragelsene",
+    "pos": "noun",
+    "topic": "family"
+  },
+  {
+    "id": "grammar-0001",
+    "en": "neuter words (grammar note: monosyllabic nouns are often neuter)",
+    "no": "mono-syllabol",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "general-0039",
+    "en": "nicely / prettily (adverb form of pen)",
+    "no": "pent",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "common_verbs-0066",
+    "en": "to hit / to strike",
+    "no": "å slå",
+    "forms": "slår, slo, har slått",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "body-0003",
+    "en": "fat / thick",
+    "no": "tjukk",
+    "forms": "tjukt, tjukke, tykkere, tykkest",
+    "pos": "adj",
+    "topic": "body"
+  },
+  {
+    "id": "general-0040",
+    "en": "no one / nobody",
+    "no": "ingen",
+    "forms": "",
+    "pos": "expr",
+    "topic": "general"
+  },
+  {
+    "id": "general-0041",
+    "en": "nothing",
+    "no": "ingenting",
+    "forms": "",
+    "pos": "expr",
+    "topic": "general"
+  },
+  {
+    "id": "health-0069",
+    "en": "to hurt / to damage",
+    "no": "å skade",
+    "forms": "skader, skadet, har skadet",
+    "pos": "verb",
+    "topic": "health"
+  },
+  {
+    "id": "common_verbs-0067",
+    "en": "could (past tense of å kunne)",
+    "no": "å kunne",
+    "forms": "kan, kunne, har kunnet",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "general-0042",
+    "en": "already",
+    "no": "allerede",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "general-0043",
+    "en": "popular",
+    "no": "populær",
+    "forms": "populært, populære, mer populær, mest populær",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "general-0044",
+    "en": "none (when the subject is already known from context)",
+    "no": "ingen",
+    "forms": "",
+    "pos": "expr",
+    "topic": "general"
+  },
+  {
+    "id": "housing-0066",
+    "en": "housing / dwelling",
+    "no": "en bolig",
+    "forms": "boligen, boliger, boligene",
+    "pos": "noun",
+    "topic": "housing"
+  },
+  {
+    "id": "housing-0067",
+    "en": "building",
+    "no": "en bygning",
+    "forms": "bygningen, bygninger, bygningene",
+    "pos": "noun",
+    "topic": "housing"
+  },
+  {
+    "id": "directions-0008",
+    "en": "north",
+    "no": "nord",
+    "forms": "",
+    "pos": "adv",
+    "topic": "directions"
+  },
+  {
+    "id": "phrases-0009",
+    "en": "as I said",
+    "no": "som jeg sa",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "nature-0094",
+    "en": "the ground (outside)",
+    "no": "en bakke",
+    "forms": "bakken, bakker, bakkene",
+    "pos": "noun",
+    "topic": "nature"
+  },
+  {
+    "id": "nature-0095",
+    "en": "hill",
+    "no": "en bakke",
+    "forms": "bakken, bakker, bakkene",
+    "pos": "noun",
+    "topic": "nature"
+  },
+  {
+    "id": "phrases-0010",
+    "en": "look for them / search for them",
+    "no": "ser etter dem",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "personality-0078",
+    "en": "weird / strange",
+    "no": "rar",
+    "forms": "rart, rare, rarere, rarest",
+    "pos": "adj",
+    "topic": "personality"
+  },
+  {
+    "id": "general-0045",
+    "en": "type / kind",
+    "no": "slag/type",
+    "forms": "",
+    "pos": "expr",
+    "topic": "general"
+  },
+  {
+    "id": "general-0046",
+    "en": "especially / particularly",
+    "no": "særlig",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "emotions-0067",
+    "en": "fun (adjective)",
+    "no": "gøy",
+    "forms": "",
+    "pos": "adj",
+    "topic": "emotions"
+  },
+  {
+    "id": "common_verbs-0068",
+    "en": "fell (past tense of å falle)",
+    "no": "å falle",
+    "forms": "faller, falt, har falt",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "general-0047",
+    "en": "clear / ready",
+    "no": "klar",
+    "forms": "klart, klare, klarere, klarest",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "general-0048",
+    "en": "clothes",
+    "no": "klær",
+    "forms": "",
+    "pos": "noun",
+    "topic": "general"
+  },
+  {
+    "id": "general-0049",
+    "en": "even though",
+    "no": "selv om",
+    "forms": "",
+    "pos": "conj",
+    "topic": "general"
+  },
+  {
+    "id": "phrases-0011",
+    "en": "make sure / watch out",
+    "no": "pass på",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "general-0050",
+    "en": "almost",
+    "no": "nesten",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "common_verbs-0069",
+    "en": "to wait",
+    "no": "å vente",
+    "forms": "venter, ventet, har ventet",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "general-0051",
+    "en": "only / just",
+    "no": "bare",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "general-0052",
+    "en": "only / exclusively",
+    "no": "kun",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "nature-0096",
+    "en": "planting plants",
+    "no": "planter planter",
+    "forms": "",
+    "pos": "expr",
+    "topic": "nature"
+  },
+  {
+    "id": "freetime-0068",
+    "en": "playground",
+    "no": "en lekeplass",
+    "forms": "lekeplassen, lekeplasser, lekeplassene",
+    "pos": "noun",
+    "topic": "freetime"
+  },
+  {
+    "id": "body-0004",
+    "en": "eye",
+    "no": "et øye",
+    "forms": "øyet, øyne, øynene",
+    "pos": "noun",
+    "topic": "body"
+  },
+  {
+    "id": "body-0005",
+    "en": "mouth",
+    "no": "en munn",
+    "forms": "munnen, munner, munnene",
+    "pos": "noun",
+    "topic": "body"
+  },
+  {
+    "id": "body-0006",
+    "en": "nose",
+    "no": "en nese",
+    "forms": "nesen, neser, nesene",
+    "pos": "noun",
+    "topic": "body"
+  },
+  {
+    "id": "body-0007",
+    "en": "ear",
+    "no": "et øre",
+    "forms": "øret, ører, ørene",
+    "pos": "noun",
+    "topic": "body"
+  },
+  {
+    "id": "common_verbs-0070",
+    "en": "to fix / to repair",
+    "no": "å fikse/å reparere",
+    "forms": "",
+    "pos": "expr",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "general-0053",
+    "en": "something",
+    "no": "noe",
+    "forms": "",
+    "pos": "expr",
+    "topic": "general"
+  },
+  {
+    "id": "general-0054",
+    "en": "someone / somebody",
+    "no": "noen",
+    "forms": "",
+    "pos": "expr",
+    "topic": "general"
+  },
+  {
+    "id": "general-0055",
+    "en": "one (impersonal pronoun)",
+    "no": "man",
+    "forms": "",
+    "pos": "expr",
+    "topic": "general"
+  },
+  {
+    "id": "society-0072",
+    "en": "holiday / public holiday",
+    "no": "en høytid",
+    "forms": "høytiden, høytider, høytidene",
+    "pos": "noun",
+    "topic": "society"
+  },
+  {
+    "id": "general-0056",
+    "en": "typical",
+    "no": "typisk",
+    "forms": "typisk, typiske, mer typisk, mest typisk",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "emotions-0068",
+    "en": "too bad / what a shame",
+    "no": "synd",
+    "forms": "",
+    "pos": "expr",
+    "topic": "emotions"
+  },
+  {
+    "id": "society-0073",
+    "en": "member",
+    "no": "et medlem",
+    "forms": "medlemmet, medlemmer, medlemmene",
+    "pos": "noun",
+    "topic": "society"
+  },
+  {
+    "id": "family-0068",
+    "en": "cousin (male)",
+    "no": "en fetter",
+    "forms": "fetteren, fettere, fetterne",
+    "pos": "noun",
+    "topic": "family"
+  },
+  {
+    "id": "society-0074",
+    "en": "freedom",
+    "no": "en frihet",
+    "forms": "friheten, friheter, frihetene",
+    "pos": "noun",
+    "topic": "society"
+  },
+  {
+    "id": "common_verbs-0071",
+    "en": "usually / tend to (present habitual)",
+    "no": "å pleie",
+    "forms": "pleier, pleide, har pleid",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "common_verbs-0072",
+    "en": "used to (do/be something in the past)",
+    "no": "å pleie",
+    "forms": "pleier, pleide, har pleid",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "family-0069",
+    "en": "to come together / to get together",
+    "no": "å komme sammen",
+    "forms": "",
+    "pos": "expr",
+    "topic": "family"
+  },
+  {
+    "id": "general-0057",
+    "en": "special / particularly",
+    "no": "spesielt",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "food-0067",
+    "en": "vegetarian (person)",
+    "no": "en vegetarianer",
+    "forms": "vegetarianeren, vegetarianere, vegetarianerne",
+    "pos": "noun",
+    "topic": "food"
+  },
+  {
+    "id": "directions-0009",
+    "en": "at the bottom",
+    "no": "nederst",
+    "forms": "",
+    "pos": "adv",
+    "topic": "directions"
+  },
+  {
+    "id": "directions-0010",
+    "en": "at the top",
+    "no": "øverst",
+    "forms": "",
+    "pos": "adv",
+    "topic": "directions"
+  },
+  {
+    "id": "directions-0011",
+    "en": "to the left of",
+    "no": "til venstre for",
+    "forms": "",
+    "pos": "expr",
+    "topic": "directions"
+  },
+  {
+    "id": "directions-0012",
+    "en": "to the side of / next to",
+    "no": "ved siden av",
+    "forms": "",
+    "pos": "expr",
+    "topic": "directions"
+  },
+  {
+    "id": "environment-0048",
+    "en": "to protect",
+    "no": "å verne",
+    "forms": "verner, vernet, har vernet",
+    "pos": "verb",
+    "topic": "environment"
+  },
+  {
+    "id": "environment-0049",
+    "en": "air",
+    "no": "en luft",
+    "forms": "luften, lufter, luftene",
+    "pos": "noun",
+    "topic": "environment"
+  },
+  {
+    "id": "environment-0050",
+    "en": "to recycle / sort waste at source",
+    "no": "å kildesortere",
+    "forms": "kildesorterer, kildesorterte, har kildesortert",
+    "pos": "verb",
+    "topic": "environment"
+  },
+  {
+    "id": "environment-0051",
+    "en": "the garbage / the waste",
+    "no": "et avfall",
+    "forms": "avfallet, avfall, avfallene",
+    "pos": "noun",
+    "topic": "environment"
+  },
+  {
+    "id": "grammar-0002",
+    "en": "I (do something) by (doing something) — sentence pattern",
+    "no": "Jeg () ved å ()",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "society-0075",
+    "en": "communal voluntary work",
+    "no": "en dugnad",
+    "forms": "dugnaden, dugnader, dugnadene",
+    "pos": "noun",
+    "topic": "society"
+  },
+  {
+    "id": "general-0058",
+    "en": "both",
+    "no": "begge",
+    "forms": "",
+    "pos": "expr",
+    "topic": "general"
+  },
+  {
+    "id": "phrases-0012",
+    "en": "it depends",
+    "no": "det kommer an på",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "food-0068",
+    "en": "potato chips",
+    "no": "et potetgull",
+    "forms": "potetgullet, potetgull, potetgullene",
+    "pos": "noun",
+    "topic": "food"
+  },
+  {
+    "id": "general-0059",
+    "en": "gold",
+    "no": "et gull",
+    "forms": "gullet, gull, gullene",
+    "pos": "noun",
+    "topic": "general"
+  },
+  {
+    "id": "food-0069",
+    "en": "meat",
+    "no": "et kjøtt",
+    "forms": "kjøttet, kjøtt, kjøttene",
+    "pos": "noun",
+    "topic": "food"
+  },
+  {
+    "id": "common_verbs-0073",
+    "en": "to steal",
+    "no": "å stjele",
+    "forms": "stjeler, stjal, har stjålet",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "general-0060",
+    "en": "person / people (individual human being)",
+    "no": "et menneske",
+    "forms": "mennesket, mennesker, menneskene",
+    "pos": "noun",
+    "topic": "general"
+  },
+  {
+    "id": "personality-0079",
+    "en": "slow",
+    "no": "treg",
+    "forms": "tregt, trege, tregere, tregest",
+    "pos": "adj",
+    "topic": "personality"
+  },
+  {
+    "id": "health-0070",
+    "en": "tired",
+    "no": "trett",
+    "forms": "trett, trette, trettere, trettest",
+    "pos": "adj",
+    "topic": "health"
+  },
+  {
+    "id": "housing-0068",
+    "en": "dishes (in the sink) / washing up",
+    "no": "en oppvask",
+    "forms": "oppvasken, oppvasker, oppvaskene",
+    "pos": "noun",
+    "topic": "housing"
+  },
+  {
+    "id": "family-0070",
+    "en": "parent",
+    "no": "en forelder",
+    "forms": "forelderen, foreldre, foreldrene",
+    "pos": "noun",
+    "topic": "family"
+  },
+  {
+    "id": "travel-0060",
+    "en": "place / location",
+    "no": "et sted",
+    "forms": "stedet, steder, stedene",
+    "pos": "noun",
+    "topic": "travel"
+  },
+  {
+    "id": "general-0061",
+    "en": "some / any",
+    "no": "noen",
+    "forms": "",
+    "pos": "expr",
+    "topic": "general"
+  },
+  {
+    "id": "general-0062",
+    "en": "during (an event)",
+    "no": "under",
+    "forms": "",
+    "pos": "prep",
+    "topic": "general"
+  },
+  {
+    "id": "general-0063",
+    "en": "long (distance)",
+    "no": "lang",
+    "forms": "langt, lange, lengre, lengst",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "time-0004",
+    "en": "long (time / duration)",
+    "no": "lenge",
+    "forms": "",
+    "pos": "adv",
+    "topic": "time"
+  },
+  {
+    "id": "general-0064",
+    "en": "danger",
+    "no": "en fare",
+    "forms": "faren, farer, farene",
+    "pos": "noun",
+    "topic": "general"
+  },
+  {
+    "id": "general-0065",
+    "en": "dangerous",
+    "no": "farlig",
+    "forms": "farlig, farlige, farligere, farligst",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "general-0066",
+    "en": "daily",
+    "no": "daglig",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "general-0067",
+    "en": "routine",
+    "no": "en rutine",
+    "forms": "rutinen, rutiner, rutinene",
+    "pos": "noun",
+    "topic": "general"
+  },
+  {
+    "id": "general-0068",
+    "en": "alone",
+    "no": "alene",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "housing-0069",
+    "en": "toilet",
+    "no": "et toalett",
+    "forms": "toalettet, toaletter, toalettene",
+    "pos": "noun",
+    "topic": "housing"
+  },
+  {
+    "id": "body-0008",
+    "en": "body",
+    "no": "en kropp",
+    "forms": "kroppen, kropper, kroppene",
+    "pos": "noun",
+    "topic": "body"
+  },
+  {
+    "id": "phrases-0013",
+    "en": "I prefer (to be) at home",
+    "no": "jeg vil heller hjemme",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "phrases-0014",
+    "en": "you know (casual filler used during conversation)",
+    "no": "du vet",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "health-0071",
+    "en": "drugs",
+    "no": "et dop",
+    "forms": "dopet, dop, dopene",
+    "pos": "noun",
+    "topic": "health"
+  },
+  {
+    "id": "freetime-0069",
+    "en": "alt (music)",
+    "no": "alternativ",
+    "forms": "",
+    "pos": "adj",
+    "topic": "freetime"
+  },
+  {
+    "id": "general-0069",
+    "en": "abstract",
+    "no": "abstrakt",
+    "forms": "abstrakt, abstrakte, mer abstrakt, mest abstrakt",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "freetime-0070",
+    "en": "band(s)",
+    "no": "et band",
+    "forms": "bandet, band, bandene",
+    "pos": "noun",
+    "topic": "freetime"
+  },
+  {
+    "id": "freetime-0071",
+    "en": "artist(s)",
+    "no": "en artist",
+    "forms": "artisten, artister, artistene",
+    "pos": "noun",
+    "topic": "freetime"
+  },
+  {
+    "id": "common_verbs-0074",
+    "en": "do (synonym of gjøre)",
+    "no": "å drive",
+    "forms": "driver, drev, har drevet",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "emotions-0069",
+    "en": "care (about)",
+    "no": "å bry seg",
+    "forms": "bryr, brydde, har brydd",
+    "pos": "verb",
+    "topic": "emotions"
+  },
+  {
+    "id": "work-0069",
+    "en": "strategy",
+    "no": "en strategi",
+    "forms": "strategien, strategier, strategiene",
+    "pos": "noun",
+    "topic": "work"
+  },
+  {
+    "id": "emotions-0070",
+    "en": "happy",
+    "no": "glad / lykkelig",
+    "forms": "",
+    "pos": "adj",
+    "topic": "emotions"
+  },
+  {
+    "id": "seasons_weather-0064",
+    "en": "Easter",
+    "no": "påske",
+    "forms": "",
+    "pos": "noun",
+    "topic": "seasons_weather"
+  },
+  {
+    "id": "common_verbs-0075",
+    "en": "lie (tell a lie)",
+    "no": "å lyve",
+    "forms": "lyver, løy, har løyet",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "phrases-0015",
+    "en": "seems _",
+    "no": "ser _ ut",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "phrases-0016",
+    "en": "another (one more)",
+    "no": "en til",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "directions-0013",
+    "en": "within / inside",
+    "no": "inne",
+    "forms": "",
+    "pos": "adv",
+    "topic": "directions"
+  },
+  {
+    "id": "general-0070",
+    "en": "among",
+    "no": "blant",
+    "forms": "",
+    "pos": "prep",
+    "topic": "general"
+  },
+  {
+    "id": "grammar-0003",
+    "en": "as if",
+    "no": "som om",
+    "forms": "",
+    "pos": "conj",
+    "topic": "grammar"
+  },
+  {
+    "id": "general-0071",
+    "en": "colour",
+    "no": "en farge",
+    "forms": "fargen, farger, fargene",
+    "pos": "noun",
+    "topic": "general"
+  },
+  {
+    "id": "time-0005",
+    "en": "before",
+    "no": "før",
+    "forms": "",
+    "pos": "prep",
+    "topic": "time"
+  },
+  {
+    "id": "seasons_weather-0065",
+    "en": "wet",
+    "no": "våt",
+    "forms": "vått, våte, våtere, våtest",
+    "pos": "adj",
+    "topic": "seasons_weather"
+  },
+  {
+    "id": "general-0072",
+    "en": "too (excessively)",
+    "no": "for",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "common_verbs-0076",
+    "en": "kidding / joking",
+    "no": "å tulle",
+    "forms": "tuller, tullet, har tullet",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "general-0073",
+    "en": "anyway / still / nevertheless",
+    "no": "likevel",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "general-0074",
+    "en": "chat",
+    "no": "en prat",
+    "forms": "praten, prater, pratene",
+    "pos": "noun",
+    "topic": "general"
+  },
+  {
+    "id": "time-0006",
+    "en": "then (past reference)",
+    "no": "da",
+    "forms": "",
+    "pos": "adv",
+    "topic": "time"
+  },
+  {
+    "id": "general-0075",
+    "en": "exactly",
+    "no": "nettopp",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "general-0076",
+    "en": "else / other",
+    "no": "andre",
+    "forms": "",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "directions-0014",
+    "en": "east",
+    "no": "øst",
+    "forms": "",
+    "pos": "noun",
+    "topic": "directions"
+  },
+  {
+    "id": "directions-0015",
+    "en": "south",
+    "no": "sør",
+    "forms": "",
+    "pos": "noun",
+    "topic": "directions"
+  },
+  {
+    "id": "directions-0016",
+    "en": "west",
+    "no": "vest",
+    "forms": "",
+    "pos": "noun",
+    "topic": "directions"
+  },
+  {
+    "id": "directions-0017",
+    "en": "north of",
+    "no": "nord for",
+    "forms": "",
+    "pos": "expr",
+    "topic": "directions"
+  },
+  {
+    "id": "grammar-0004",
+    "en": "most of it/them",
+    "no": "det/de meste",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "grammar-0005",
+    "en": "properly / truly (intensifying prefix)",
+    "no": "erke-",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "opinions-0057",
+    "en": "mean (I mean..., etc.)",
+    "no": "å mene",
+    "forms": "mener,mente, har ment",
+    "pos": "verb",
+    "topic": "opinions"
+  },
+  {
+    "id": "general-0077",
+    "en": "true",
+    "no": "sant",
+    "forms": "",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "phrases-0017",
+    "en": "right? (tag question)",
+    "no": "ikke sant",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "grammar-0006",
+    "en": "those are the",
+    "no": "de er de",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "grammar-0007",
+    "en": "important ones (\"ones\" implied)",
+    "no": "viktige",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "phrases-0018",
+    "en": "etcetera",
+    "no": "og så videre",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "common_verbs-0077",
+    "en": "leave (go away, colloquial)",
+    "no": "å stikke",
+    "forms": "stikker, stakk, har stukket",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "directions-0018",
+    "en": "into",
+    "no": "inn i",
+    "forms": "",
+    "pos": "prep",
+    "topic": "directions"
+  },
+  {
+    "id": "personality-0080",
+    "en": "evil",
+    "no": "ond",
+    "forms": "ondt, onde, vondere, vondest",
+    "pos": "adj",
+    "topic": "personality"
+  },
+  {
+    "id": "grammar-0008",
+    "en": "I will hurt you (modal: skal)",
+    "no": "jeg skal skade deg",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "grammar-0009",
+    "en": "I will hurt you (future with komme til å)",
+    "no": "jeg kommer til å skade deg",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "phrases-0019",
+    "en": "know for sure",
+    "no": "vet sikkert",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "phrases-0020",
+    "en": "don't know for sure",
+    "no": "vet ikke sikkert",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "phrases-0021",
+    "en": "used to / accustomed to",
+    "no": "vant til",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "grammar-0010",
+    "en": "I have seen",
+    "no": "jeg har sett",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "grammar-0011",
+    "en": "I was seen (passive)",
+    "no": "jeg ble sett",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "common_verbs-0078",
+    "en": "act(ing) / pretend(ing)",
+    "no": "å late",
+    "forms": "later, lot, har latt",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "common_verbs-0079",
+    "en": "to let / letting / let (past)",
+    "no": "å la",
+    "forms": "lar, lot, har latt",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "general-0078",
+    "en": "dissimilar / different",
+    "no": "annerledes",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "general-0079",
+    "en": "the difference",
+    "no": "en forskjell",
+    "forms": "forskjellen, forskjeller, forskjellene",
+    "pos": "noun",
+    "topic": "general"
+  },
+  {
+    "id": "common_verbs-0080",
+    "en": "owe",
+    "no": "å skylde",
+    "forms": "skylder, skyldte, har skyldt",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "general-0080",
+    "en": "favour",
+    "no": "en tjeneste",
+    "forms": "tjenesten, tjenester, tjenestene",
+    "pos": "noun",
+    "topic": "general"
+  },
+  {
+    "id": "phrases-0022",
+    "en": "it's ok / fine",
+    "no": "det er i orden",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "travel-0061",
+    "en": "journey",
+    "no": "en ferd",
+    "forms": "ferden, ferder, ferdene",
+    "pos": "noun",
+    "topic": "travel"
+  },
+  {
+    "id": "grammar-0012",
+    "en": "to be about to",
+    "no": "å være i ferd med",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "grammar-0013",
+    "en": "I was being dumb (Norwegian uses simple past, not past continuous)",
+    "no": "jeg var dum",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "grammar-0014",
+    "en": "which book (noun stays indefinite after hvilken)",
+    "no": "hvilken bok",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "society-0076",
+    "en": "police",
+    "no": "et politi",
+    "forms": "politiet, politier, politiene",
+    "pos": "noun",
+    "topic": "society"
+  },
+  {
+    "id": "work-0070",
+    "en": "sell / sold",
+    "no": "å selge",
+    "forms": "selger, solgte, har solgt",
+    "pos": "verb",
+    "topic": "work"
+  },
+  {
+    "id": "general-0081",
+    "en": "left (over / remaining)",
+    "no": "igjen",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "general-0082",
+    "en": "back (receive back)",
+    "no": "igjen",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "phrases-0023",
+    "en": "simply",
+    "no": "rett og slett",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "grammar-0015",
+    "en": "have seen (past participle of se)",
+    "no": "sett",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "time-0007",
+    "en": "for a week (duration)",
+    "no": "i en uke",
+    "forms": "",
+    "pos": "expr",
+    "topic": "time"
+  },
+  {
+    "id": "time-0008",
+    "en": "in a week (future point in time)",
+    "no": "om en uke",
+    "forms": "",
+    "pos": "expr",
+    "topic": "time"
+  },
+  {
+    "id": "time-0009",
+    "en": "in a week (time taken to complete)",
+    "no": "på en uke",
+    "forms": "",
+    "pos": "expr",
+    "topic": "time"
+  },
+  {
+    "id": "common_verbs-0081",
+    "en": "recognize",
+    "no": "å kjenne igjen",
+    "forms": "kjenner igjen, kjente igjen, har kjent igjen",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "general-0083",
+    "en": "thin",
+    "no": "tynn",
+    "forms": "tynt, tynne, tynnere, tynnest",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "nature-0097",
+    "en": "horse",
+    "no": "en hest",
+    "forms": "hesten, hester, hestene",
+    "pos": "noun",
+    "topic": "nature"
+  },
+  {
+    "id": "nature-0098",
+    "en": "cow",
+    "no": "ei ku",
+    "forms": "kua, kyr, kyrne",
+    "pos": "noun",
+    "topic": "nature"
+  },
+  {
+    "id": "nature-0099",
+    "en": "pig",
+    "no": "en gris",
+    "forms": "grisen, griser, grisene",
+    "pos": "noun",
+    "topic": "nature"
+  },
+  {
+    "id": "nature-0100",
+    "en": "barn",
+    "no": "en låve",
+    "forms": "låven, låver, låvene",
+    "pos": "noun",
+    "topic": "nature"
+  },
+  {
+    "id": "nature-0101",
+    "en": "farm",
+    "no": "en gård",
+    "forms": "gården, gårder, gårdene",
+    "pos": "noun",
+    "topic": "nature"
+  },
+  {
+    "id": "phrases-0024",
+    "en": "in any case",
+    "no": "i hvert fall",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "general-0084",
+    "en": "weak",
+    "no": "svak",
+    "forms": "svakt, svake, svakere, svakest",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "grammar-0016",
+    "en": "all (countable)",
+    "no": "alle",
+    "forms": "",
+    "pos": "adj",
+    "topic": "grammar"
+  },
+  {
+    "id": "grammar-0017",
+    "en": "all (uncountable)",
+    "no": "all",
+    "forms": "",
+    "pos": "adj",
+    "topic": "grammar"
+  },
+  {
+    "id": "general-0085",
+    "en": "fine / nice / pretty",
+    "no": "fint",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "personality-0081",
+    "en": "clever / capable / good at something",
+    "no": "flink",
+    "forms": "flint, flinke, flinkere, flinkest",
+    "pos": "adj",
+    "topic": "personality"
+  },
+  {
+    "id": "general-0086",
+    "en": "good / well (quality, health, situations)",
+    "no": "bra",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "general-0087",
+    "en": "good (taste, morality, intensity)",
+    "no": "god",
+    "forms": "godt, gode, bedre, best",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "time-0010",
+    "en": "a long time",
+    "no": "lenge",
+    "forms": "",
+    "pos": "adv",
+    "topic": "time"
+  },
+  {
+    "id": "general-0088",
+    "en": "safe",
+    "no": "trygg",
+    "forms": "trygt, trygge, tryggere, tryggest",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "general-0089",
+    "en": "queer / crooked",
+    "no": "skeiv",
+    "forms": "skeivt, skeive, skeivere, skeivest",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "grammar-0018",
+    "en": "neuter noun suffix -et (grammar note)",
+    "no": "-et (neuter definite suffix)",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "emotions-0071",
+    "en": "crazy",
+    "no": "gal",
+    "forms": "galt, gale, galere, galest",
+    "pos": "adj",
+    "topic": "emotions"
+  },
+  {
+    "id": "health-0072",
+    "en": "rest",
+    "no": "å hvile",
+    "forms": "hviler, hvilte, har hvilt",
+    "pos": "verb",
+    "topic": "health"
+  },
+  {
+    "id": "housing-0070",
+    "en": "bed",
+    "no": "ei seng",
+    "forms": "senga, senger, sengene",
+    "pos": "noun",
+    "topic": "housing"
+  },
+  {
+    "id": "grammar-0019",
+    "en": "obviously / do (emphatic particle, like \"I do love you\")",
+    "no": "jo",
+    "forms": "",
+    "pos": "adv",
+    "topic": "grammar"
+  },
+  {
+    "id": "grammar-0020",
+    "en": "whichever one that...",
+    "no": "den som...",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "phrases-0025",
+    "en": "seems like...",
+    "no": "ser ut som...",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "phrases-0026",
+    "en": "seems like it... / seems to...",
+    "no": "ser ut som den...",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "phrases-0027",
+    "en": "what about...?",
+    "no": "hva med",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "general-0090",
+    "en": "normally",
+    "no": "vanligvis",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "general-0091",
+    "en": "powerful / large",
+    "no": "kraftig",
+    "forms": "kraftig, kraftige, kraftigere, kraftigst",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "general-0092",
+    "en": "rarely",
+    "no": "sjelden",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "common_verbs-0082",
+    "en": "deserve",
+    "no": "å fortjene",
+    "forms": "fortjener, fortjente, har fortjent",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "general-0093",
+    "en": "sure",
+    "no": "sikker",
+    "forms": "sikkert, sikre, sikrere, sikrest",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "common_verbs-0083",
+    "en": "happen",
+    "no": "å hende",
+    "forms": "hender, hendte, har hendt",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "common_verbs-0084",
+    "en": "works (a time to meet/call, clothes going together)",
+    "no": "å passe",
+    "forms": "passer, passet, har passet",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "emotions-0072",
+    "en": "gross",
+    "no": "ekkel",
+    "forms": "ekkelt, ekle, ekklere, ekklest",
+    "pos": "adj",
+    "topic": "emotions"
+  },
+  {
+    "id": "common_verbs-0085",
+    "en": "ordered",
+    "no": "å bestille",
+    "forms": "bestiller, bestilte, har bestilt",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "general-0094",
+    "en": "complicated",
+    "no": "komplisert",
+    "forms": "komplisert, kompliserte, mer komplisert, mest komplisert",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "general-0095",
+    "en": "fairly (more than moderately, less than really)",
+    "no": "ganske",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "society-0077",
+    "en": "rules",
+    "no": "en regel",
+    "forms": "regelen, regler, reglene",
+    "pos": "noun",
+    "topic": "society"
+  },
+  {
+    "id": "general-0096",
+    "en": "each other",
+    "no": "hverandre",
+    "forms": "",
+    "pos": "expr",
+    "topic": "general"
+  },
+  {
+    "id": "work-0071",
+    "en": "cooperate",
+    "no": "å samarbeide",
+    "forms": "samarbeider, samarbeidet, har samarbeidet",
+    "pos": "verb",
+    "topic": "work"
+  },
+  {
+    "id": "common_verbs-0086",
+    "en": "hinder",
+    "no": "å hindre",
+    "forms": "hindrer, hindret, har hindret",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "society-0078",
+    "en": "class (societal, e.g. middle/upper class)",
+    "no": "en klasse",
+    "forms": "klassen, klasser, klassene",
+    "pos": "noun",
+    "topic": "society"
+  },
+  {
+    "id": "general-0097",
+    "en": "whole",
+    "no": "hele",
+    "forms": "",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "emotions-0073",
+    "en": "doubt",
+    "no": "å tvile",
+    "forms": "tviler, tvilde, har tvilt",
+    "pos": "verb",
+    "topic": "emotions"
+  },
+  {
+    "id": "phrases-0028",
+    "en": "no worries",
+    "no": "null stress",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "time-0011",
+    "en": "at five (o'clock)",
+    "no": "til fem",
+    "forms": "",
+    "pos": "expr",
+    "topic": "time"
+  },
+  {
+    "id": "time-0012",
+    "en": "by five (o'clock)",
+    "no": "innen fem",
+    "forms": "",
+    "pos": "expr",
+    "topic": "time"
+  },
+  {
+    "id": "time-0013",
+    "en": "during",
+    "no": "om",
+    "forms": "",
+    "pos": "prep",
+    "topic": "time"
+  },
+  {
+    "id": "grammar-0021",
+    "en": "still vs. continue (fortatt = still; fortsette = continue)",
+    "no": "fortatt vs. fortsette",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "society-0079",
+    "en": "punish",
+    "no": "å straffe",
+    "forms": "straffer, straffet, har straffet",
+    "pos": "verb",
+    "topic": "society"
+  },
+  {
+    "id": "phrases-0029",
+    "en": "what a shame",
+    "no": "det var synd",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "general-0098",
+    "en": "at least",
+    "no": "i hvert fall",
+    "forms": "",
+    "pos": "expr",
+    "topic": "general"
+  },
+  {
+    "id": "general-0099",
+    "en": "anymore",
+    "no": "lenger",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "technology-0073",
+    "en": "internet",
+    "no": "et internett",
+    "forms": "internettet, internett, internettene",
+    "pos": "noun",
+    "topic": "technology"
+  },
+  {
+    "id": "general-0100",
+    "en": "each",
+    "no": "hver",
+    "forms": "",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "work-0072",
+    "en": "programmer",
+    "no": "en programmerer",
+    "forms": "programmereren, programmerere, programmererne",
+    "pos": "noun",
+    "topic": "work"
+  },
+  {
+    "id": "general-0101",
+    "en": "instead",
+    "no": "i stedet",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "phrases-0030",
+    "en": "please",
+    "no": "vær så snill",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "general-0102",
+    "en": "either / rather (you didn't do it either; rather A than B)",
+    "no": "heller",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "emotions-0074",
+    "en": "cuddle",
+    "no": "en kos",
+    "forms": "kosen, koser, kosene",
+    "pos": "noun",
+    "topic": "emotions"
+  },
+  {
+    "id": "general-0103",
+    "en": "normal",
+    "no": "normal",
+    "forms": "normalt, normale, mer normal, mest normal",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "phrases-0031",
+    "en": "it doesn't matter",
+    "no": "det spiller ingen rolle",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "general-0104",
+    "en": "either (either x or y)",
+    "no": "enten",
+    "forms": "",
+    "pos": "conj",
+    "topic": "general"
+  },
+  {
+    "id": "general-0105",
+    "en": "either way / anyway",
+    "no": "uansett",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "common_verbs-0087",
+    "en": "promise (verb)",
+    "no": "å love",
+    "forms": "lover, lovet, har lovet",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "general-0106",
+    "en": "a promise (noun)",
+    "no": "et løfte",
+    "forms": "løftet, løfter, løftene",
+    "pos": "noun",
+    "topic": "general"
+  },
+  {
+    "id": "personality-0082",
+    "en": "lied (past tense of å lyve)",
+    "no": "å lyve",
+    "forms": "lyver, løy, har løyet",
+    "pos": "verb",
+    "topic": "personality"
+  },
+  {
+    "id": "general-0107",
+    "en": "another (as in: I love another person)",
+    "no": "en annen",
+    "forms": "",
+    "pos": "expr",
+    "topic": "general"
+  },
+  {
+    "id": "general-0108",
+    "en": "other",
+    "no": "andre",
+    "forms": "",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "general-0109",
+    "en": "so that",
+    "no": "sånn at",
+    "forms": "",
+    "pos": "conj",
+    "topic": "general"
+  },
+  {
+    "id": "emotions-0075",
+    "en": "dream",
+    "no": "en drøm",
+    "forms": "drømmen, drømmer, drømmene",
+    "pos": "noun",
+    "topic": "emotions"
+  },
+  {
+    "id": "personality-0083",
+    "en": "rude / cheeky",
+    "no": "frekk",
+    "forms": "frekkt, frekke, frekkere, frekkest",
+    "pos": "adj",
+    "topic": "personality"
+  },
+  {
+    "id": "directions-0019",
+    "en": "far",
+    "no": "langt",
+    "forms": "",
+    "pos": "adv",
+    "topic": "directions"
+  },
+  {
+    "id": "travel-0062",
+    "en": "countries",
+    "no": "et land",
+    "forms": "landet, land, landene",
+    "pos": "noun",
+    "topic": "travel"
+  },
+  {
+    "id": "society-0080",
+    "en": "diverse",
+    "no": "variert",
+    "forms": "variert, varierte, mer variert, mest variert",
+    "pos": "adj",
+    "topic": "society"
+  },
+  {
+    "id": "travel-0063",
+    "en": "Europe",
+    "no": "Europa",
+    "forms": "",
+    "pos": "noun",
+    "topic": "travel"
+  },
+  {
+    "id": "general-0110",
+    "en": "everywhere / all around",
+    "no": "overalt",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "phrases-0032",
+    "en": "shut up",
+    "no": "hold munn",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "phrases-0033",
+    "en": "stay (away, stick around, etc.)",
+    "no": "hold deg",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "grammar-0022",
+    "en": "like (filler word — no Norwegian equivalent; say \"uh\" if needed)",
+    "no": "NONE (si \"uh\" om nødvendig)",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "general-0111",
+    "en": "quiet",
+    "no": "stille",
+    "forms": "stille, stille, stillere, stillest",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "general-0112",
+    "en": "like (this is like that)",
+    "no": "som",
+    "forms": "",
+    "pos": "conj",
+    "topic": "general"
+  },
+  {
+    "id": "common_verbs-0088",
+    "en": "pick up and bring (a package, a book, food)",
+    "no": "å hente",
+    "forms": "henter, hentet, har hentet",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "education-0064",
+    "en": "pen",
+    "no": "en penn",
+    "forms": "pennen, penner, pennene",
+    "pos": "noun",
+    "topic": "education"
+  },
+  {
+    "id": "general-0113",
+    "en": "a display / proof",
+    "no": "et bevis",
+    "forms": "beviset, bevis, bevisene",
+    "pos": "noun",
+    "topic": "general"
+  },
+  {
+    "id": "work-0073",
+    "en": "I can do anything (to help, for a job, etc.) — idiom: I'm a potato",
+    "no": "jeg er en potet",
+    "forms": "",
+    "pos": "expr",
+    "topic": "work"
+  },
+  {
+    "id": "emotions-0076",
+    "en": "awful",
+    "no": "grusom",
+    "forms": "grusomt, grusomme, grusommere, grusomst",
+    "pos": "adj",
+    "topic": "emotions"
+  },
+  {
+    "id": "travel-0064",
+    "en": "drove (past tense)",
+    "no": "å kjøre",
+    "forms": "kjører, kjørte, har kjørt",
+    "pos": "verb",
+    "topic": "travel"
+  },
+  {
+    "id": "travel-0065",
+    "en": "flew (past tense)",
+    "no": "å fly",
+    "forms": "flyr, fløy, har fløyet",
+    "pos": "verb",
+    "topic": "travel"
+  },
+  {
+    "id": "travel-0066",
+    "en": "fly (present tense)",
+    "no": "å fly",
+    "forms": "flyr, fløy, har fløyet",
+    "pos": "verb",
+    "topic": "travel"
+  },
+  {
+    "id": "general-0114",
+    "en": "simple",
+    "no": "enkel",
+    "forms": "enkelt, enkle, enklere, enklest",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "general-0115",
+    "en": "about / approximately",
+    "no": "cirka / rundt",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "emotions-0077",
+    "en": "angry",
+    "no": "sint",
+    "forms": "sint, sinte, sintere, sintest",
+    "pos": "adj",
+    "topic": "emotions"
+  },
+  {
+    "id": "personality-0084",
+    "en": "spoiled (bratty)",
+    "no": "bortskjemt",
+    "forms": "bortskjemt, bortskjemte, mer bortskjemt, mest bortskjemt",
+    "pos": "adj",
+    "topic": "personality"
+  },
+  {
+    "id": "general-0116",
+    "en": "life",
+    "no": "et liv",
+    "forms": "livet, liv, livene",
+    "pos": "noun",
+    "topic": "general"
+  },
+  {
+    "id": "common_verbs-0089",
+    "en": "keep (promises)",
+    "no": "å holde",
+    "forms": "holder, holdt, har holdt",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "phrases-0034",
+    "en": "there for you",
+    "no": "der for deg",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "general-0117",
+    "en": "whatever",
+    "no": "hva som helst",
+    "forms": "",
+    "pos": "expr",
+    "topic": "general"
+  },
+  {
+    "id": "emotions-0078",
+    "en": "appreciate",
+    "no": "å sette pris på",
+    "forms": "setter pris på, satte pris på, har satt pris på",
+    "pos": "verb",
+    "topic": "emotions"
+  },
+  {
+    "id": "general-0118",
+    "en": "relevant",
+    "no": "relevant",
+    "forms": "relevant, relevante, mer relevant, mest relevant",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "time-0014",
+    "en": "once",
+    "no": "én gang",
+    "forms": "",
+    "pos": "expr",
+    "topic": "time"
+  },
+  {
+    "id": "time-0015",
+    "en": "twice",
+    "no": "to ganger",
+    "forms": "",
+    "pos": "expr",
+    "topic": "time"
+  },
+  {
+    "id": "general-0119",
+    "en": "same amount",
+    "no": "like mye",
+    "forms": "",
+    "pos": "expr",
+    "topic": "general"
+  },
+  {
+    "id": "general-0120",
+    "en": "worth",
+    "no": "verd",
+    "forms": "",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "personality-0085",
+    "en": "rude",
+    "no": "frekk",
+    "forms": "frekkt, frekke, frekkere, frekkest",
+    "pos": "adj",
+    "topic": "personality"
+  },
+  {
+    "id": "general-0121",
+    "en": "for good, permanently",
+    "no": "for godt",
+    "forms": "",
+    "pos": "expr",
+    "topic": "general"
+  },
+  {
+    "id": "general-0122",
+    "en": "most (countable things)",
+    "no": "de fleste",
+    "forms": "",
+    "pos": "expr",
+    "topic": "general"
+  },
+  {
+    "id": "general-0123",
+    "en": "mainly / mostly",
+    "no": "mest",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "education-0065",
+    "en": "philosophy",
+    "no": "en filosofi",
+    "forms": "filosofien, filosofier, filosofiene",
+    "pos": "noun",
+    "topic": "education"
+  },
+  {
+    "id": "education-0066",
+    "en": "psychology",
+    "no": "en psykologi",
+    "forms": "psykologien, psykologier, psykologiene",
+    "pos": "noun",
+    "topic": "education"
+  },
+  {
+    "id": "society-0081",
+    "en": "news",
+    "no": "nyheter",
+    "forms": "en nyhet, nyheten, nyheter, nyhetene",
+    "pos": "noun",
+    "topic": "society"
+  },
+  {
+    "id": "emotions-0079",
+    "en": "scary",
+    "no": "skummelt",
+    "forms": "skummel, skummelt, skumle, mer skummel, mest skummel",
+    "pos": "adj",
+    "topic": "emotions"
+  },
+  {
+    "id": "family-0071",
+    "en": "toy",
+    "no": "en leke",
+    "forms": "leken, leker, lekene",
+    "pos": "noun",
+    "topic": "family"
+  },
+  {
+    "id": "freetime-0072",
+    "en": "social meetup (can be public)",
+    "no": "et treff",
+    "forms": "treffet, treff, treffene",
+    "pos": "noun",
+    "topic": "freetime"
+  },
+  {
+    "id": "opinions-0058",
+    "en": "care a lot about (a topic, not a person)",
+    "no": "opptatt av",
+    "forms": "",
+    "pos": "expr",
+    "topic": "opinions"
+  },
+  {
+    "id": "general-0124",
+    "en": "for themselves",
+    "no": "for seg selv",
+    "forms": "",
+    "pos": "expr",
+    "topic": "general"
+  },
+  {
+    "id": "common_verbs-0090",
+    "en": "support",
+    "no": "å støtte",
+    "forms": "støtter, støttet, har støttet",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "common_verbs-0091",
+    "en": "take care of / maintain",
+    "no": "å ta vare på",
+    "forms": "tar vare på, tok vare på, har tatt vare på",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "common_verbs-0092",
+    "en": "bring (it)",
+    "no": "å ta med",
+    "forms": "tar med, tok med, har tatt med",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "society-0082",
+    "en": "evil (noun)",
+    "no": "en ondskap",
+    "forms": "ondskapen, ondskaper, ondskapene",
+    "pos": "noun",
+    "topic": "society"
+  },
+  {
+    "id": "society-0083",
+    "en": "youths",
+    "no": "en ungdom",
+    "forms": "ungdommen, ungdommer, ungdommene",
+    "pos": "noun",
+    "topic": "society"
+  },
+  {
+    "id": "general-0125",
+    "en": "meant to",
+    "no": "ment til å",
+    "forms": "",
+    "pos": "expr",
+    "topic": "general"
+  },
+  {
+    "id": "general-0126",
+    "en": "really (intensifier)",
+    "no": "kjempe",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "society-0084",
+    "en": "laws",
+    "no": "en lov",
+    "forms": "loven, lover, lovene",
+    "pos": "noun",
+    "topic": "society"
+  },
+  {
+    "id": "personality-0086",
+    "en": "friendly",
+    "no": "vennlig",
+    "forms": "vennlig, vennlige, vennligere, vennligst",
+    "pos": "adj",
+    "topic": "personality"
+  },
+  {
+    "id": "general-0127",
+    "en": "quick",
+    "no": "kjapp",
+    "forms": "kjappt, kjappe, kjappere, kjappest",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "education-0067",
+    "en": "poem(s)",
+    "no": "et dikt",
+    "forms": "diktet, dikt, diktene",
+    "pos": "noun",
+    "topic": "education"
+  },
+  {
+    "id": "phrases-0035",
+    "en": "let's...",
+    "no": "la oss...",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "general-0128",
+    "en": "medium",
+    "no": "middels",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "general-0129",
+    "en": "broken / ruined",
+    "no": "ødelagt",
+    "forms": "ødelagt, ødelagte, mer ødelagt, mest ødelagt",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "general-0130",
+    "en": "mostly",
+    "no": "for det meste",
+    "forms": "",
+    "pos": "expr",
+    "topic": "general"
+  },
+  {
+    "id": "common_verbs-0093",
+    "en": "prevent",
+    "no": "å forhindre",
+    "forms": "forhindrer, forhindret, har forhindret",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "directions-0020",
+    "en": "towards",
+    "no": "mot",
+    "forms": "",
+    "pos": "prep",
+    "topic": "directions"
+  },
+  {
+    "id": "housing-0071",
+    "en": "stove/oven appliance",
+    "no": "en stekeovn / en komfyr",
+    "forms": "stekeovnen, stekeovner, stekeovnene / komfyren, komfyrer, komfyrene",
+    "pos": "noun",
+    "topic": "housing"
+  },
+  {
+    "id": "work-0074",
+    "en": "customer",
+    "no": "en kunde",
+    "forms": "kunden, kunder, kundene",
+    "pos": "noun",
+    "topic": "work"
+  },
+  {
+    "id": "general-0131",
+    "en": "cash",
+    "no": "kontanter",
+    "forms": "",
+    "pos": "noun",
+    "topic": "general"
+  },
+  {
+    "id": "family-0072",
+    "en": "family",
+    "no": "en familie",
+    "forms": "familien, familier, familiene",
+    "pos": "noun",
+    "topic": "family"
+  },
+  {
+    "id": "family-0073",
+    "en": "foster (adjective)",
+    "no": "foster-",
+    "forms": "",
+    "pos": "adj",
+    "topic": "family"
+  },
+  {
+    "id": "nature-0102",
+    "en": "fire (safe, e.g. campfire)",
+    "no": "en ild",
+    "forms": "ilden, ildene, ildene",
+    "pos": "noun",
+    "topic": "nature"
+  },
+  {
+    "id": "general-0132",
+    "en": "fire (dangerous, e.g. house fire)",
+    "no": "en brann",
+    "forms": "brannen, branner, brannene",
+    "pos": "noun",
+    "topic": "general"
+  },
+  {
+    "id": "general-0133",
+    "en": "wearing / put on (oneself)",
+    "no": "å ha/ta på seg",
+    "forms": "har/tar på seg, hadde/tok på seg, har hatt/tatt på seg",
+    "pos": "verb",
+    "topic": "general"
+  },
+  {
+    "id": "general-0134",
+    "en": "specific",
+    "no": "spesifikk",
+    "forms": "spesifikt, spesifikke, mer spesifikk, mest spesifikk",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "education-0068",
+    "en": "education",
+    "no": "en utdanning",
+    "forms": "utdanningen, utdanninger, utdanningene",
+    "pos": "noun",
+    "topic": "education"
+  },
+  {
+    "id": "nature-0103",
+    "en": "grow",
+    "no": "å vokse",
+    "forms": "vokser, vokste, har vokst",
+    "pos": "verb",
+    "topic": "nature"
+  },
+  {
+    "id": "emotions-0080",
+    "en": "sad",
+    "no": "trist",
+    "forms": "trist, triste, tristere, tristest",
+    "pos": "adj",
+    "topic": "emotions"
+  },
+  {
+    "id": "opinions-0059",
+    "en": "believe",
+    "no": "å tro",
+    "forms": "tror, trodde, har trodd",
+    "pos": "verb",
+    "topic": "opinions"
+  },
+  {
+    "id": "society-0085",
+    "en": "(un)fair",
+    "no": "(u)rettferdig",
+    "forms": "(u)rettferdig, (u)rettferdige, mer (u)rettferdig, mest (u)rettferdig",
+    "pos": "adj",
+    "topic": "society"
+  },
+  {
+    "id": "health-0073",
+    "en": "die / be dead",
+    "no": "å dø",
+    "forms": "dør, døde, har dødd",
+    "pos": "verb",
+    "topic": "health"
+  },
+  {
+    "id": "common_verbs-0094",
+    "en": "pick / choose",
+    "no": "å velge",
+    "forms": "velger, valgte, har valgt",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "grammar-0023",
+    "en": "when _, we will _ (future construction)",
+    "no": "når _ skal vi _",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "grammar-0024",
+    "en": "if/when I don't like (note: liker & ikke swap order because it's less certain)",
+    "no": "hvis/når jeg ikke liker",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "common_verbs-0095",
+    "en": "hit (past tense of å slå)",
+    "no": "å slå",
+    "forms": "slår, slo, har slått",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "general-0135",
+    "en": "by himself / yourself / etc. (alone)",
+    "no": "alene",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "health-0074",
+    "en": "weight",
+    "no": "en vekt",
+    "forms": "vekten, vekter, vektene",
+    "pos": "noun",
+    "topic": "health"
+  },
+  {
+    "id": "health-0075",
+    "en": "weigh",
+    "no": "å veie",
+    "forms": "veier, veide, har veid",
+    "pos": "verb",
+    "topic": "health"
+  },
+  {
+    "id": "time-0016",
+    "en": "now and then / occasionally",
+    "no": "av og til",
+    "forms": "",
+    "pos": "adv",
+    "topic": "time"
+  },
+  {
+    "id": "work-0075",
+    "en": "agreement / appointment",
+    "no": "en avtale",
+    "forms": "avtalen, avtaler, avtalene",
+    "pos": "noun",
+    "topic": "work"
+  },
+  {
+    "id": "time-0017",
+    "en": "yet",
+    "no": "ennå",
+    "forms": "",
+    "pos": "adv",
+    "topic": "time"
+  },
+  {
+    "id": "general-0136",
+    "en": "even (e.g. even worse)",
+    "no": "enda",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "general-0137",
+    "en": "size",
+    "no": "en størrelse",
+    "forms": "størrelsen, størrelser, størrelsene",
+    "pos": "noun",
+    "topic": "general"
+  },
+  {
+    "id": "grammar-0025",
+    "en": "add -t to adjective to form adverb",
+    "no": "-t",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "general-0138",
+    "en": "fast (adjective)",
+    "no": "rask",
+    "forms": "raskt, raske, raskere, raskest",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "general-0139",
+    "en": "quickly (adverb)",
+    "no": "raskt",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "common_verbs-0096",
+    "en": "switch / change",
+    "no": "å bytte",
+    "forms": "bytter, byttet, har byttet",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "common_verbs-0097",
+    "en": "remove",
+    "no": "å fjerne",
+    "forms": "fjerner, fjernet, har fjernet",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "common_verbs-0098",
+    "en": "put (imperative / infinitive)",
+    "no": "å legge",
+    "forms": "legger, la, har lagt",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "common_verbs-0099",
+    "en": "build (imperative / infinitive)",
+    "no": "å bygge",
+    "forms": "bygger, bygde, har bygd",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "general-0140",
+    "en": "except",
+    "no": "unntatt",
+    "forms": "",
+    "pos": "prep",
+    "topic": "general"
+  },
+  {
+    "id": "emotions-0081",
+    "en": "exciting",
+    "no": "spennende",
+    "forms": "spennende, spennende, mer spennende, mest spennende",
+    "pos": "adj",
+    "topic": "emotions"
+  },
+  {
+    "id": "time-0018",
+    "en": "future",
+    "no": "en framtid",
+    "forms": "framtiden, framtider, framtidene",
+    "pos": "noun",
+    "topic": "time"
+  },
+  {
+    "id": "time-0019",
+    "en": "past",
+    "no": "en fortid",
+    "forms": "fortiden, fortider, fortidene",
+    "pos": "noun",
+    "topic": "time"
+  },
+  {
+    "id": "society-0086",
+    "en": "fight for",
+    "no": "å kjempe for",
+    "forms": "kjemper for, kjempet for, har kjempet for",
+    "pos": "verb",
+    "topic": "society"
+  },
+  {
+    "id": "directions-0021",
+    "en": "from behind",
+    "no": "bakfra",
+    "forms": "",
+    "pos": "adv",
+    "topic": "directions"
+  },
+  {
+    "id": "common_verbs-0100",
+    "en": "change / switch",
+    "no": "å bytte",
+    "forms": "bytter, byttet, har byttet",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "common_verbs-0101",
+    "en": "break (the law, bread)",
+    "no": "å bryte",
+    "forms": "bryter, brøt, har brutt",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "general-0141",
+    "en": "longer",
+    "no": "lenger",
+    "forms": "",
+    "pos": "adv",
+    "topic": "general"
+  },
+  {
+    "id": "general-0142",
+    "en": "need(s) (noun)",
+    "no": "et behov",
+    "forms": "behovet, behov, behovene",
+    "pos": "noun",
+    "topic": "general"
+  },
+  {
+    "id": "common_verbs-0102",
+    "en": "suggest",
+    "no": "å foreslå",
+    "forms": "foreslår, foreslo, har foreslått",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "work-0076",
+    "en": "employee",
+    "no": "en ansatt",
+    "forms": "ansatte, ansatte, de ansatte",
+    "pos": "noun",
+    "topic": "work"
+  },
+  {
+    "id": "time-0020",
+    "en": "on time / in time",
+    "no": "tidsnok",
+    "forms": "",
+    "pos": "adv",
+    "topic": "time"
+  },
+  {
+    "id": "general-0143",
+    "en": "emergency",
+    "no": "en nød",
+    "forms": "nøden, nøder, nødene",
+    "pos": "noun",
+    "topic": "general"
+  },
+  {
+    "id": "society-0087",
+    "en": "military",
+    "no": "militæret",
+    "forms": "",
+    "pos": "noun",
+    "topic": "society"
+  },
+  {
+    "id": "society-0088",
+    "en": "billionaire",
+    "no": "en milliardær",
+    "forms": "milliardæren, milliardærer, milliardærene",
+    "pos": "noun",
+    "topic": "society"
+  },
+  {
+    "id": "grammar-0026",
+    "en": "plural verb ending (-e added to verb stem)",
+    "no": "-e",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "common_verbs-0103",
+    "en": "ruin (present tense)",
+    "no": "å ødelegge",
+    "forms": "ødelegger, ødela, har ødelagt",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "common_verbs-0104",
+    "en": "make / makes (e.g. it makes me dumb)",
+    "no": "å gjøre",
+    "forms": "gjør, gjorde, har gjort",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "opinions-0060",
+    "en": "believes it/them",
+    "no": "å tro på det/dem",
+    "forms": "",
+    "pos": "expr",
+    "topic": "opinions"
+  },
+  {
+    "id": "society-0089",
+    "en": "rich",
+    "no": "rik",
+    "forms": "rikt, rike, rikere, rikest",
+    "pos": "adj",
+    "topic": "society"
+  },
+  {
+    "id": "grammar-0027",
+    "en": "in (open container, e.g. bowl, gym)",
+    "no": "i",
+    "forms": "",
+    "pos": "prep",
+    "topic": "grammar"
+  },
+  {
+    "id": "grammar-0028",
+    "en": "in (closed space, e.g. inside a house)",
+    "no": "inne",
+    "forms": "",
+    "pos": "adv",
+    "topic": "grammar"
+  },
+  {
+    "id": "travel-0067",
+    "en": "went (past tense of å dra)",
+    "no": "å dra",
+    "forms": "drar, dro, har dratt",
+    "pos": "verb",
+    "topic": "travel"
+  },
+  {
+    "id": "work-0077",
+    "en": "coworker / colleague",
+    "no": "en kollega",
+    "forms": "kollegaen, kollegaer, kollegaene",
+    "pos": "noun",
+    "topic": "work"
+  },
+  {
+    "id": "technology-0074",
+    "en": "code (both source code and access code)",
+    "no": "å kode / en kode",
+    "forms": "koder, kodet, har kodet",
+    "pos": "verb",
+    "topic": "technology"
+  },
+  {
+    "id": "technology-0075",
+    "en": "search",
+    "no": "å søke",
+    "forms": "søker, søkte, har søkt",
+    "pos": "verb",
+    "topic": "technology"
+  },
+  {
+    "id": "technology-0076",
+    "en": "internet",
+    "no": "nettet",
+    "forms": "",
+    "pos": "noun",
+    "topic": "technology"
+  },
+  {
+    "id": "work-0078",
+    "en": "go to meetings / have meetings (online)",
+    "no": "å ha møter",
+    "forms": "",
+    "pos": "expr",
+    "topic": "work"
+  },
+  {
+    "id": "common_verbs-0105",
+    "en": "usually (to usually do something)",
+    "no": "å pleie",
+    "forms": "pleier, pleide, har pleid",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "technology-0077",
+    "en": "electronic (e.g. electronic music)",
+    "no": "elektronisk",
+    "forms": "elektronisk, elektroniske, mer elektronisk, mest elektronisk",
+    "pos": "adj",
+    "topic": "technology"
+  },
+  {
+    "id": "education-0069",
+    "en": "concentrate",
+    "no": "å konsentrere seg",
+    "forms": "konsentrerer seg, konsentrerte seg, har konsentrert seg",
+    "pos": "verb",
+    "topic": "education"
+  },
+  {
+    "id": "freetime-0073",
+    "en": "games (plural)",
+    "no": "et spill",
+    "forms": "spillet, spill, spillene",
+    "pos": "noun",
+    "topic": "freetime"
+  },
+  {
+    "id": "work-0079",
+    "en": "earn",
+    "no": "å tjene",
+    "forms": "tjener, tjente, har tjent",
+    "pos": "verb",
+    "topic": "work"
+  },
+  {
+    "id": "travel-0068",
+    "en": "plane / airplane",
+    "no": "et fly",
+    "forms": "flyet, fly, flyene",
+    "pos": "noun",
+    "topic": "travel"
+  },
+  {
+    "id": "common_verbs-0106",
+    "en": "bring / take along",
+    "no": "å ta med",
+    "forms": "tar med, tok med, har tatt med",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "general-0144",
+    "en": "a man (specific person)",
+    "no": "en mann",
+    "forms": "mannen, menn, mennene",
+    "pos": "noun",
+    "topic": "general"
+  },
+  {
+    "id": "grammar-0029",
+    "en": "a person / one (generic, without article)",
+    "no": "man",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "time-0021",
+    "en": "sometimes",
+    "no": "noen ganger",
+    "forms": "",
+    "pos": "adv",
+    "topic": "time"
+  },
+  {
+    "id": "emotions-0082",
+    "en": "trust",
+    "no": "å stole på",
+    "forms": "stoler på, stolte på, har stolt på",
+    "pos": "verb",
+    "topic": "emotions"
+  },
+  {
+    "id": "opinions-0061",
+    "en": "I think so",
+    "no": "jeg synes det",
+    "forms": "",
+    "pos": "expr",
+    "topic": "opinions"
+  },
+  {
+    "id": "common_verbs-0107",
+    "en": "to get to know (someone)",
+    "no": "å bli kjent med",
+    "forms": "",
+    "pos": "expr",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "education-0070",
+    "en": "question",
+    "no": "et spørsmål",
+    "forms": "spørsmålet, spørsmål, spørsmålene",
+    "pos": "noun",
+    "topic": "education"
+  },
+  {
+    "id": "education-0071",
+    "en": "topic",
+    "no": "et tema",
+    "forms": "temaet, temaer, temaene",
+    "pos": "noun",
+    "topic": "education"
+  },
+  {
+    "id": "freetime-0074",
+    "en": "hang out",
+    "no": "å henge",
+    "forms": "henger, hang, har hengt",
+    "pos": "verb",
+    "topic": "freetime"
+  },
+  {
+    "id": "grammar-0030",
+    "en": "would do (conditional perfect)",
+    "no": "ville gjort",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "common_verbs-0108",
+    "en": "require",
+    "no": "å kreve",
+    "forms": "krever, krevde, har krevd",
+    "pos": "verb",
+    "topic": "common_verbs"
+  },
+  {
+    "id": "grammar-0031",
+    "en": "should (it is smart to do)",
+    "no": "bør",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "grammar-0032",
+    "en": "should have (would have been smart to do)",
+    "no": "burde",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "grammar-0033",
+    "en": "should / should have (planned or expected)",
+    "no": "skulle",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "grammar-0034",
+    "en": "must know",
+    "no": "må vite",
+    "forms": "",
+    "pos": "expr",
+    "topic": "grammar"
+  },
+  {
+    "id": "freetime-0075",
+    "en": "bar (place)",
+    "no": "en bar",
+    "forms": "baren, barer, barene",
+    "pos": "noun",
+    "topic": "freetime"
+  },
+  {
+    "id": "society-0090",
+    "en": "gun / weapon",
+    "no": "et våpen",
+    "forms": "våpenet, våpen, våpnene",
+    "pos": "noun",
+    "topic": "society"
+  },
+  {
+    "id": "technology-0078",
+    "en": "delete / erase",
+    "no": "å slette",
+    "forms": "sletter, slettet, har slettet",
+    "pos": "verb",
+    "topic": "technology"
+  },
+  {
+    "id": "general-0145",
+    "en": "similar / such",
+    "no": "slik",
+    "forms": "",
+    "pos": "adj",
+    "topic": "general"
+  },
+  {
+    "id": "general-0146",
+    "en": "be allowed / have permission",
+    "no": "å ha lov",
+    "forms": "",
+    "pos": "expr",
+    "topic": "general"
+  },
+  {
+    "id": "opinions-0062",
+    "en": "important that...",
+    "no": "viktig at...",
+    "forms": "",
+    "pos": "expr",
+    "topic": "opinions"
+  },
+  {
+    "id": "directions-0022",
+    "en": "outside of",
+    "no": "utenfor",
+    "forms": "",
+    "pos": "prep",
+    "topic": "directions"
+  },
+  {
+    "id": "opinions-0063",
+    "en": "prefer / rather",
+    "no": "heller / helst",
+    "forms": "",
+    "pos": "adv",
+    "topic": "opinions"
+  },
+  {
+    "id": "phrases-0036",
+    "en": "but seriously",
+    "no": "men seriøst",
+    "forms": "",
+    "pos": "expr",
+    "topic": "phrases"
+  },
+  {
+    "id": "emotions-0083",
+    "en": "embarrassing",
+    "no": "pinlig",
+    "forms": "pinlig, pinlige, mer pinlig, mest pinlig",
+    "pos": "adj",
+    "topic": "emotions"
+  },
+  {
+    "id": "emotions-0084",
+    "en": "confusing",
+    "no": "forvirrende",
+    "forms": "forvirrende, forvirrende, mer forvirrende, mest forvirrende",
+    "pos": "adj",
+    "topic": "emotions"
   }
 ];
 

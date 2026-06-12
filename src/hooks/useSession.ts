@@ -6,6 +6,7 @@ import type {
   PersistedState,
   SessionItem,
   SessionStats,
+  Settings,
   VocabEntry,
 } from '@/types';
 import {
@@ -89,6 +90,7 @@ function serializeSession(
       direction: i.direction,
       repeatQueued: i.repeatQueued,
       clearsRemaining: i.clearsRemaining,
+      hardLapse: i.hardLapse,
     })),
     reserve: reserve.map(e => e.id),
     stats,
@@ -110,6 +112,7 @@ function rehydrateSession(
         direction: it.direction,
         repeatQueued: it.repeatQueued,
         clearsRemaining: it.clearsRemaining ?? 0,
+        hardLapse: it.hardLapse ?? false,
       });
     }
   }
@@ -126,7 +129,10 @@ function rehydrateSession(
  * applying the within-session re-insertion / replenishment rules on each grade,
  * and persisting card progress as it happens.
  */
-export function useSession(entries: readonly VocabEntry[]): UseSession {
+export function useSession(
+  entries: readonly VocabEntry[],
+  settings: Settings,
+): UseSession {
   const [phase, setPhase] = useState<Phase>('loading');
   const [queue, setQueue] = useState<SessionItem[]>([]);
   const [stats, setStats] = useState<SessionStats>(EMPTY_STATS);
@@ -140,6 +146,13 @@ export function useSession(entries: readonly VocabEntry[]): UseSession {
   const cardsRef = useRef<Record<string, CardState>>({});
   const reserveRef = useRef<VocabEntry[]>([]);
   const baseRef = useRef<PersistedState | null>(null);
+
+  // Live entries + settings, read inside callbacks so config changes apply going
+  // forward without rebuilding (and thereby resetting) the active session.
+  const entriesRef = useRef(entries);
+  entriesRef.current = entries;
+  const settingsRef = useRef(settings);
+  settingsRef.current = settings;
 
   const commitQueue = useCallback((next: SessionItem[]) => {
     queueRef.current = next;
@@ -157,6 +170,7 @@ export function useSession(entries: readonly VocabEntry[]): UseSession {
   const begin = useCallback(
     (base: PersistedState, options?: { resume?: boolean }) => {
       const resume = options?.resume ?? true;
+      const entries = entriesRef.current;
       baseRef.current = base;
       cardsRef.current = { ...base.cards };
       historyRef.current = [];
@@ -181,6 +195,7 @@ export function useSession(entries: readonly VocabEntry[]): UseSession {
         entries,
         cards: cardsRef.current,
         now: Date.now(),
+        cfg: settingsRef.current,
       });
       reserveRef.current = built.newReserve;
       const initialStats: SessionStats = {
@@ -206,7 +221,7 @@ export function useSession(entries: readonly VocabEntry[]): UseSession {
       baseRef.current = freshBase;
       saveState(freshBase);
     },
-    [entries, commitStats],
+    [commitStats],
   );
 
   // Initial load.
@@ -243,8 +258,9 @@ export function useSession(entries: readonly VocabEntry[]): UseSession {
       const item = prevQueue[0]!;
       const rest = prevQueue.slice(1);
       const now = Date.now();
+      const cfg = settingsRef.current;
       const firstEncounter = item.origin === 'new' && !item.repeatQueued;
-      const decision = resolveReinsertion(item, difficulty, firstEncounter);
+      const decision = resolveReinsertion(item, difficulty, firstEncounter, cfg);
 
       // 1. Update card scheduling. A "hard" rating is a real lapse: it resets the
       // interval (to 1 day) and that reset stands even though the card stays for
@@ -259,6 +275,7 @@ export function useSession(entries: readonly VocabEntry[]): UseSession {
         now,
         item.entry.id,
         decision.stays,
+        cfg,
       );
       cardsRef.current = { ...cardsRef.current, [item.entry.id]: nextState };
 
@@ -281,6 +298,7 @@ export function useSession(entries: readonly VocabEntry[]): UseSession {
           direction: decision.direction,
           repeatQueued: decision.repeatQueued,
           clearsRemaining: decision.clearsRemaining,
+          hardLapse: decision.hardLapse,
         };
         const idx = reinsertIndex(difficulty, rest.length);
         nextQueue = insertAt(rest, idx, repeatItem);
@@ -296,9 +314,10 @@ export function useSession(entries: readonly VocabEntry[]): UseSession {
         const replacementItem: SessionItem = {
           entry: replacement,
           origin: 'new',
-          direction: pickDirection(),
+          direction: pickDirection(cfg.enFrontProbability),
           repeatQueued: false,
           clearsRemaining: 0,
+          hardLapse: false,
         };
         const idx = Math.floor(Math.random() * (rest.length + 1));
         nextQueue = insertAt(rest, idx, replacementItem);
@@ -358,7 +377,7 @@ export function useSession(entries: readonly VocabEntry[]): UseSession {
 
   const current = queue[0] ?? null;
   const previews = current
-    ? buildPreviews(current, cardsRef.current[current.entry.id])
+    ? buildPreviews(current, cardsRef.current[current.entry.id], settings)
     : null;
 
   return {
@@ -379,12 +398,15 @@ export function useSession(entries: readonly VocabEntry[]): UseSession {
 function buildPreviews(
   item: SessionItem,
   prevState: CardState | undefined,
+  cfg: Settings,
 ): GradePreviews {
   const firstEncounter = item.origin === 'new' && !item.repeatQueued;
   const result = {} as GradePreviews;
   for (const d of DIFFICULTIES) {
-    const decision = resolveReinsertion(item, d, firstEncounter);
-    const days = Math.round(gradeCard(prevState, d, 0, item.entry.id).interval);
+    const decision = resolveReinsertion(item, d, firstEncounter, cfg);
+    const days = Math.round(
+      gradeCard(prevState, d, 0, item.entry.id, cfg).interval,
+    );
     result[d] = { stays: decision.stays, days };
   }
   return result;

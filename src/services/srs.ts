@@ -9,8 +9,10 @@
  *      offsets below. Harder cards are re-queued sooner; trivial new cards are
  *      replaced by fresh new cards; hard reviews are re-added to the session.
  *
- * A card's `weight` is an exponential moving average of difficulty that captures
- * accumulated history and is used to prioritise which due reviews to surface.
+ * The user-tunable knobs (English-front probability, per-button interval
+ * multiplier/floor, new-card repeats, hard re-learn clears) live in `Settings`
+ * and are threaded through as a `cfg` argument that defaults to DEFAULT_SETTINGS.
+ * The remaining structural constants stay in SRS_CONFIG.
  *
  * All functions here are pure and deterministic except where a PRNG is passed.
  */
@@ -21,6 +23,7 @@ import type {
   Direction,
   Origin,
   SessionItem,
+  Settings,
   VocabEntry,
 } from '@/types';
 
@@ -34,7 +37,7 @@ export const SRS_CONFIG = {
   /** For every `reviewBacklogStep` due cards, add `reviewBacklogBonus` reviews. */
   reviewBacklogStep: 100,
   reviewBacklogBonus: 10,
-  /** Probability a card is shown English-front (else Norwegian-front). */
+  /** Default probability a card is shown English-front (else Norwegian-front). */
   enFrontProbability: 0.85,
   /** Difficulty -> numeric value feeding the weight EMA. */
   weightValue: { trivial: 0, easy: 1, normal: 2.5, hard: 4 } as Record<
@@ -43,7 +46,7 @@ export const SRS_CONFIG = {
   >,
   /** EMA smoothing factor (new value contribution). */
   emaAlpha: 0.4,
-  /** Inter-session interval multipliers + day floors per difficulty. */
+  /** Default inter-session interval multipliers + day floors per difficulty. */
   interval: {
     trivial: { mult: 4, floor: 120 },
     easy: { mult: 2.5, floor: 4 },
@@ -52,14 +55,29 @@ export const SRS_CONFIG = {
   } as Record<Difficulty, { mult: number; floor: number }>,
   /** Max interval in days. */
   maxIntervalDays: 365,
-  /** Non-hard ratings required to clear a card after a "hard" (re-learn steps). */
+  /** Default non-hard ratings required to clear a card after a "hard". */
   hardRelearnClears: 2,
+  /** Default extra in-session views a new card needs before it leaves. */
+  newCardRepeats: 1,
   /** How many positions ahead to re-insert a card within the session. */
   reinsertOffset: { trivial: Infinity, easy: 10, normal: 6, hard: 3 } as Record<
     Difficulty,
     number
   >,
 } as const;
+
+/** Default user-tunable settings, derived from SRS_CONFIG. */
+export const DEFAULT_SETTINGS: Settings = {
+  enFrontProbability: SRS_CONFIG.enFrontProbability,
+  intervals: {
+    trivial: { ...SRS_CONFIG.interval.trivial },
+    easy: { ...SRS_CONFIG.interval.easy },
+    normal: { ...SRS_CONFIG.interval.normal },
+    hard: { ...SRS_CONFIG.interval.hard },
+  },
+  newCardRepeats: SRS_CONFIG.newCardRepeats,
+  hardRelearnClears: SRS_CONFIG.hardRelearnClears,
+};
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -69,6 +87,8 @@ export interface ReinsertDecision {
   stays: boolean;
   /** Non-hard clears still required before it may leave. */
   clearsRemaining: number;
+  /** Whether the streak is a hard-induced lapse (forces English-front re-shows). */
+  hardLapse: boolean;
   /** Direction to use for the re-queued presentation. */
   direction: Direction;
   /** Updated "no longer a first encounter" flag. */
@@ -79,32 +99,36 @@ export interface ReinsertDecision {
  * Decide how a graded card re-enters (or leaves) the current session.
  *
  * - Trivial: leaves (a new trivial card is replaced with a fresh one elsewhere).
- * - Hard: re-arms the re-learn requirement (`hardRelearnClears` non-hard clears)
- *   and always comes back English-front so you drill recall.
- * - While re-learning (clearsRemaining > 0): each non-hard rating clears one step,
- *   staying English-front until the steps run out, then it leaves.
- * - New + easy/normal (not re-learning): shown exactly once more on first
- *   encounter, then finalises.
- * - Review + easy/normal (not re-learning): leaves immediately.
+ * - Hard: arms a re-learn streak of `cfg.hardRelearnClears` non-hard clears and
+ *   always comes back English-front so you drill recall.
+ * - While clearing (clearsRemaining > 0): each non-hard rating clears one step;
+ *   a hard-induced streak stays English-front, a new-card streak keeps random
+ *   direction. It leaves once the steps run out.
+ * - New + easy/normal (first encounter): arms `cfg.newCardRepeats` extra views.
+ * - Review + easy/normal (not clearing): leaves immediately.
  */
 export function resolveReinsertion(
   item: SessionItem,
   difficulty: Difficulty,
   isFirstEncounter: boolean,
+  cfg: Settings = DEFAULT_SETTINGS,
   rng: () => number = Math.random,
 ): ReinsertDecision {
   if (difficulty === 'trivial') {
     return {
       stays: false,
       clearsRemaining: 0,
+      hardLapse: false,
       direction: item.direction,
       repeatQueued: true,
     };
   }
   if (difficulty === 'hard') {
+    const clears = cfg.hardRelearnClears;
     return {
-      stays: true,
-      clearsRemaining: SRS_CONFIG.hardRelearnClears,
+      stays: clears > 0,
+      clearsRemaining: clears,
+      hardLapse: true,
       direction: 'en-no', // hard cards always come back English-front
       repeatQueued: true,
     };
@@ -115,19 +139,29 @@ export function resolveReinsertion(
     return {
       stays: clearsRemaining > 0,
       clearsRemaining,
-      direction: 'en-no', // stay English-front for the rest of the re-learn
+      hardLapse: item.hardLapse,
+      direction: item.hardLapse
+        ? 'en-no'
+        : pickDirection(cfg.enFrontProbability, rng),
       repeatQueued: true,
     };
   }
-  if (item.origin === 'new' && isFirstEncounter) {
+  if (item.origin === 'new' && isFirstEncounter && cfg.newCardRepeats > 0) {
     return {
       stays: true,
-      clearsRemaining: 0,
-      direction: pickDirection(rng),
+      clearsRemaining: cfg.newCardRepeats,
+      hardLapse: false,
+      direction: pickDirection(cfg.enFrontProbability, rng),
       repeatQueued: true,
     };
   }
-  return { stays: false, clearsRemaining: 0, direction: item.direction, repeatQueued: true };
+  return {
+    stays: false,
+    clearsRemaining: 0,
+    hardLapse: false,
+    direction: item.direction,
+    repeatQueued: true,
+  };
 }
 
 /** Compute the next persisted CardState after grading. */
@@ -136,6 +170,7 @@ export function gradeCard(
   difficulty: Difficulty,
   now: number,
   id: string,
+  cfg: Settings = DEFAULT_SETTINGS,
 ): CardState {
   const value = SRS_CONFIG.weightValue[difficulty];
   const weight = prev
@@ -143,7 +178,7 @@ export function gradeCard(
     : value;
 
   const prevInterval = prev?.interval ?? 0;
-  const { mult, floor } = SRS_CONFIG.interval[difficulty];
+  const { mult, floor } = cfg.intervals[difficulty];
   const interval = Math.min(
     SRS_CONFIG.maxIntervalDays,
     Math.max(prevInterval * mult, floor),
@@ -164,13 +199,13 @@ export function gradeCard(
  * Compute the next CardState given the grade AND whether the card stays in the
  * session. This is what actually persists per grade:
  *
- * - A "hard" rating always applies (a lapse: interval resets to 1), even though
- *   the card stays for re-learning.
+ * - A "hard" rating always applies (a lapse: interval resets to its hard floor),
+ *   even though the card stays for re-learning.
  * - Any other rating that keeps the card in the session (a re-learn clear or a
- *   new card's single repeat) freezes the schedule at its current value, so
- *   repeated in-session markings never advance/compound the interval.
+ *   new card's repeat) freezes the schedule at its current value, so repeated
+ *   in-session markings never advance/compound the interval.
  * - A rating that lets the card leave applies normally, using the card's current
- *   interval (which a prior hard will have reset to 1).
+ *   interval (which a prior hard will have reset).
  */
 export function applyGrade(
   prev: CardState | undefined,
@@ -178,8 +213,9 @@ export function applyGrade(
   now: number,
   id: string,
   stays: boolean,
+  cfg: Settings = DEFAULT_SETTINGS,
 ): CardState {
-  const next = gradeCard(prev, difficulty, now, id);
+  const next = gradeCard(prev, difficulty, now, id, cfg);
   if (stays && difficulty !== 'hard') {
     return { ...next, interval: prev?.interval ?? 0, due: prev?.due ?? now };
   }
@@ -198,9 +234,12 @@ export function reviewTargetForBacklog(dueCount: number): number {
   return SRS_CONFIG.reviewTarget + steps * SRS_CONFIG.reviewBacklogBonus;
 }
 
-/** Pick a presentation direction using the provided RNG (defaults to Math.random). */
-export function pickDirection(rng: () => number = Math.random): Direction {
-  return rng() < SRS_CONFIG.enFrontProbability ? 'en-no' : 'no-en';
+/** Pick a presentation direction given the English-front probability. */
+export function pickDirection(
+  enFrontProbability: number = DEFAULT_SETTINGS.enFrontProbability,
+  rng: () => number = Math.random,
+): Direction {
+  return rng() < enFrontProbability ? 'en-no' : 'no-en';
 }
 
 /** Fisher–Yates shuffle (non-mutating). */
@@ -218,14 +257,16 @@ export function shuffle<T>(input: readonly T[], rng: () => number = Math.random)
 function makeItem(
   entry: VocabEntry,
   origin: Origin,
+  cfg: Settings,
   rng: () => number,
 ): SessionItem {
   return {
     entry,
     origin,
-    direction: pickDirection(rng),
+    direction: pickDirection(cfg.enFrontProbability, rng),
     repeatQueued: false,
     clearsRemaining: 0,
+    hardLapse: false,
   };
 }
 
@@ -233,6 +274,7 @@ export interface BuildSessionArgs {
   entries: readonly VocabEntry[];
   cards: Record<string, CardState>;
   now: number;
+  cfg?: Settings;
   rng?: () => number;
 }
 
@@ -257,6 +299,7 @@ export function buildSession({
   entries,
   cards,
   now,
+  cfg = DEFAULT_SETTINGS,
   rng = Math.random,
 }: BuildSessionArgs): BuiltSession {
   const newPool: VocabEntry[] = [];
@@ -293,9 +336,9 @@ export function buildSession({
 
   const reviewItems = dueEntries
     .slice(0, reviewTarget)
-    .map(entry => makeItem(entry, 'review', rng));
+    .map(entry => makeItem(entry, 'review', cfg, rng));
 
-  const newItems = initialNew.map(entry => makeItem(entry, 'new', rng));
+  const newItems = initialNew.map(entry => makeItem(entry, 'new', cfg, rng));
 
   const queue = shuffle([...newItems, ...reviewItems], rng);
 

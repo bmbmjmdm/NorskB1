@@ -5,9 +5,14 @@ import { FlashCard, type FlashCardFace } from '@/components/FlashCard';
 import { DifficultyButtons } from '@/components/DifficultyButtons';
 import { ProgressHeader } from '@/components/ProgressHeader';
 import { useSession } from '@/hooks/useSession';
-import { VOCABULARY } from '@/data/vocabulary';
-import type { Pos, SessionItem } from '@/types';
+import type { Pos, SessionItem, Settings, VocabEntry } from '@/types';
 import { colors, radius, spacing, typography } from '@/theme';
+
+export interface SessionScreenProps {
+  entries: readonly VocabEntry[];
+  settings: Settings;
+  onOpenSettings: () => void;
+}
 
 const POS_LABEL: Record<Pos, string> = {
   noun: 'noun',
@@ -36,8 +41,12 @@ function buildFaces(item: SessionItem): { front: FlashCardFace; back: FlashCardF
     : { front: norsk, back: english };
 }
 
-export function SessionScreen() {
-  const session = useSession(VOCABULARY);
+export function SessionScreen({
+  entries,
+  settings,
+  onOpenSettings,
+}: SessionScreenProps) {
+  const session = useSession(entries, settings);
   const { phase, current, remaining, stats } = session;
 
   const faces = useMemo(
@@ -65,6 +74,7 @@ export function SessionScreen() {
           <StatRow label="Total cards graded" value={`${stats.graded}`} />
         </View>
         <PrimaryButton label="Start new session" onPress={session.startNewSession} />
+        <SecondaryButton label="⚙ Settings" onPress={onOpenSettings} />
         <SecondaryButton label="Reset all progress" onPress={session.resetAllProgress} />
       </Screen>
     );
@@ -82,6 +92,7 @@ export function SessionScreen() {
         remaining={remaining}
         onUndo={session.undo}
         canUndo={session.canUndo}
+        onOpenSettings={onOpenSettings}
       />
       <View style={styles.cardArea}>
         <FlashCard

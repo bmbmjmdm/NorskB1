@@ -60,6 +60,26 @@ export interface CardState {
 /** Which language is shown on the front of a given card presentation. */
 export type Direction = 'en-no' | 'no-en';
 
+/** Tunable interval parameters for one grading button. */
+export interface GradingConfig {
+  /** Multiplier applied to the card's current interval. */
+  mult: number;
+  /** Minimum interval in days. */
+  floor: number;
+}
+
+/** User-adjustable engine settings (persisted across sessions). */
+export interface Settings {
+  /** Probability a card is shown English-front, 0..1. */
+  enFrontProbability: number;
+  /** Per-button interval multiplier + day floor. */
+  intervals: Record<Difficulty, GradingConfig>;
+  /** Extra in-session views a new (non-trivial) card needs before it leaves. */
+  newCardRepeats: number;
+  /** Non-hard ratings required to clear a card after a "hard". */
+  hardRelearnClears: number;
+}
+
 /** Why a card is in the current session queue. */
 export type Origin = 'new' | 'review';
 
@@ -75,9 +95,14 @@ export interface SessionItem {
   repeatQueued: boolean;
   /**
    * Non-hard ratings still required before the card may leave the session. A
-   * "hard" rating arms this (re-learn steps); reaches 0 to let the card exit.
+   * "hard" rating arms this (re-learn steps); a new card's repeats use it too.
    */
   clearsRemaining: number;
+  /**
+   * True when the current re-learn streak was triggered by a "hard" rating (so
+   * re-shows are forced English-front). False for a new card's ordinary repeats.
+   */
+  hardLapse: boolean;
 }
 
 /** Per-session progress counters. */
@@ -99,6 +124,7 @@ export interface PersistedSessionItem {
   direction: Direction;
   repeatQueued: boolean;
   clearsRemaining: number;
+  hardLapse: boolean;
 }
 
 /** Snapshot of an in-progress session so it can be resumed after the app closes. */

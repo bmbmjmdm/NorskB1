@@ -10,6 +10,7 @@ export interface ProgressHeaderProps {
   remaining: number;
   onUndo?: () => void;
   canUndo?: boolean;
+  onOpenSettings?: () => void;
 }
 
 export function ProgressHeader({
@@ -19,6 +20,7 @@ export function ProgressHeader({
   remaining,
   onUndo,
   canUndo,
+  onOpenSettings,
 }: ProgressHeaderProps) {
   const width = useRef(new Animated.Value(0)).current;
 
@@ -42,10 +44,22 @@ export function ProgressHeader({
         <Text style={styles.title}>NorskB1</Text>
         <View style={styles.rightGroup}>
           {onUndo ? <UndoButton onPress={onUndo} disabled={!canUndo} /> : null}
-          <Text style={styles.meta}>
-            {remaining} {remaining === 1 ? 'card' : 'cards'} in queue
-          </Text>
+          {onOpenSettings ? (
+            <Pressable
+              onPress={onOpenSettings}
+              hitSlop={8}
+              accessibilityRole="button"
+              accessibilityLabel="Open settings"
+              style={styles.gear}>
+              <Text style={styles.gearText}>⚙</Text>
+            </Pressable>
+          ) : null}
         </View>
+      </View>
+      <View style={styles.metaRow}>
+        <Text style={styles.meta}>
+          {remaining} {remaining === 1 ? 'card' : 'cards'} in queue
+        </Text>
       </View>
       <View style={styles.track}>
         <Animated.View style={[styles.fill, { width: barWidth }]} />
@@ -95,8 +109,20 @@ const styles = StyleSheet.create({
   container: { gap: spacing.sm },
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   rightGroup: { flexDirection: 'row', alignItems: 'center', gap: spacing.md },
+  metaRow: { flexDirection: 'row', justifyContent: 'flex-end' },
   title: { ...typography.title, color: colors.text },
   meta: { ...typography.label, color: colors.textMuted },
+  gear: {
+    width: 34,
+    height: 34,
+    borderRadius: radius.pill,
+    backgroundColor: colors.surfaceAlt,
+    borderWidth: 1,
+    borderColor: colors.border,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  gearText: { fontSize: 18, color: colors.text },
   undo: {
     flexDirection: 'row',
     alignItems: 'center',

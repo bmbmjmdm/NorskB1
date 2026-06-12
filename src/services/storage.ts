@@ -1,8 +1,54 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import type { CardState, PersistedState } from '@/types';
+import type { CardState, PersistedState, Settings, VocabEntry } from '@/types';
+import { DEFAULT_SETTINGS } from '@/services/srs';
 
 const STORAGE_KEY = '@norskb1/state/v1';
+const CONFIG_KEY = '@norskb1/config/v1';
 const CURRENT_VERSION = 1;
+
+/** App-level configuration: tunable settings + user-added flashcards. */
+export interface AppConfig {
+  settings: Settings;
+  customCards: VocabEntry[];
+}
+
+const emptyConfig = (): AppConfig => ({
+  settings: DEFAULT_SETTINGS,
+  customCards: [],
+});
+
+/** Load settings + custom cards, backfilling any missing fields with defaults. */
+export async function loadConfig(): Promise<AppConfig> {
+  try {
+    const json = await AsyncStorage.getItem(CONFIG_KEY);
+    if (!json) return emptyConfig();
+    const raw = JSON.parse(json) as Partial<AppConfig>;
+    const s: Partial<Settings> = raw.settings ?? {};
+    return {
+      settings: {
+        enFrontProbability:
+          s.enFrontProbability ?? DEFAULT_SETTINGS.enFrontProbability,
+        intervals: { ...DEFAULT_SETTINGS.intervals, ...(s.intervals ?? {}) },
+        newCardRepeats: s.newCardRepeats ?? DEFAULT_SETTINGS.newCardRepeats,
+        hardRelearnClears:
+          s.hardRelearnClears ?? DEFAULT_SETTINGS.hardRelearnClears,
+      },
+      customCards: Array.isArray(raw.customCards) ? raw.customCards : [],
+    };
+  } catch (err) {
+    if (__DEV__) console.warn('[storage] loadConfig failed:', err);
+    return emptyConfig();
+  }
+}
+
+/** Persist settings + custom cards. */
+export async function saveConfig(config: AppConfig): Promise<void> {
+  try {
+    await AsyncStorage.setItem(CONFIG_KEY, JSON.stringify(config));
+  } catch (err) {
+    if (__DEV__) console.warn('[storage] saveConfig failed:', err);
+  }
+}
 
 const emptyState = (): PersistedState => ({
   version: CURRENT_VERSION,

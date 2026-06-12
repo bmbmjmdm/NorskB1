@@ -1,4 +1,5 @@
 import {
+  DEFAULT_SETTINGS,
   SRS_CONFIG,
   applyGrade,
   buildSession,
@@ -8,7 +9,8 @@ import {
   reviewTargetForBacklog,
   shuffle,
 } from '@/services/srs';
-import type { CardState, Origin, SessionItem, VocabEntry } from '@/types';
+import { findByHeadword, normalizeHeadword } from '@/utils/dedup';
+import type { CardState, Origin, SessionItem, Settings, VocabEntry } from '@/types';
 
 const DAY = 24 * 60 * 60 * 1000;
 const NOW = 1_700_000_000_000;
@@ -111,6 +113,7 @@ describe('resolveReinsertion', () => {
     direction: 'no-en',
     repeatQueued: false,
     clearsRemaining: 0,
+    hardLapse: false,
     ...over,
   });
 
@@ -137,12 +140,20 @@ describe('resolveReinsertion', () => {
 
   it('requires two non-hard clears before a hard card leaves', () => {
     // After hard: clearsRemaining = 2.
-    const first = resolveReinsertion(item('review', { clearsRemaining: 2 }), 'easy', false);
+    const first = resolveReinsertion(
+      item('review', { clearsRemaining: 2, hardLapse: true }),
+      'easy',
+      false,
+    );
     expect(first.stays).toBe(true);
     expect(first.clearsRemaining).toBe(1);
     expect(first.direction).toBe('en-no');
     // Second clear -> leaves.
-    const second = resolveReinsertion(item('review', { clearsRemaining: 1 }), 'normal', false);
+    const second = resolveReinsertion(
+      item('review', { clearsRemaining: 1, hardLapse: true }),
+      'normal',
+      false,
+    );
     expect(second.stays).toBe(false);
     expect(second.clearsRemaining).toBe(0);
   });
@@ -292,6 +303,52 @@ describe('reinsertIndex', () => {
     expect(reinsertIndex('easy', 20)).toBe(SRS_CONFIG.reinsertOffset.easy);
     expect(reinsertIndex('trivial', 20)).toBe(20); // never (append)
     expect(reinsertIndex('hard', 1)).toBe(1); // clamped to remaining length
+  });
+});
+
+describe('custom settings', () => {
+  const cfg: Settings = {
+    ...DEFAULT_SETTINGS,
+    intervals: {
+      ...DEFAULT_SETTINGS.intervals,
+      easy: { mult: 2.0, floor: 3 },
+    },
+    newCardRepeats: 2,
+    hardRelearnClears: 3,
+  };
+
+  it('gradeCard honors a custom interval multiplier/floor', () => {
+    // floor wins when small: from 0 -> floor 3.
+    expect(gradeCard(undefined, 'easy', NOW, 'w', cfg).interval).toBe(3);
+    // then ×2.0.
+    const s = gradeCard(undefined, 'easy', NOW, 'w', cfg);
+    expect(gradeCard(s, 'easy', NOW, 'w', cfg).interval).toBe(6);
+  });
+
+  it('resolveReinsertion honors custom new-card repeats and hard clears', () => {
+    const newItem: SessionItem = {
+      entry: entry('w'), origin: 'new', direction: 'no-en',
+      repeatQueued: false, clearsRemaining: 0, hardLapse: false,
+    };
+    expect(resolveReinsertion(newItem, 'easy', true, cfg).clearsRemaining).toBe(2);
+    expect(resolveReinsertion(newItem, 'hard', false, cfg).clearsRemaining).toBe(3);
+  });
+});
+
+describe('dedup util', () => {
+  it('normalizes headwords (article/å, case, parentheticals)', () => {
+    expect(normalizeHeadword('å jobbe')).toBe('jobbe');
+    expect(normalizeHeadword('En Hest')).toBe('hest');
+    expect(normalizeHeadword('strategi (ga sing)')).toBe('strategi');
+  });
+
+  it('finds an existing entry by headword regardless of article', () => {
+    const entries: VocabEntry[] = [
+      { id: 'x-1', en: 'a horse', no: 'en hest', forms: '', pos: 'noun', topic: 'nature' },
+    ];
+    expect(findByHeadword(entries, 'hest')?.id).toBe('x-1');
+    expect(findByHeadword(entries, 'Hesten')).toBeNull(); // different headword
+    expect(findByHeadword(entries, 'katt')).toBeNull();
   });
 });
 

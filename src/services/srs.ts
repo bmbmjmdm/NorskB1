@@ -5,9 +5,10 @@
  *   1. Cross-session scheduling — each card has an `interval` (days) and a `due`
  *      timestamp. Grading adjusts the interval SM-2-style: hard collapses it to
  *      ~1 day, trivial stretches it far out ("almost never").
- *   2. Within-session ordering — handled in `useSession` using the re-insertion
- *      offsets below. Harder cards are re-queued sooner; trivial new cards are
- *      replaced by fresh new cards; hard reviews are re-added to the session.
+ *   2. Within-session ordering — handled in `useSession`. A card that stays
+ *      (new-card repeat or hard re-learn) is re-inserted `reinsertOffset` cards
+ *      later so it isn't seen too soon; trivial new cards are replaced by fresh
+ *      new cards.
  *
  * The user-tunable knobs (English-front probability, per-button interval
  * multiplier/floor, new-card repeats, hard re-learn clears) live in `Settings`
@@ -59,11 +60,12 @@ export const SRS_CONFIG = {
   hardRelearnClears: 2,
   /** Default extra in-session views a new card needs before it leaves. */
   newCardRepeats: 1,
-  /** How many positions ahead to re-insert a card within the session. */
-  reinsertOffset: { trivial: Infinity, easy: 10, normal: 6, hard: 3 } as Record<
-    Difficulty,
-    number
-  >,
+  /**
+   * How many positions ahead a re-added card is placed in the queue (so it isn't
+   * shown again too soon). Clamped to the queue length, so with fewer cards left
+   * it lands at the end.
+   */
+  reinsertOffset: 10,
 } as const;
 
 /** Default user-tunable settings, derived from SRS_CONFIG. */
@@ -350,12 +352,11 @@ export function buildSession({
   };
 }
 
-/** Clamp an insertion index into a queue of the given remaining length. */
-export function reinsertIndex(
-  difficulty: Difficulty,
-  remaining: number,
-): number {
-  const offset = SRS_CONFIG.reinsertOffset[difficulty];
-  if (!isFinite(offset)) return remaining; // never (append far end)
-  return Math.min(offset, remaining);
+/**
+ * Index at which to re-insert a card that stays in the session: a fixed offset
+ * ahead (so it isn't shown again too soon), clamped to the remaining queue
+ * length so a short queue places it at the very end.
+ */
+export function reinsertIndex(remaining: number): number {
+  return Math.min(SRS_CONFIG.reinsertOffset, remaining);
 }

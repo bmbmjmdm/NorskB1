@@ -297,12 +297,11 @@ describe('buildSession backlog scaling', () => {
 });
 
 describe('reinsertIndex', () => {
-  it('places harder cards sooner and trivial at the far end', () => {
-    expect(reinsertIndex('hard', 20)).toBe(SRS_CONFIG.reinsertOffset.hard);
-    expect(reinsertIndex('normal', 20)).toBe(SRS_CONFIG.reinsertOffset.normal);
-    expect(reinsertIndex('easy', 20)).toBe(SRS_CONFIG.reinsertOffset.easy);
-    expect(reinsertIndex('trivial', 20)).toBe(20); // never (append)
-    expect(reinsertIndex('hard', 1)).toBe(1); // clamped to remaining length
+  it('re-inserts a fixed offset ahead, clamped to the queue length', () => {
+    expect(reinsertIndex(20)).toBe(SRS_CONFIG.reinsertOffset); // 10 cards later
+    expect(reinsertIndex(10)).toBe(10); // exactly the offset
+    expect(reinsertIndex(5)).toBe(5); // fewer than 10 left -> end of queue
+    expect(reinsertIndex(0)).toBe(0);
   });
 });
 

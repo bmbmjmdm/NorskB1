@@ -300,7 +300,7 @@ export function useSession(
           clearsRemaining: decision.clearsRemaining,
           hardLapse: decision.hardLapse,
         };
-        const idx = reinsertIndex(difficulty, rest.length);
+        const idx = reinsertIndex(rest.length);
         nextQueue = insertAt(rest, idx, repeatItem);
       } else if (
         firstEncounter &&

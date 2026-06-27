@@ -3,6 +3,7 @@ import {
   SRS_CONFIG,
   applyGrade,
   buildSession,
+  effectiveDifficulty,
   gradeCard,
   reinsertIndex,
   resolveReinsertion,
@@ -44,7 +45,7 @@ describe('gradeCard', () => {
     expect(s.due).toBe(NOW + s.interval * DAY);
   });
 
-  it('collapses interval to 1 day on hard and stretches far on trivial', () => {
+  it('collapses interval to 1 day on wrong and stretches far on trivial', () => {
     const base: CardState = {
       id: 'w1',
       weight: 2,
@@ -54,14 +55,14 @@ describe('gradeCard', () => {
       lastSeen: NOW,
       introduced: true,
     };
-    expect(gradeCard(base, 'hard', NOW, 'w1').interval).toBe(1);
+    expect(gradeCard(base, 'wrong', NOW, 'w1').interval).toBe(1);
     expect(gradeCard(base, 'trivial', NOW, 'w1').interval).toBe(
       Math.max(10 * SRS_CONFIG.interval.trivial.mult, SRS_CONFIG.interval.trivial.floor),
     );
   });
 
   it('moves weight via EMA toward the new rating', () => {
-    const first = gradeCard(undefined, 'hard', NOW, 'w1'); // weight 4
+    const first = gradeCard(undefined, 'wrong', NOW, 'w1'); // weight 4
     const second = gradeCard(first, 'trivial', NOW, 'w1'); // EMA toward 0
     expect(second.weight).toBeLessThan(first.weight);
     expect(second.weight).toBeCloseTo(4 * (1 - SRS_CONFIG.emaAlpha));
@@ -89,12 +90,12 @@ describe('applyGrade (per-grade scheduling)', () => {
     expect(s.interval).toBe(25);
   });
 
-  it('hard lapses to 1 day even while the card stays, then a clear schedules off 1', () => {
+  it('wrong lapses to 1 day even while the card stays, then a clear schedules off 1', () => {
     const base: CardState = {
       id: 'w', weight: 1, reps: 5, interval: 30,
       due: NOW, lastSeen: NOW, introduced: true,
     };
-    const lapsed = applyGrade(base, 'hard', NOW, 'w', true); // stays for re-learn
+    const lapsed = applyGrade(base, 'wrong', NOW, 'w', true); // stays for re-learn
     expect(lapsed.interval).toBe(1); // reset applied despite staying
     const clear1 = applyGrade(lapsed, 'normal', NOW, 'w', true); // first clear, frozen
     expect(clear1.interval).toBe(1);
@@ -113,7 +114,7 @@ describe('resolveReinsertion', () => {
     direction: 'no-en',
     repeatQueued: false,
     clearsRemaining: 0,
-    hardLapse: false,
+    wrongLapse: false,
     ...over,
   });
 
@@ -125,23 +126,23 @@ describe('resolveReinsertion', () => {
     expect(resolveReinsertion(item('new'), 'normal', false).stays).toBe(false);
   });
 
-  it('keeps reviews only when hard', () => {
+  it('keeps reviews only when wrong', () => {
     expect(resolveReinsertion(item('review'), 'normal', false).stays).toBe(false);
     expect(resolveReinsertion(item('review'), 'easy', false).stays).toBe(false);
     expect(resolveReinsertion(item('review'), 'trivial', false).stays).toBe(false);
   });
 
-  it('hard arms a 2-clear re-learn and forces English-front', () => {
-    const d = resolveReinsertion(item('review'), 'hard', false);
+  it('wrong arms a 2-clear re-learn and forces English-front', () => {
+    const d = resolveReinsertion(item('review'), 'wrong', false);
     expect(d.stays).toBe(true);
-    expect(d.clearsRemaining).toBe(SRS_CONFIG.hardRelearnClears);
+    expect(d.clearsRemaining).toBe(SRS_CONFIG.wrongRelearnClears);
     expect(d.direction).toBe('en-no');
   });
 
-  it('requires two non-hard clears before a hard card leaves', () => {
-    // After hard: clearsRemaining = 2.
+  it('requires two non-wrong clears before a wrong card leaves', () => {
+    // After wrong: clearsRemaining = 2.
     const first = resolveReinsertion(
-      item('review', { clearsRemaining: 2, hardLapse: true }),
+      item('review', { clearsRemaining: 2, wrongLapse: true }),
       'easy',
       false,
     );
@@ -150,7 +151,7 @@ describe('resolveReinsertion', () => {
     expect(first.direction).toBe('en-no');
     // Second clear -> leaves.
     const second = resolveReinsertion(
-      item('review', { clearsRemaining: 1, hardLapse: true }),
+      item('review', { clearsRemaining: 1, wrongLapse: true }),
       'normal',
       false,
     );
@@ -158,9 +159,9 @@ describe('resolveReinsertion', () => {
     expect(second.clearsRemaining).toBe(0);
   });
 
-  it('re-arms to 2 clears if marked hard again mid-re-learn', () => {
-    const d = resolveReinsertion(item('review', { clearsRemaining: 1 }), 'hard', false);
-    expect(d.clearsRemaining).toBe(SRS_CONFIG.hardRelearnClears);
+  it('re-arms to 2 clears if marked wrong again mid-re-learn', () => {
+    const d = resolveReinsertion(item('review', { clearsRemaining: 1 }), 'wrong', false);
+    expect(d.clearsRemaining).toBe(SRS_CONFIG.wrongRelearnClears);
     expect(d.stays).toBe(true);
   });
 });
@@ -305,6 +306,40 @@ describe('reinsertIndex', () => {
   });
 });
 
+describe('newHard (the "Hard" button)', () => {
+  const mk = (origin: Origin, clearsRemaining = 0): SessionItem => ({
+    entry: entry('h'),
+    origin,
+    direction: 'no-en',
+    repeatQueued: false,
+    clearsRemaining,
+    wrongLapse: false,
+  });
+
+  it('acts as "wrong" while a card is new or re-learning', () => {
+    expect(effectiveDifficulty(mk('new'), 'newHard')).toBe('wrong');
+    expect(effectiveDifficulty(mk('review', 2), 'newHard')).toBe('wrong');
+  });
+
+  it('is a gentle ×0.5 reschedule for a settled review', () => {
+    expect(effectiveDifficulty(mk('review', 0), 'newHard')).toBe('newHard');
+    const card: CardState = {
+      id: 'h', weight: 1, reps: 3, interval: 20,
+      due: NOW, lastSeen: NOW, introduced: true,
+    };
+    expect(gradeCard(card, 'newHard', NOW, 'h').interval).toBe(10); // 20 × 0.5
+    expect(gradeCard({ ...card, interval: 1 }, 'newHard', NOW, 'h').interval).toBe(1); // floor
+    // a settled review leaves the session on Hard (no re-show).
+    expect(resolveReinsertion(mk('review', 0), 'newHard', false).stays).toBe(false);
+  });
+
+  it('leaves the other difficulties unchanged', () => {
+    expect(effectiveDifficulty(mk('new'), 'normal')).toBe('normal');
+    expect(effectiveDifficulty(mk('review'), 'wrong')).toBe('wrong');
+    expect(effectiveDifficulty(mk('review'), 'trivial')).toBe('trivial');
+  });
+});
+
 describe('custom settings', () => {
   const cfg: Settings = {
     ...DEFAULT_SETTINGS,
@@ -313,7 +348,7 @@ describe('custom settings', () => {
       easy: { mult: 2.0, floor: 3 },
     },
     newCardRepeats: 2,
-    hardRelearnClears: 3,
+    wrongRelearnClears: 3,
   };
 
   it('gradeCard honors a custom interval multiplier/floor', () => {
@@ -324,13 +359,13 @@ describe('custom settings', () => {
     expect(gradeCard(s, 'easy', NOW, 'w', cfg).interval).toBe(6);
   });
 
-  it('resolveReinsertion honors custom new-card repeats and hard clears', () => {
+  it('resolveReinsertion honors custom new-card repeats and wrong clears', () => {
     const newItem: SessionItem = {
       entry: entry('w'), origin: 'new', direction: 'no-en',
-      repeatQueued: false, clearsRemaining: 0, hardLapse: false,
+      repeatQueued: false, clearsRemaining: 0, wrongLapse: false,
     };
     expect(resolveReinsertion(newItem, 'easy', true, cfg).clearsRemaining).toBe(2);
-    expect(resolveReinsertion(newItem, 'hard', false, cfg).clearsRemaining).toBe(3);
+    expect(resolveReinsertion(newItem, 'wrong', false, cfg).clearsRemaining).toBe(3);
   });
 });
 

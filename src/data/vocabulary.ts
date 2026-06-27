@@ -4859,7 +4859,7 @@ export const VOCABULARY: VocabEntry[] = [
   },
   {
     "id": "food-0060",
-    "en": "good appetite! (bon appétit)",
+    "en": "bon appétit",
     "no": "god appetitt",
     "forms": "",
     "pos": "expr",
@@ -7411,7 +7411,7 @@ export const VOCABULARY: VocabEntry[] = [
   },
   {
     "id": "housing-0007",
-    "en": "a co-operative apartment (andel)",
+    "en": "a co-operative apartment",
     "no": "en andelsleilighet",
     "forms": "andelsleiligheten, andelsleiligheter, andelsleilighetene",
     "pos": "noun",
@@ -7419,7 +7419,7 @@ export const VOCABULARY: VocabEntry[] = [
   },
   {
     "id": "housing-0008",
-    "en": "an owner-occupied flat (selveier)",
+    "en": "an owner-occupied flat",
     "no": "en selveierbolig",
     "forms": "selveierboligen, selveierboliger, selveierboligene",
     "pos": "noun",
@@ -10123,7 +10123,7 @@ export const VOCABULARY: VocabEntry[] = [
   },
   {
     "id": "general-0039",
-    "en": "nicely / prettily (adverb form of pen)",
+    "en": "nicely / prettily (adverb)",
     "no": "pent",
     "forms": "",
     "pos": "adv",
@@ -10171,7 +10171,7 @@ export const VOCABULARY: VocabEntry[] = [
   },
   {
     "id": "common_verbs-0067",
-    "en": "could (past tense of å kunne)",
+    "en": "could (past tense)",
     "no": "å kunne",
     "forms": "kan, kunne, har kunnet",
     "pos": "verb",
@@ -10291,7 +10291,7 @@ export const VOCABULARY: VocabEntry[] = [
   },
   {
     "id": "common_verbs-0068",
-    "en": "fell (past tense of å falle)",
+    "en": "fell (past tense)",
     "no": "å falle",
     "forms": "faller, falt, har falt",
     "pos": "verb",
@@ -11139,7 +11139,7 @@ export const VOCABULARY: VocabEntry[] = [
   },
   {
     "id": "grammar-0008",
-    "en": "I will hurt you (modal: skal)",
+    "en": "I will hurt you (emphasis on intentional)",
     "no": "jeg skal skade deg",
     "forms": "",
     "pos": "expr",
@@ -11147,7 +11147,7 @@ export const VOCABULARY: VocabEntry[] = [
   },
   {
     "id": "grammar-0009",
-    "en": "I will hurt you (future with komme til å)",
+    "en": "I will hurt you (emphasis on prediction)",
     "no": "jeg kommer til å skade deg",
     "forms": "",
     "pos": "expr",
@@ -11275,8 +11275,8 @@ export const VOCABULARY: VocabEntry[] = [
   },
   {
     "id": "grammar-0014",
-    "en": "which book (noun stays indefinite after hvilken)",
-    "no": "hvilken bok",
+    "en": "which book",
+    "no": "hvilken bok (noun is indefinite)",
     "forms": "",
     "pos": "expr",
     "topic": "grammar"
@@ -11747,7 +11747,7 @@ export const VOCABULARY: VocabEntry[] = [
   },
   {
     "id": "grammar-0021",
-    "en": "still vs. continue (fortatt = still; fortsette = continue)",
+    "en": "still vs. continue",
     "no": "fortatt vs. fortsette",
     "forms": "",
     "pos": "expr",
@@ -11891,7 +11891,7 @@ export const VOCABULARY: VocabEntry[] = [
   },
   {
     "id": "personality-0082",
-    "en": "lied (past tense of å lyve)",
+    "en": "lied (to tell a lie, present + past tense)",
     "no": "å lyve",
     "forms": "lyver, løy, har løyet",
     "pos": "verb",
@@ -12563,15 +12563,15 @@ export const VOCABULARY: VocabEntry[] = [
   },
   {
     "id": "grammar-0024",
-    "en": "if/when I don't like (note: liker & ikke swap order because it's less certain)",
-    "no": "hvis/når jeg ikke liker",
+    "en": "if/when I don't like",
+    "no": "hvis/når jeg ikke liker (note: liker & ikke swap order because it's less certain)",
     "forms": "",
     "pos": "expr",
     "topic": "grammar"
   },
   {
     "id": "common_verbs-0095",
-    "en": "hit (past tense of å slå)",
+    "en": "hit",
     "no": "å slå",
     "forms": "slår, slo, har slått",
     "pos": "verb",
@@ -12883,7 +12883,7 @@ export const VOCABULARY: VocabEntry[] = [
   },
   {
     "id": "travel-0067",
-    "en": "went (past tense of å dra)",
+    "en": "to go, went",
     "no": "å dra",
     "forms": "drar, dro, har dratt",
     "pos": "verb",

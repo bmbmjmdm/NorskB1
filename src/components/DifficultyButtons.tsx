@@ -21,7 +21,8 @@ const LABELS: Record<Difficulty, string> = {
   trivial: 'Trivial',
   easy: 'Easy',
   normal: 'Normal',
-  hard: 'Hard',
+  newHard: 'Hard',
+  wrong: 'Wrong',
 };
 
 /** Short text under each button: "review" if it stays, else the scheduled days. */
@@ -88,10 +89,16 @@ function GradeButton({
           { backgroundColor: palette.base },
           disabled && styles.disabled,
         ]}>
-        <Text style={[styles.label, { color: palette.text }]}>
+        <Text
+          style={[styles.label, { color: palette.text }]}
+          numberOfLines={1}
+          adjustsFontSizeToFit>
           {LABELS[difficulty]}
         </Text>
-        <Text style={[styles.sub, { color: palette.text }]} numberOfLines={1}>
+        <Text
+          style={[styles.sub, { color: palette.text }]}
+          numberOfLines={1}
+          adjustsFontSizeToFit>
           {subLabel}
         </Text>
       </Pressable>
@@ -100,7 +107,7 @@ function GradeButton({
 }
 
 const styles = StyleSheet.create({
-  row: { flexDirection: 'row', gap: spacing.sm },
+  row: { flexDirection: 'row', gap: spacing.xs },
   btnWrap: { flex: 1 },
   btn: {
     borderRadius: radius.lg,

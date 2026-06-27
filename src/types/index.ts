@@ -21,14 +21,19 @@ export interface VocabEntry {
   topic: string;
 }
 
-/** The four grading buttons. Order matters (easiest -> hardest). */
-export type Difficulty = 'trivial' | 'easy' | 'normal' | 'hard';
+/**
+ * The five grading buttons, ordered easiest -> hardest. Note `newHard` (label
+ * "Hard") is distinct from `wrong` (the old "Hard"); the internal value is
+ * `newHard` so its persisted settings never collide with the legacy `hard` key.
+ */
+export type Difficulty = 'trivial' | 'easy' | 'normal' | 'newHard' | 'wrong';
 
 export const DIFFICULTIES: readonly Difficulty[] = [
   'trivial',
   'easy',
   'normal',
-  'hard',
+  'newHard',
+  'wrong',
 ] as const;
 
 /**
@@ -38,7 +43,7 @@ export const DIFFICULTIES: readonly Difficulty[] = [
 export interface CardState {
   id: string;
   /**
-   * Exponential moving average of difficulty (0 = trivial .. ~4 = hard).
+   * Exponential moving average of difficulty (0 = trivial .. ~4 = wrong).
    * Higher = harder = surfaced sooner.
    */
   weight: number;
@@ -76,8 +81,8 @@ export interface Settings {
   intervals: Record<Difficulty, GradingConfig>;
   /** Extra in-session views a new (non-trivial) card needs before it leaves. */
   newCardRepeats: number;
-  /** Non-hard ratings required to clear a card after a "hard". */
-  hardRelearnClears: number;
+  /** Non-wrong ratings required to clear a card after a "wrong". */
+  wrongRelearnClears: number;
 }
 
 /** Why a card is in the current session queue. */
@@ -94,15 +99,15 @@ export interface SessionItem {
    */
   repeatQueued: boolean;
   /**
-   * Non-hard ratings still required before the card may leave the session. A
-   * "hard" rating arms this (re-learn steps); a new card's repeats use it too.
+   * Non-wrong ratings still required before the card may leave the session. A
+   * "wrong" rating arms this (re-learn steps); a new card's repeats use it too.
    */
   clearsRemaining: number;
   /**
-   * True when the current re-learn streak was triggered by a "hard" rating (so
+   * True when the current re-learn streak was triggered by a "wrong" rating (so
    * re-shows are forced English-front). False for a new card's ordinary repeats.
    */
-  hardLapse: boolean;
+  wrongLapse: boolean;
 }
 
 /** Per-session progress counters. */
@@ -124,7 +129,7 @@ export interface PersistedSessionItem {
   direction: Direction;
   repeatQueued: boolean;
   clearsRemaining: number;
-  hardLapse: boolean;
+  wrongLapse: boolean;
 }
 
 /** Snapshot of an in-progress session so it can be resumed after the app closes. */

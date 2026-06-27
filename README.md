@@ -45,7 +45,7 @@ The header shows the **total number of cards remaining in the queue** plus how m
 
 ### Grading
 
-Each card is graded with one of four buttons, which sets its next review date and decides whether it reappears in the current session. Each button also **previews its outcome** right on the button: the number of days the card would be scheduled (e.g. "4 days", "120 days"), or "↻ review" when that grade would keep the card in the current session instead of scheduling it.
+Each card is graded with one of **five** buttons, which sets its next review date and decides whether it reappears in the current session. Each button also **previews its outcome** right on the button: the number of days the card would be scheduled (e.g. "4 days", "120 days"), or "↻ review" when that grade would keep the card in the current session instead of scheduling it.
 
 The next review date is computed from the card's current interval:
 
@@ -58,17 +58,19 @@ newInterval = min(365 days, max(currentInterval × mult, floor))
 | Trivial | ×4   | 120   | 120 days            | Leaves; if it was a *new* card it's swapped for a fresh unseen word |
 | Easy    | ×2.5 | 4     | 4 days              | *New* card shows once more, then done; *review* leaves |
 | Normal  | ×1.6 | 2     | 2 days              | *New* card shows once more, then done; *review* leaves |
-| Hard    | ×0   | 1     | 1 day               | Lapse + re-learn: resets interval to 1 and re-shows (English-front) until cleared — see below |
+| Hard    | ×0.5 | 1     | (review only)       | *Review*: a gentle lapse — halves the interval and leaves. *New / re-learning*: acts exactly like Wrong |
+| Wrong   | ×0   | 1     | 1 day               | Lapse + re-learn: resets interval to 1 and re-shows (English-front) until cleared — see below |
 
 Key rules:
 
 - **New** cards rated anything but *trivial* are shown exactly once more before the session ends, then finalize. Trivial new cards don't count toward your 10 and are replaced with fresh words, so consistently-easy material keeps the queue moving toward 10 genuinely-new words.
-- **Review** cards re-enter the session only when rated *hard*.
-- **Hard is a lapse + re-learn loop.** It immediately resets the card's interval to 1 day, then requires **two non-hard ratings** to clear before the card may leave the session, showing **English-front** each time so you practice recalling the Norwegian. Hitting hard again re-arms the two-clear requirement and re-applies the reset. Within the session it re-shows ≈3 cards later each time.
-- **Only the grade that lets a card *leave* sets its next review date**, and it's applied to the card's interval as of its last lapse (a hard resets that to 1). Intermediate stays — re-learn clears or a new card's single repeat — keep the schedule frozen, so repeated markings never compound: a hard → normal → normal sequence schedules off the post-lapse interval (≈2 days), not off the original interval and not compounded across the two clears.
-- Within a session, the harder the rating the sooner the re-show (hard ≈ 3 cards ahead, normal ≈ 6, easy ≈ 10).
+- **Hard** is context-sensitive. On a **settled review** it's a soft lapse: it multiplies the interval by **0.5** (so the card returns sooner than before) and the card leaves the session — no re-show. But while a card is still being learned (**new**) or is **mid re-learn**, pressing Hard counts the same as Wrong. (Internally it's a distinct value, `newHard`, so it doesn't clash with the old "Hard" that was renamed to Wrong.)
+- **Review** cards re-enter the session only when rated *wrong* (or *hard* while still re-learning).
+- **Wrong is a lapse + re-learn loop.** It immediately resets the card's interval to 1 day, then requires **two non-wrong ratings** to clear before the card may leave the session, showing **English-front** each time so you practice recalling the Norwegian. Hitting wrong again re-arms the two-clear requirement and re-applies the reset.
+- **Only the grade that lets a card *leave* sets its next review date**, and it's applied to the card's interval as of its last lapse (a wrong resets that to 1). Intermediate stays — re-learn clears or a new card's single repeat — keep the schedule frozen, so repeated markings never compound: a wrong → normal → normal sequence schedules off the post-lapse interval (≈2 days), not off the original interval and not compounded across the two clears.
+- Any card that stays in the session (a new-card repeat or a wrong re-learn) is re-inserted **10 cards later**, or at the end of the queue if fewer than 10 remain, so it isn't shown again too soon.
 
-Cards are shown English-front **75%** of the time and Norwegian-front the rest (re-learning hard cards are always English-front, as noted above).
+Cards are shown English-front a configurable percentage of the time (default **85%**) and Norwegian-front the rest (re-learning wrong cards are always English-front, as noted above).
 
 > Note: each card also stores a `weight` (an EMA of your ratings). It's currently computed but not read by anything — review order is driven purely by how overdue a card is. It's a hook for a future feature (e.g. flagging "leech" cards) rather than active behavior.
 
@@ -78,9 +80,21 @@ An **↶ Undo** button in the header (placed away from the grading buttons) reve
 
 ### Persistence & resume
 
-Every grade is written to device storage (AsyncStorage): per-card scheduling plus a snapshot of the live session (queue order, reserve, counters), stored compactly by card id. Close the app mid-queue and reopening **resumes exactly where you left off**, including pending repeats and hard re-shows. The saved session is cleared when it completes; "Start new session" and "Reset all progress" always build fresh.
+Every grade is written to device storage (AsyncStorage): per-card scheduling plus a snapshot of the live session (queue order, reserve, counters), stored compactly by card id. Close the app mid-queue and reopening **resumes exactly where you left off**, including pending repeats and wrong re-shows. The saved session is cleared when it completes; "Start new session" and "Reset all progress" always build fresh. Settings and custom cards are stored separately, so adjusting them never touches your study progress.
 
-The engine is fully unit-tested (18 tests) — see `src/services/__tests__/srs.test.ts`.
+### Settings
+
+Open settings from the **⚙** in the header (or "⚙ Settings" on the session-complete screen). The sheet lets you adjust, all persisted on device:
+
+- **English on front** — the percentage of cards shown English-first (0–100%).
+- **Grading intervals** — the `floor` (minimum days) and `× mult` for each of the five buttons, i.e. the two numbers in the `newInterval` formula above.
+- **Repeats before a card leaves** — extra in-session views for a new card, and the number of non-wrong clears required after a *wrong*.
+- **Add a flashcard** — enter a Norwegian word and its English; it's added to your deck unless that headword already exists (in which case it shows an error naming the existing entry). Custom cards merge with the built-in vocabulary and show up as new cards in your next session.
+- **Reset settings to defaults.**
+
+Setting changes apply going forward — new gradings and the next session use the new values immediately, without disturbing the session in progress.
+
+The engine and config storage are unit-tested (30 tests) — see `src/services/__tests__/`.
 
 ## Project structure
 
@@ -88,26 +102,30 @@ The engine is fully unit-tested (18 tests) — see `src/services/__tests__/srs.t
 src/
   components/
     FlashCard.tsx          animated 3D flip card (built-in Animated API)
-    DifficultyButtons.tsx  trivial / easy / normal / hard
-    ProgressHeader.tsx     progress bar, queue count, undo button
+    DifficultyButtons.tsx  trivial / easy / normal / hard / wrong
+    ProgressHeader.tsx     progress bar, queue count, undo + settings buttons
     Screen.tsx             safe-area layout wrapper
   data/
-    vocabulary.ts          1,146 entries across 18 topics
+    vocabulary.ts          built-in vocabulary
   hooks/
     useSession.ts          session state machine (queue, replenishment, grading, undo, resume)
+    useAppConfig.ts        settings + custom cards, merged with the vocabulary
   screens/
     SessionScreen.tsx      composes the study screen
+    SettingsScreen.tsx     settings sheet + add-flashcard form
   services/
     srs.ts                 spaced-repetition engine (pure, tested)
-    storage.ts             AsyncStorage persistence
+    storage.ts             AsyncStorage persistence (progress + config)
   theme/                   colors, spacing, typography tokens
   types/                   domain types
+  utils/
+    dedup.ts               headword normalization / duplicate detection
 jest.setup.js              registers the in-memory AsyncStorage mock for tests
 ```
 
 ## Vocabulary
 
-`src/data/vocabulary.ts` holds **1,146** entries covering the B1 oral topics: free time, sports, seasons/weather, nature, work, education, technology, health, food, family, emotions, personality, society, environment, housing, travel, opinions/connectors, and common verbs. Each entry has English, Norwegian (Bokmål), inflected forms, part of speech, and a topic.
+`src/data/vocabulary.ts` holds **1,648** entries (a base set plus words imported from personal notes) covering the B1 oral topics: free time, sports, seasons/weather, nature, work, education, technology, health, food, family, emotions, personality, society, environment, housing, travel, opinions/connectors, and common verbs. Each entry has English, Norwegian (Bokmål), inflected forms, part of speech, and a topic. Cards you add in Settings are stored separately and merged in at runtime.
 
 Forms follow these conventions: nouns are the indefinite singular with article, and `forms` lists definite singular, indefinite plural, definite plural; verbs are the infinitive with `å`, and `forms` lists present, past, present perfect; adjectives give neuter, plural/definite, comparative, superlative.
 

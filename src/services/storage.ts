@@ -1,5 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import type { CardState, PersistedState, Settings, VocabEntry } from '@/types';
+import type {
+  CardState,
+  GradingConfig,
+  PersistedState,
+  Settings,
+  VocabEntry,
+} from '@/types';
 import { DEFAULT_SETTINGS } from '@/services/srs';
 
 const STORAGE_KEY = '@norskb1/state/v1';
@@ -24,14 +30,28 @@ export async function loadConfig(): Promise<AppConfig> {
     if (!json) return emptyConfig();
     const raw = JSON.parse(json) as Partial<AppConfig>;
     const s: Partial<Settings> = raw.settings ?? {};
+    // Saved intervals may use an old key set; read leniently and rebuild the
+    // exact 5-key shape so a missing/legacy key can never crash a lookup.
+    const saved = (s.intervals ?? {}) as Record<string, GradingConfig | undefined>;
+    const D = DEFAULT_SETTINGS.intervals;
     return {
       settings: {
         enFrontProbability:
           s.enFrontProbability ?? DEFAULT_SETTINGS.enFrontProbability,
-        intervals: { ...DEFAULT_SETTINGS.intervals, ...(s.intervals ?? {}) },
+        intervals: {
+          trivial: saved.trivial ?? D.trivial,
+          easy: saved.easy ?? D.easy,
+          normal: saved.normal ?? D.normal,
+          newHard: saved.newHard ?? D.newHard,
+          // migrate the pre-rename "hard" (old lapse button) interval to "wrong"
+          wrong: saved.wrong ?? saved.hard ?? D.wrong,
+        },
         newCardRepeats: s.newCardRepeats ?? DEFAULT_SETTINGS.newCardRepeats,
-        hardRelearnClears:
-          s.hardRelearnClears ?? DEFAULT_SETTINGS.hardRelearnClears,
+        wrongRelearnClears:
+          s.wrongRelearnClears ??
+          // migrate the previous "hardRelearnClears" key if present
+          (s as { hardRelearnClears?: number }).hardRelearnClears ??
+          DEFAULT_SETTINGS.wrongRelearnClears,
       },
       customCards: Array.isArray(raw.customCards) ? raw.customCards : [],
     };

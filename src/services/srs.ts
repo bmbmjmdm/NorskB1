@@ -3,15 +3,15 @@
  *
  * Two timescales are modelled:
  *   1. Cross-session scheduling — each card has an `interval` (days) and a `due`
- *      timestamp. Grading adjusts the interval SM-2-style: hard collapses it to
+ *      timestamp. Grading adjusts the interval SM-2-style: wrong collapses it to
  *      ~1 day, trivial stretches it far out ("almost never").
  *   2. Within-session ordering — handled in `useSession`. A card that stays
- *      (new-card repeat or hard re-learn) is re-inserted `reinsertOffset` cards
+ *      (new-card repeat or wrong re-learn) is re-inserted `reinsertOffset` cards
  *      later so it isn't seen too soon; trivial new cards are replaced by fresh
  *      new cards.
  *
  * The user-tunable knobs (English-front probability, per-button interval
- * multiplier/floor, new-card repeats, hard re-learn clears) live in `Settings`
+ * multiplier/floor, new-card repeats, wrong re-learn clears) live in `Settings`
  * and are threaded through as a `cfg` argument that defaults to DEFAULT_SETTINGS.
  * The remaining structural constants stay in SRS_CONFIG.
  *
@@ -41,7 +41,7 @@ export const SRS_CONFIG = {
   /** Default probability a card is shown English-front (else Norwegian-front). */
   enFrontProbability: 0.85,
   /** Difficulty -> numeric value feeding the weight EMA. */
-  weightValue: { trivial: 0, easy: 1, normal: 2.5, hard: 4 } as Record<
+  weightValue: { trivial: 0, easy: 1, normal: 2.5, newHard: 3, wrong: 4 } as Record<
     Difficulty,
     number
   >,
@@ -52,12 +52,15 @@ export const SRS_CONFIG = {
     trivial: { mult: 4, floor: 120 },
     easy: { mult: 2.5, floor: 4 },
     normal: { mult: 1.6, floor: 2 },
-    hard: { mult: 0, floor: 1 },
+    // "Hard" (newHard) — a gentle lapse for reviews: halve the interval so the
+    // card returns sooner than it would have, without resetting it like wrong.
+    newHard: { mult: 0.5, floor: 1 },
+    wrong: { mult: 0, floor: 1 },
   } as Record<Difficulty, { mult: number; floor: number }>,
   /** Max interval in days. */
   maxIntervalDays: 365,
-  /** Default non-hard ratings required to clear a card after a "hard". */
-  hardRelearnClears: 2,
+  /** Default non-wrong ratings required to clear a card after a "wrong". */
+  wrongRelearnClears: 2,
   /** Default extra in-session views a new card needs before it leaves. */
   newCardRepeats: 1,
   /**
@@ -75,10 +78,11 @@ export const DEFAULT_SETTINGS: Settings = {
     trivial: { ...SRS_CONFIG.interval.trivial },
     easy: { ...SRS_CONFIG.interval.easy },
     normal: { ...SRS_CONFIG.interval.normal },
-    hard: { ...SRS_CONFIG.interval.hard },
+    newHard: { ...SRS_CONFIG.interval.newHard },
+    wrong: { ...SRS_CONFIG.interval.wrong },
   },
   newCardRepeats: SRS_CONFIG.newCardRepeats,
-  hardRelearnClears: SRS_CONFIG.hardRelearnClears,
+  wrongRelearnClears: SRS_CONFIG.wrongRelearnClears,
 };
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -87,10 +91,10 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 export interface ReinsertDecision {
   /** Whether the card is re-queued in the current session. */
   stays: boolean;
-  /** Non-hard clears still required before it may leave. */
+  /** Non-wrong clears still required before it may leave. */
   clearsRemaining: number;
-  /** Whether the streak is a hard-induced lapse (forces English-front re-shows). */
-  hardLapse: boolean;
+  /** Whether the streak is a wrong-induced lapse (forces English-front re-shows). */
+  wrongLapse: boolean;
   /** Direction to use for the re-queued presentation. */
   direction: Direction;
   /** Updated "no longer a first encounter" flag. */
@@ -98,13 +102,32 @@ export interface ReinsertDecision {
 }
 
 /**
+ * Resolve which rating actually applies, accounting for the "Hard" (`newHard`)
+ * button's dual behavior: while a card is still being learned (a new card) or is
+ * mid re-learn (clearsRemaining > 0), pressing Hard counts the same as Wrong;
+ * otherwise (a settled review) it stays `newHard` — a gentle ×0.5 reschedule.
+ */
+export function effectiveDifficulty(
+  item: SessionItem,
+  difficulty: Difficulty,
+): Difficulty {
+  if (
+    difficulty === 'newHard' &&
+    (item.origin === 'new' || item.clearsRemaining > 0)
+  ) {
+    return 'wrong';
+  }
+  return difficulty;
+}
+
+/**
  * Decide how a graded card re-enters (or leaves) the current session.
  *
  * - Trivial: leaves (a new trivial card is replaced with a fresh one elsewhere).
- * - Hard: arms a re-learn streak of `cfg.hardRelearnClears` non-hard clears and
- *   always comes back English-front so you drill recall.
- * - While clearing (clearsRemaining > 0): each non-hard rating clears one step;
- *   a hard-induced streak stays English-front, a new-card streak keeps random
+ * - Wrong: arms a re-learn streak of `cfg.wrongRelearnClears` non-wrong clears
+ *   and always comes back English-front so you drill recall.
+ * - While clearing (clearsRemaining > 0): each non-wrong rating clears one step;
+ *   a wrong-induced streak stays English-front, a new-card streak keeps random
  *   direction. It leaves once the steps run out.
  * - New + easy/normal (first encounter): arms `cfg.newCardRepeats` extra views.
  * - Review + easy/normal (not clearing): leaves immediately.
@@ -120,18 +143,18 @@ export function resolveReinsertion(
     return {
       stays: false,
       clearsRemaining: 0,
-      hardLapse: false,
+      wrongLapse: false,
       direction: item.direction,
       repeatQueued: true,
     };
   }
-  if (difficulty === 'hard') {
-    const clears = cfg.hardRelearnClears;
+  if (difficulty === 'wrong') {
+    const clears = cfg.wrongRelearnClears;
     return {
       stays: clears > 0,
       clearsRemaining: clears,
-      hardLapse: true,
-      direction: 'en-no', // hard cards always come back English-front
+      wrongLapse: true,
+      direction: 'en-no', // wrong cards always come back English-front
       repeatQueued: true,
     };
   }
@@ -141,8 +164,8 @@ export function resolveReinsertion(
     return {
       stays: clearsRemaining > 0,
       clearsRemaining,
-      hardLapse: item.hardLapse,
-      direction: item.hardLapse
+      wrongLapse: item.wrongLapse,
+      direction: item.wrongLapse
         ? 'en-no'
         : pickDirection(cfg.enFrontProbability, rng),
       repeatQueued: true,
@@ -152,7 +175,7 @@ export function resolveReinsertion(
     return {
       stays: true,
       clearsRemaining: cfg.newCardRepeats,
-      hardLapse: false,
+      wrongLapse: false,
       direction: pickDirection(cfg.enFrontProbability, rng),
       repeatQueued: true,
     };
@@ -160,7 +183,7 @@ export function resolveReinsertion(
   return {
     stays: false,
     clearsRemaining: 0,
-    hardLapse: false,
+    wrongLapse: false,
     direction: item.direction,
     repeatQueued: true,
   };
@@ -201,13 +224,13 @@ export function gradeCard(
  * Compute the next CardState given the grade AND whether the card stays in the
  * session. This is what actually persists per grade:
  *
- * - A "hard" rating always applies (a lapse: interval resets to its hard floor),
+ * - A "wrong" rating always applies (a lapse: interval resets to its floor),
  *   even though the card stays for re-learning.
  * - Any other rating that keeps the card in the session (a re-learn clear or a
  *   new card's repeat) freezes the schedule at its current value, so repeated
  *   in-session markings never advance/compound the interval.
  * - A rating that lets the card leave applies normally, using the card's current
- *   interval (which a prior hard will have reset).
+ *   interval (which a prior wrong will have reset).
  */
 export function applyGrade(
   prev: CardState | undefined,
@@ -218,7 +241,7 @@ export function applyGrade(
   cfg: Settings = DEFAULT_SETTINGS,
 ): CardState {
   const next = gradeCard(prev, difficulty, now, id, cfg);
-  if (stays && difficulty !== 'hard') {
+  if (stays && difficulty !== 'wrong') {
     return { ...next, interval: prev?.interval ?? 0, due: prev?.due ?? now };
   }
   return next;
@@ -268,7 +291,7 @@ function makeItem(
     direction: pickDirection(cfg.enFrontProbability, rng),
     repeatQueued: false,
     clearsRemaining: 0,
-    hardLapse: false,
+    wrongLapse: false,
   };
 }
 

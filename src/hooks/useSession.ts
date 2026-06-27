@@ -12,6 +12,7 @@ import type {
 import {
   applyGrade,
   buildSession,
+  effectiveDifficulty,
   gradeCard,
   pickDirection,
   reinsertIndex,
@@ -90,7 +91,7 @@ function serializeSession(
       direction: i.direction,
       repeatQueued: i.repeatQueued,
       clearsRemaining: i.clearsRemaining,
-      hardLapse: i.hardLapse,
+      wrongLapse: i.wrongLapse,
     })),
     reserve: reserve.map(e => e.id),
     stats,
@@ -112,7 +113,7 @@ function rehydrateSession(
         direction: it.direction,
         repeatQueued: it.repeatQueued,
         clearsRemaining: it.clearsRemaining ?? 0,
-        hardLapse: it.hardLapse ?? false,
+        wrongLapse: it.wrongLapse ?? false,
       });
     }
   }
@@ -260,18 +261,20 @@ export function useSession(
       const now = Date.now();
       const cfg = settingsRef.current;
       const firstEncounter = item.origin === 'new' && !item.repeatQueued;
-      const decision = resolveReinsertion(item, difficulty, firstEncounter, cfg);
+      // "Hard" (newHard) counts as "wrong" while a card is new / re-learning.
+      const effective = effectiveDifficulty(item, difficulty);
+      const decision = resolveReinsertion(item, effective, firstEncounter, cfg);
 
-      // 1. Update card scheduling. A "hard" rating is a real lapse: it resets the
+      // 1. Update card scheduling. A "wrong" rating is a real lapse: it resets the
       // interval (to 1 day) and that reset stands even though the card stays for
       // re-learning. Other *intermediate* stays — a re-learn clear or a new card's
       // single repeat — keep the schedule frozen at its current value, so repeated
-      // markings (e.g. hard then two clears) never compound: only the final,
+      // markings (e.g. wrong then two clears) never compound: only the final,
       // leaving grade advances the schedule, applied to the post-lapse interval.
       const prevState = cardsRef.current[item.entry.id];
       const nextState = applyGrade(
         prevState,
-        difficulty,
+        effective,
         now,
         item.entry.id,
         decision.stays,
@@ -284,7 +287,7 @@ export function useSession(
         ...statsRef.current,
         graded: statsRef.current.graded + 1,
         newLearned:
-          firstEncounter && difficulty !== 'trivial'
+          firstEncounter && effective !== 'trivial'
             ? statsRef.current.newLearned + 1
             : statsRef.current.newLearned,
       };
@@ -298,13 +301,13 @@ export function useSession(
           direction: decision.direction,
           repeatQueued: decision.repeatQueued,
           clearsRemaining: decision.clearsRemaining,
-          hardLapse: decision.hardLapse,
+          wrongLapse: decision.wrongLapse,
         };
         const idx = reinsertIndex(rest.length);
         nextQueue = insertAt(rest, idx, repeatItem);
       } else if (
         firstEncounter &&
-        difficulty === 'trivial' &&
+        effective === 'trivial' &&
         reserveRef.current.length > 0
       ) {
         // Too-easy new card: replace it with a fresh new card so the user still
@@ -317,7 +320,7 @@ export function useSession(
           direction: pickDirection(cfg.enFrontProbability),
           repeatQueued: false,
           clearsRemaining: 0,
-          hardLapse: false,
+          wrongLapse: false,
         };
         const idx = Math.floor(Math.random() * (rest.length + 1));
         nextQueue = insertAt(rest, idx, replacementItem);
@@ -403,9 +406,10 @@ function buildPreviews(
   const firstEncounter = item.origin === 'new' && !item.repeatQueued;
   const result = {} as GradePreviews;
   for (const d of DIFFICULTIES) {
-    const decision = resolveReinsertion(item, d, firstEncounter, cfg);
+    const effective = effectiveDifficulty(item, d);
+    const decision = resolveReinsertion(item, effective, firstEncounter, cfg);
     const days = Math.round(
-      gradeCard(prevState, d, 0, item.entry.id, cfg).interval,
+      gradeCard(prevState, effective, 0, item.entry.id, cfg).interval,
     );
     result[d] = { stays: decision.stays, days };
   }

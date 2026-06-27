@@ -19,7 +19,8 @@ export const difficultyColors: Record<
   trivial: { base: '#3FB68B', text: '#04130D' },
   easy: { base: '#6FC36B', text: '#06140A' },
   normal: { base: '#E0A92E', text: '#1A1303' },
-  hard: { base: '#E5564E', text: '#1A0605' },
+  newHard: { base: '#E07B39', text: '#1A0C03' },
+  wrong: { base: '#E5564E', text: '#1A0605' },
 };
 
 export const spacing = { xs: 4, sm: 8, md: 16, lg: 24, xl: 32, xxl: 48 } as const;

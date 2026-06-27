@@ -29,7 +29,8 @@ const DIFF_LABEL: Record<Difficulty, string> = {
   trivial: 'Trivial',
   easy: 'Easy',
   normal: 'Normal',
-  hard: 'Hard',
+  newHard: 'Hard',
+  wrong: 'Wrong',
 };
 
 const clamp = (n: number, lo: number, hi: number) =>
@@ -50,7 +51,7 @@ export function SettingsScreen({
 }: SettingsScreenProps) {
   const [enFrontPct, setEnFrontPct] = useState(75);
   const [newRepeats, setNewRepeats] = useState(1);
-  const [hardClears, setHardClears] = useState(2);
+  const [wrongClears, setWrongClears] = useState(2);
   const [intervals, setIntervals] = useState(() =>
     toIntervalForm(DEFAULT_SETTINGS),
   );
@@ -66,7 +67,7 @@ export function SettingsScreen({
     if (!visible) return;
     setEnFrontPct(Math.round(settings.enFrontProbability * 100));
     setNewRepeats(settings.newCardRepeats);
-    setHardClears(settings.hardRelearnClears);
+    setWrongClears(settings.wrongRelearnClears);
     setIntervals(toIntervalForm(settings));
     setCardNo('');
     setCardEn('');
@@ -88,7 +89,7 @@ export function SettingsScreen({
       enFrontProbability: clamp(enFrontPct, 0, 100) / 100,
       intervals: built,
       newCardRepeats: clamp(Math.round(newRepeats), 0, 20),
-      hardRelearnClears: clamp(Math.round(hardClears), 0, 20),
+      wrongRelearnClears: clamp(Math.round(wrongClears), 0, 20),
     };
   };
 
@@ -186,7 +187,7 @@ export function SettingsScreen({
                 </View>
               ))}
               <Text style={styles.hint}>
-                Next interval = max(current × mult, floor). Hard uses mult 0 to
+                Next interval = max(current × mult, floor). Wrong uses mult 0 to
                 reset to its floor.
               </Text>
             </Section>
@@ -202,15 +203,15 @@ export function SettingsScreen({
                 onChange={setNewRepeats}
               />
               <Stepper
-                label="Hard card — non-hard clears"
-                value={hardClears}
+                label="Wrong card — non-wrong clears"
+                value={wrongClears}
                 step={1}
                 min={0}
                 max={20}
-                onChange={setHardClears}
+                onChange={setWrongClears}
               />
               <Text style={styles.hint}>
-                How many times a new card, or a card you marked hard, must come
+                How many times a new card, or a card you marked wrong, must come
                 back in the session before it's allowed out.
               </Text>
             </Section>
@@ -440,7 +441,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     ...typography.body,
   },
-  error: { ...typography.caption, color: difficultyColors.hard.base, marginTop: spacing.sm },
+  error: { ...typography.caption, color: difficultyColors.wrong.base, marginTop: spacing.sm },
   success: { ...typography.caption, color: difficultyColors.trivial.base, marginTop: spacing.sm },
   addBtn: {
     backgroundColor: colors.primary,

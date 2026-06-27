@@ -208,6 +208,31 @@ describe('buildSession', () => {
     expect(ids.has('w0')).toBe(false); // least overdue
   });
 
+  it('orders the queue new-first, then reviews hardest -> easiest by weight', () => {
+    const entries = makeEntries(20);
+    const cards: Record<string, CardState> = {};
+    const weights: Record<string, number> = {
+      w0: 0.5, w1: 3.5, w2: 1.0, w3: 4.0, w4: 2.0,
+    };
+    for (const [id, w] of Object.entries(weights)) {
+      cards[id] = {
+        id, weight: w, reps: 2, interval: 1,
+        due: NOW - DAY, lastSeen: NOW - DAY, introduced: true,
+      };
+    }
+    const built = buildSession({ entries, cards, now: NOW, rng: seeded(1) });
+    const origins = built.queue.map(i => i.origin);
+    const firstReview = origins.indexOf('review');
+    // every item before the first review is new; everything after is review
+    expect(origins.slice(0, firstReview).every(o => o === 'new')).toBe(true);
+    expect(origins.slice(firstReview).every(o => o === 'review')).toBe(true);
+    // reviews ordered by descending weight
+    const reviewIds = built.queue
+      .filter(i => i.origin === 'review')
+      .map(i => i.entry.id);
+    expect(reviewIds).toEqual(['w3', 'w1', 'w4', 'w2', 'w0']);
+  });
+
   it('never pulls not-yet-due cards into reviews', () => {
     const entries = makeEntries(50);
     const cards: Record<string, CardState> = {};

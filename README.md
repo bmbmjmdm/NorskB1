@@ -72,7 +72,11 @@ Key rules:
 
 Cards are shown English-front a configurable percentage of the time (default **85%**) and Norwegian-front the rest (re-learning wrong cards are always English-front, as noted above).
 
-> Note: each card also stores a `weight` (an EMA of your ratings). It's currently computed but not read by anything — review order is driven purely by how overdue a card is. It's a hook for a future feature (e.g. flagging "leech" cards) rather than active behavior.
+> Each card stores a `weight` — an exponential moving average of your ratings (0 = always trivial … ~4 = always wrong) that captures how difficult it has proven over time. It's used to order a new session (see below).
+
+### Session order
+
+A freshly built session is ordered **hardest to easiest**: all **new** words come first, then the due **reviews** sorted by `weight` (descending), so the cards you've historically struggled with are surfaced while you're freshest, and consistently-easy ones come last. (Which reviews are *selected* is still by most-overdue; this is only the order they're shown in.)
 
 ### Undo
 

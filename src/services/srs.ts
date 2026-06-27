@@ -317,8 +317,12 @@ export interface BuiltSession {
  * cards are never pulled forward, so a "trivial" card really does disappear for
  * months. The review count scales with the due backlog (see
  * `reviewTargetForBacklog` — base 30, +10 per 100 due) and the most-overdue
- * cards are taken first (ties random), so an oversized backlog drains over
+ * cards are chosen first (ties random), so an oversized backlog drains over
  * multiple sessions. Early on, when little is due, the session is simply smaller.
+ *
+ * The resulting queue is ordered new cards first, then the chosen reviews from
+ * hardest to easiest by accumulated difficulty (`weight`), so you tackle the
+ * toughest material while fresh.
  */
 export function buildSession({
   entries,
@@ -363,9 +367,19 @@ export function buildSession({
     .slice(0, reviewTarget)
     .map(entry => makeItem(entry, 'review', cfg, rng));
 
+  // Order the chosen reviews hardest -> easiest by how difficult they've proven
+  // to be (the accumulated `weight` EMA), tie-broken by most overdue first.
+  reviewItems.sort((a, b) => {
+    const wa = cards[a.entry.id]?.weight ?? 0;
+    const wb = cards[b.entry.id]?.weight ?? 0;
+    if (wb !== wa) return wb - wa;
+    return (cards[a.entry.id]?.due ?? 0) - (cards[b.entry.id]?.due ?? 0);
+  });
+
   const newItems = initialNew.map(entry => makeItem(entry, 'new', cfg, rng));
 
-  const queue = shuffle([...newItems, ...reviewItems], rng);
+  // New words come first, then reviews from hardest to easiest.
+  const queue = [...newItems, ...reviewItems];
 
   return {
     queue,

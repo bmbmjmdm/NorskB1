@@ -23,6 +23,8 @@ export interface UseAppConfig {
   resetSettings: () => void;
   /** Add a flashcard if its Norwegian headword isn't already present. */
   addCard: (no: string, en: string) => AddCardResult;
+  /** Replace settings + custom cards wholesale (used by backup import). */
+  replaceConfig: (settings: Settings, customCards: VocabEntry[]) => void;
 }
 
 /**
@@ -93,6 +95,15 @@ export function useAppConfig(): UseAppConfig {
     [entries],
   );
 
+  const replaceConfig = useCallback(
+    (nextSettings: Settings, nextCards: VocabEntry[]) => {
+      setSettings(nextSettings);
+      setCustomCards(nextCards);
+      saveConfig({ settings: nextSettings, customCards: nextCards });
+    },
+    [],
+  );
+
   return {
     loaded,
     settings,
@@ -101,5 +112,6 @@ export function useAppConfig(): UseAppConfig {
     updateSettings,
     resetSettings,
     addCard,
+    replaceConfig,
   };
 }

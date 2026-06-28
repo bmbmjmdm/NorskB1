@@ -1,0 +1,6 @@
+
+# Release signing — never commit upload keystores or credentials
+*.keystore
+!debug.keystore
+*.jks
+keystore.properties

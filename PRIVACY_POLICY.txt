@@ -1,0 +1,87 @@
+PRIVACY POLICY — Norsk B1
+
+Last updated: 2026-06-28
+
+This Privacy Policy explains how the "Norsk B1" mobile application
+(the "App", bundle identifier com.norskb1) handles information. Please
+replace the contact details marked [ ... ] below before publishing.
+
+
+SUMMARY
+
+Norsk B1 collects no personal data. The App works entirely offline. Everything
+it stores — your study progress, your settings, and any flashcards you add —
+stays on your device. None of it is transmitted to the developer or to any
+third party, and the developer has no ability to access it.
+
+
+1. INFORMATION WE COLLECT
+
+We do not collect, transmit, sell, or share any personal information.
+
+The App does not:
+  - require an account, sign-in, name, email address, or phone number;
+  - use analytics, advertising, crash reporting, or tracking SDKs;
+  - contain third-party SDKs that collect data;
+  - access your contacts, photos, location, microphone, or camera;
+  - request any runtime permissions in the released app.
+
+
+2. INFORMATION STORED ON YOUR DEVICE
+
+To make the App work, the following is saved locally on your device only,
+using the operating system's standard on-device storage:
+  - study progress (which cards you have seen and their review schedule);
+  - your settings (e.g. grading intervals, English-front percentage);
+  - any flashcards you create within the App.
+
+This information never leaves your device. We cannot see it. It is not backed
+up to any server we control. (Your device's own OS backup, such as iCloud or
+Google backup, may include it according to your device settings; that is under
+your control, not ours.)
+
+
+3. HOW THE INFORMATION IS USED
+
+On-device data is used solely to provide the App's functionality — scheduling
+reviews and remembering your preferences. It is not used for any other purpose.
+
+
+4. DATA RETENTION AND DELETION
+
+Your on-device data remains until you delete it. You can remove it at any time
+by using "Reset all progress" inside the App, or by uninstalling the App, which
+deletes all of its locally stored data.
+
+
+5. CHILDREN'S PRIVACY
+
+The App is a language-learning tool suitable for general audiences. Because the
+App collects no personal information from anyone, it collects no personal
+information from children. We do not knowingly collect data from children.
+
+
+6. NETWORK USE
+
+The released App does not connect to the internet and requests no network
+permission on Android. It contains no servers, no remote APIs, and no remote
+content.
+
+
+7. THIRD PARTIES
+
+The App does not share data with third parties because it does not collect or
+transmit any data.
+
+
+8. CHANGES TO THIS POLICY
+
+If this policy changes, the updated version will be posted at the same location
+where you found this document, with a new "Last updated" date.
+
+
+9. CONTACT
+
+If you have questions about this Privacy Policy, contact:
+  [Your name or company]
+  [your-email@example.com]

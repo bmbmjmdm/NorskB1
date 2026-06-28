@@ -8,7 +8,7 @@ You learn a batch of new words/phrases each session and review old ones, with st
 
 ```bash
 cd ~/Documents/NorskB1
-npm install            # restores deps incl. @react-native-async-storage/async-storage
+npm install            # restores all native deps (AsyncStorage, file picker, fs, share, …)
 
 # iOS (first run)
 bundle install
@@ -91,14 +91,19 @@ Every grade is written to device storage (AsyncStorage): per-card scheduling plu
 Open settings from the **⚙** in the header (or "⚙ Settings" on the session-complete screen). The sheet lets you adjust, all persisted on device:
 
 - **English on front** — the percentage of cards shown English-first (0–100%).
+- **New cards per session** — how many never-seen words to introduce each session (default 10).
+- **Max review cards per session** — caps the due reviews per session (default 30). The backlog scaling (+10 per 100 due) still applies but never exceeds this limit.
 - **Grading intervals** — the `floor` (minimum days) and `× mult` for each of the five buttons, i.e. the two numbers in the `newInterval` formula above.
 - **Repeats before a card leaves** — extra in-session views for a new card, and the number of non-wrong clears required after a *wrong*.
 - **Add a flashcard** — enter a Norwegian word and its English; it's added to your deck unless that headword already exists (in which case it shows an error naming the existing entry). Custom cards merge with the built-in vocabulary and show up as new cards in your next session.
+- **Backup & restore** — **Export backup** bundles your progress, settings, and custom cards into a JSON file and opens the system share sheet (save to Files/Drive, AirDrop, email, etc.). **Import backup** opens the file picker; selecting a backup replaces the current data on the device and reloads. Use this to move to a new phone.
 - **Reset settings to defaults.**
 
 Setting changes apply going forward — new gradings and the next session use the new values immediately, without disturbing the session in progress.
 
-The engine and config storage are unit-tested (30 tests) — see `src/services/__tests__/`.
+The engine, config storage, and backup logic are unit-tested (36 tests) — see `src/services/__tests__/`.
+
+> Backup/restore adds three native modules — `@react-native-documents/picker`, `@dr.pogodin/react-native-fs`, and `react-native-share`. After pulling these changes run `npm install`, then `cd ios && pod install`, and **rebuild** the app (a JS-only reload isn't enough for new native modules).
 
 ## Project structure
 
@@ -120,6 +125,8 @@ src/
   services/
     srs.ts                 spaced-repetition engine (pure, tested)
     storage.ts             AsyncStorage persistence (progress + config)
+    backup.ts              backup envelope: serialize/parse (pure, tested)
+    backupIO.ts            native file export/import (share sheet + picker)
   theme/                   colors, spacing, typography tokens
   types/                   domain types
   utils/
@@ -139,3 +146,62 @@ Forms follow these conventions: nouns are the indefinite singular with article, 
 - Animations use React Native's built-in `Animated` API (no extra native deps). Reanimated could be layered in later for gesture-driven flips.
 - Path alias `@/*` → `src/*` (configured in `tsconfig.json` + `babel.config.js`).
 - Tuning knobs (new-per-session, review target + backlog scaling, interval multipliers/floors, re-insertion offsets) live in `SRS_CONFIG` at the top of `src/services/srs.ts`.
+
+## Release
+
+The app is configured for a `1.0.0` release. Identity is set in the repo:
+
+| | Value |
+|---|---|
+| Display name | **Norsk B1** (`strings.xml`, `Info.plist`, `app.json`) |
+| Bundle / application id | **com.norskb1** (Android `applicationId`/`namespace`, iOS `PRODUCT_BUNDLE_IDENTIFIER`) |
+| Version | `1.0.0`, build/versionCode `1` |
+
+What's already done in the repo:
+
+- Versions, display name, and identifiers set (iOS no longer uses the invalid `org.reactjs.native.example.*` placeholder).
+- **No network**: the app is fully offline, so the `INTERNET` permission was moved to a debug-only manifest (`android/app/src/debug/AndroidManifest.xml`). Release builds request no permissions — your Play **Data safety** form can declare no data collected or shared.
+- iOS `ITSAppUsesNonExemptEncryption = false` (skips the per-upload encryption-compliance question; the app uses no non-exempt crypto).
+- Android release **signing scaffold**: `build.gradle` reads `MYAPP_UPLOAD_*` from Gradle properties when present and otherwise falls back to debug signing (so `npm run android:release` still works for sideloading).
+- Removed the unused `@react-native/new-app-screen` dependency.
+- `.gitignore` updated so keystores/credentials are never committed.
+
+### What you still need to do
+
+**Icons & launch screen** (you're handling): replace `android/app/src/main/res/mipmap-*/ic_launcher*` and the iOS `Images.xcassets/AppIcon` set.
+
+**Android — signing & build:**
+1. Generate an upload keystore (`keytool -genkeypair -v -keystore upload.keystore -alias upload -keyalg RSA -keysize 2048 -validity 10000`).
+2. Put credentials in `~/.gradle/gradle.properties` (outside the repo):
+   ```
+   MYAPP_UPLOAD_STORE_FILE=/absolute/path/to/upload.keystore
+   MYAPP_UPLOAD_KEY_ALIAS=upload
+   MYAPP_UPLOAD_STORE_PASSWORD=•••
+   MYAPP_UPLOAD_KEY_PASSWORD=•••
+   ```
+3. Build the app bundle: `cd android && ./gradlew bundleRelease` → `app/build/outputs/bundle/release/app-release.aab`. Upload to Play Console (consider enabling Play App Signing).
+
+**iOS — signing & build:**
+1. In Xcode, open `ios/NorskB1.xcworkspace`, select the team under Signing & Capabilities (bundle id is already `com.norskb1`).
+2. `cd ios && bundle install && pod install` (first time).
+3. Product → Archive (Release scheme) → distribute to App Store Connect.
+
+**Both stores:** create the app listing (name, description, screenshots, category, age rating) and submit for review. Bump `versionCode`/`CURRENT_PROJECT_VERSION` for each subsequent upload.
+
+### Store review readiness (checked June 2026)
+
+Already handled in the project:
+
+- **Privacy policy** — see `PRIVACY_POLICY.txt` at the repo root. Both stores require a privacy-policy **URL**, so host this text somewhere public (GitHub Pages, a gist, your site) and paste the link into App Store Connect and the Play Console. Fill in the `[contact]` placeholder first.
+- **Android target API** — `targetSdkVersion`/`compileSdkVersion` is **36 (Android 16)**, which satisfies both the current API-35 minimum and the API-36 minimum that takes effect **Aug 31, 2026**.
+- **16 KB page sizes** — required for API-35+ apps. RN 0.85 + NDK 27 build 16 KB-aligned native libraries, so this is satisfied; you can confirm via the Play Console pre-launch report.
+- **iOS privacy manifest** — `ios/NorskB1/PrivacyInfo.xcprivacy` is present and declares the standard React Native required-reason APIs (file timestamp, UserDefaults, system boot time), `NSPrivacyTracking = false`, and no collected data types. AsyncStorage ships its own manifest in its pod. If Apple ever emails about an undeclared reason, add the code from the email to this file.
+- **iOS encryption compliance** — `ITSAppUsesNonExemptEncryption = false` in `Info.plist` (no compliance prompt per upload).
+- **Permissions** — release builds request **none** (the `INTERNET` permission is debug-only); the unused location usage-description was removed.
+
+You must still do (tooling / store console — outside the repo):
+
+- **Build with Xcode 26 / iOS 26 SDK.** Since **Apr 28, 2026**, App Store Connect rejects uploads not built with the iOS 26 SDK. (Your deployment target can stay lower to support older devices.)
+- **Answer the updated App Store age-rating questionnaire** (the new format has been required since Jan 31, 2026).
+- **Play Data safety form** — declare **no data collected and no data shared** (true: the app is offline and local-only).
+- **Account deletion** — not applicable (the app has no accounts).

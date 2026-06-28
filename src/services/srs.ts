@@ -29,10 +29,8 @@ import type {
 } from '@/types';
 
 export const SRS_CONFIG = {
-  /** Target number of *non-trivial* new cards to learn per session. */
+  /** Default number of *non-trivial* new cards to learn per session. */
   newPerSession: 10,
-  /** Hard cap on total new cards introduced in one session (safety bound). */
-  maxNewPerSession: 30,
   /** Base number of review cards per session (grows with a large backlog). */
   reviewTarget: 30,
   /** For every `reviewBacklogStep` due cards, add `reviewBacklogBonus` reviews. */
@@ -83,6 +81,8 @@ export const DEFAULT_SETTINGS: Settings = {
   },
   newCardRepeats: SRS_CONFIG.newCardRepeats,
   wrongRelearnClears: SRS_CONFIG.wrongRelearnClears,
+  newCardsPerSession: SRS_CONFIG.newPerSession,
+  maxReviewCards: SRS_CONFIG.reviewTarget,
 };
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -343,12 +343,14 @@ export function buildSession({
     }
   }
 
+  // New cards: introduce up to cfg.newCardsPerSession (capped by what's left).
+  const newPerSession = Math.max(0, Math.floor(cfg.newCardsPerSession));
+  const newCount = Math.min(newPerSession, newPool.length);
+
   const shuffledNew = shuffle(newPool, rng);
-  const initialNew = shuffledNew.slice(0, SRS_CONFIG.newPerSession);
-  const newReserve = shuffledNew.slice(
-    SRS_CONFIG.newPerSession,
-    SRS_CONFIG.maxNewPerSession,
-  );
+  const initialNew = shuffledNew.slice(0, newCount);
+  // Hold back up to two more batches to replace trivially-rated new cards.
+  const newReserve = shuffledNew.slice(newCount, newCount + 2 * newPerSession);
 
   // Only cards that are actually due (due <= now) are eligible for review — a
   // card scheduled into the future (e.g. one you rated "trivial") must wait until
@@ -360,8 +362,12 @@ export function buildSession({
     .sort((a, b) => a.due - b.due || a.rnd - b.rnd)
     .map(d => d.entry);
 
-  // Grow the review target when the due backlog is large (+10 per 100 due).
-  const reviewTarget = reviewTargetForBacklog(dueEntries.length);
+  // Grow the review target when the due backlog is large (+10 per 100 due),
+  // but never exceed the user's max review cards per session.
+  const reviewTarget = Math.min(
+    reviewTargetForBacklog(dueEntries.length),
+    Math.max(0, Math.floor(cfg.maxReviewCards)),
+  );
 
   const reviewItems = dueEntries
     .slice(0, reviewTarget)
@@ -384,7 +390,7 @@ export function buildSession({
   return {
     queue,
     newReserve,
-    newTarget: Math.min(SRS_CONFIG.newPerSession, newPool.length),
+    newTarget: newCount,
     reviewCount: reviewItems.length,
   };
 }

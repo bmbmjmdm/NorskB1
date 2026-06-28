@@ -23,6 +23,9 @@ export interface SettingsScreenProps {
   onSave: (next: Settings) => void;
   onReset: () => void;
   onAddCard: (no: string, en: string) => AddCardResult;
+  /** Closes the sheet and runs export/import (feedback shown via native alerts). */
+  onExport: () => void;
+  onImport: () => void;
 }
 
 const DIFF_LABEL: Record<Difficulty, string> = {
@@ -48,10 +51,14 @@ export function SettingsScreen({
   onSave,
   onReset,
   onAddCard,
+  onExport,
+  onImport,
 }: SettingsScreenProps) {
   const [enFrontPct, setEnFrontPct] = useState(75);
   const [newRepeats, setNewRepeats] = useState(1);
   const [wrongClears, setWrongClears] = useState(2);
+  const [newPerSession, setNewPerSession] = useState(10);
+  const [maxReview, setMaxReview] = useState(30);
   const [intervals, setIntervals] = useState(() =>
     toIntervalForm(DEFAULT_SETTINGS),
   );
@@ -62,10 +69,13 @@ export function SettingsScreen({
     null,
   );
 
+
   // Re-seed the form from the current settings whenever the sheet opens.
   useEffect(() => {
     if (!visible) return;
     setEnFrontPct(Math.round(settings.enFrontProbability * 100));
+    setNewPerSession(settings.newCardsPerSession);
+    setMaxReview(settings.maxReviewCards);
     setNewRepeats(settings.newCardRepeats);
     setWrongClears(settings.wrongRelearnClears);
     setIntervals(toIntervalForm(settings));
@@ -90,6 +100,8 @@ export function SettingsScreen({
       intervals: built,
       newCardRepeats: clamp(Math.round(newRepeats), 0, 20),
       wrongRelearnClears: clamp(Math.round(wrongClears), 0, 20),
+      newCardsPerSession: clamp(Math.round(newPerSession), 0, 50),
+      maxReviewCards: clamp(Math.round(maxReview), 0, 300),
     };
   };
 
@@ -142,6 +154,31 @@ export function SettingsScreen({
               />
               <Text style={styles.hint}>
                 Chance a card shows English first; the rest show Norwegian first.
+              </Text>
+            </Section>
+
+            {/* Session size */}
+            <Section title="Session size">
+              <Stepper
+                label="New cards per session"
+                value={newPerSession}
+                step={1}
+                min={0}
+                max={50}
+                onChange={setNewPerSession}
+              />
+              <Stepper
+                label="Max review cards per session"
+                value={maxReview}
+                step={5}
+                min={0}
+                max={300}
+                onChange={setMaxReview}
+              />
+              <Text style={styles.hint}>
+                New words are introduced first, then due reviews up to the review
+                limit. (A large backlog still grows reviews, but never past this
+                limit.)
               </Text>
             </Section>
 
@@ -253,6 +290,30 @@ export function SettingsScreen({
                 accessibilityRole="button">
                 <Text style={styles.addBtnText}>Add flashcard</Text>
               </Pressable>
+            </Section>
+
+            {/* Backup & restore */}
+            <Section title="Backup & restore">
+              <Text style={styles.hint}>
+                Move your progress, settings, and custom cards to another phone
+                with a backup file.
+              </Text>
+              <Pressable
+                onPress={onExport}
+                style={styles.addBtn}
+                accessibilityRole="button">
+                <Text style={styles.addBtnText}>Export backup</Text>
+              </Pressable>
+              <Pressable
+                onPress={onImport}
+                style={styles.secondaryAction}
+                accessibilityRole="button">
+                <Text style={styles.secondaryActionText}>Import backup…</Text>
+              </Pressable>
+              <Text style={styles.hint}>
+                These close Settings to open the system sheet. Importing replaces
+                your current progress, settings, and custom cards on this device.
+              </Text>
             </Section>
 
             <Pressable
@@ -451,6 +512,17 @@ const styles = StyleSheet.create({
     marginTop: spacing.md,
   },
   addBtnText: { ...typography.label, color: '#04130D' },
+  btnDisabled: { opacity: 0.5 },
+  secondaryAction: {
+    backgroundColor: colors.surfaceAlt,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: radius.lg,
+    paddingVertical: spacing.md,
+    alignItems: 'center',
+    marginTop: spacing.sm,
+  },
+  secondaryActionText: { ...typography.label, color: colors.text },
   resetBtn: { alignItems: 'center', paddingVertical: spacing.md },
   resetText: { ...typography.label, color: colors.textMuted },
 });

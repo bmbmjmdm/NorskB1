@@ -174,10 +174,8 @@ describe('buildSession', () => {
     expect(newItems).toHaveLength(SRS_CONFIG.newPerSession);
     expect(built.reviewCount).toBe(0);
     expect(built.newTarget).toBe(SRS_CONFIG.newPerSession);
-    // remaining new cards (capped) are held in reserve for replenishment
-    expect(built.newReserve.length).toBe(
-      SRS_CONFIG.maxNewPerSession - SRS_CONFIG.newPerSession,
-    );
+    // up to two more batches are held in reserve for trivial replacement
+    expect(built.newReserve.length).toBe(2 * SRS_CONFIG.newPerSession);
   });
 
   it('selects the most-overdue reviews and caps at reviewTarget', () => {
@@ -300,6 +298,29 @@ describe('reviewTargetForBacklog', () => {
 });
 
 describe('buildSession backlog scaling', () => {
+  it('caps reviews at maxReviewCards, independent of new cards', () => {
+    const entries = makeEntries(200);
+    const cards: Record<string, CardState> = {};
+    for (let i = 0; i < 150; i++) {
+      cards[`w${i}`] = {
+        id: `w${i}`, weight: 1, reps: 1, interval: 1,
+        due: NOW - DAY, lastSeen: NOW - DAY, introduced: true,
+      };
+    }
+    const cfg = { ...DEFAULT_SETTINGS, newCardsPerSession: 10, maxReviewCards: 15 };
+    const built = buildSession({ entries, cards, now: NOW, cfg, rng: seeded(3) });
+    expect(built.queue.filter(i => i.origin === 'new')).toHaveLength(10);
+    expect(built.queue.filter(i => i.origin === 'review')).toHaveLength(15);
+  });
+
+  it('introduces exactly newCardsPerSession new cards', () => {
+    const entries = makeEntries(50);
+    const cfg = { ...DEFAULT_SETTINGS, newCardsPerSession: 4 };
+    const built = buildSession({ entries, cards: {}, now: NOW, cfg, rng: seeded(1) });
+    expect(built.queue.filter(i => i.origin === 'new')).toHaveLength(4);
+    expect(built.newTarget).toBe(4);
+  });
+
   it('serves more reviews when the due backlog crosses 100', () => {
     const entries = makeEntries(200);
     const cards: Record<string, CardState> = {};
@@ -315,7 +336,10 @@ describe('buildSession backlog scaling', () => {
         introduced: true,
       };
     }
-    const built = buildSession({ entries, cards, now: NOW, rng: seeded(5) });
+    // Raise the cap so this isolates backlog scaling (the default 40 cap would
+    // otherwise limit reviews to 30).
+    const cfg = { ...DEFAULT_SETTINGS, maxReviewCards: 100 };
+    const built = buildSession({ entries, cards, now: NOW, cfg, rng: seeded(5) });
     const reviews = built.queue.filter(i => i.origin === 'review');
     expect(reviews).toHaveLength(40);
     expect(built.reviewCount).toBe(40);

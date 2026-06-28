@@ -83,6 +83,10 @@ export interface Settings {
   newCardRepeats: number;
   /** Non-wrong ratings required to clear a card after a "wrong". */
   wrongRelearnClears: number;
+  /** How many new (never-seen) cards to introduce per session. */
+  newCardsPerSession: number;
+  /** Maximum number of review (due) cards per session. */
+  maxReviewCards: number;
 }
 
 /** Why a card is in the current session queue. */

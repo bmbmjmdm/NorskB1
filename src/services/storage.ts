@@ -23,6 +23,17 @@ const emptyConfig = (): AppConfig => ({
   customCards: [],
 });
 
+/** Derive a review cap from a legacy combined "maxQueueCards" (total) value. */
+function migrateMaxReview(
+  legacyMaxQueue: number | undefined,
+  newPerSession: number,
+): number {
+  if (typeof legacyMaxQueue === 'number') {
+    return Math.max(0, legacyMaxQueue - newPerSession);
+  }
+  return DEFAULT_SETTINGS.maxReviewCards;
+}
+
 /** Load settings + custom cards, backfilling any missing fields with defaults. */
 export async function loadConfig(): Promise<AppConfig> {
   try {
@@ -52,6 +63,16 @@ export async function loadConfig(): Promise<AppConfig> {
           // migrate the previous "hardRelearnClears" key if present
           (s as { hardRelearnClears?: number }).hardRelearnClears ??
           DEFAULT_SETTINGS.wrongRelearnClears,
+        newCardsPerSession:
+          s.newCardsPerSession ?? DEFAULT_SETTINGS.newCardsPerSession,
+        maxReviewCards:
+          s.maxReviewCards ??
+          // migrate the previous combined "maxQueueCards" (total) into a review
+          // cap by subtracting the new-cards budget.
+          migrateMaxReview(
+            (s as { maxQueueCards?: number }).maxQueueCards,
+            s.newCardsPerSession ?? DEFAULT_SETTINGS.newCardsPerSession,
+          ),
       },
       customCards: Array.isArray(raw.customCards) ? raw.customCards : [],
     };

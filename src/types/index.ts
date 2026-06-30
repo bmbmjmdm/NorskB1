@@ -60,6 +60,12 @@ export interface CardState {
    * "introduced" / learned and now participates in reviews).
    */
   introduced: boolean;
+  /**
+   * Whether the most recent grade was "trivial". Such cards are picked last for
+   * review (only when non-trivial due cards don't fill the session). Optional
+   * for backward compatibility with cards saved before this field existed.
+   */
+  lastTrivial?: boolean;
 }
 
 /** Which language is shown on the front of a given card presentation. */

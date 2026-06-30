@@ -5,8 +5,6 @@ import { colors, radius, spacing, typography } from '@/theme';
 export interface ProgressHeaderProps {
   /** 0..1 fraction of the session completed. */
   progress: number;
-  newLearned: number;
-  newTarget: number;
   remaining: number;
   onUndo?: () => void;
   canUndo?: boolean;
@@ -15,8 +13,6 @@ export interface ProgressHeaderProps {
 
 export function ProgressHeader({
   progress,
-  newLearned,
-  newTarget,
   remaining,
   onUndo,
   canUndo,
@@ -64,9 +60,6 @@ export function ProgressHeader({
       <View style={styles.track}>
         <Animated.View style={[styles.fill, { width: barWidth }]} />
       </View>
-      <Text style={styles.caption}>
-        {newLearned}/{newTarget} new words learned today
-      </Text>
     </View>
   );
 }
@@ -146,5 +139,4 @@ const styles = StyleSheet.create({
     borderRadius: radius.pill,
     backgroundColor: colors.primary,
   },
-  caption: { ...typography.caption, color: colors.textMuted },
 });

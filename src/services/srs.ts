@@ -217,6 +217,7 @@ export function gradeCard(
     due: now + interval * DAY_MS,
     lastSeen: now,
     introduced: true,
+    lastTrivial: difficulty === 'trivial',
   };
 }
 
@@ -353,13 +354,20 @@ export function buildSession({
   const newReserve = shuffledNew.slice(newCount, newCount + 2 * newPerSession);
 
   // Only cards that are actually due (due <= now) are eligible for review — a
-  // card scheduled into the future (e.g. one you rated "trivial") must wait until
-  // its due date and is never pulled forward to pad a thin session. Among the due
-  // cards, the most overdue come first, with ties broken randomly.
+  // card scheduled into the future is never pulled forward. Cards whose last
+  // grade was "trivial" are de-prioritised: they sort after every non-trivial
+  // due card regardless of how overdue they are, so they're only picked when
+  // non-trivial cards don't fill the session. Within each group the most overdue
+  // come first, ties broken randomly.
   const dueEntries = introduced
     .filter(entry => cards[entry.id]!.due <= now)
-    .map(entry => ({ entry, due: cards[entry.id]!.due, rnd: rng() }))
-    .sort((a, b) => a.due - b.due || a.rnd - b.rnd)
+    .map(entry => ({
+      entry,
+      trivial: cards[entry.id]!.lastTrivial ? 1 : 0,
+      due: cards[entry.id]!.due,
+      rnd: rng(),
+    }))
+    .sort((a, b) => a.trivial - b.trivial || a.due - b.due || a.rnd - b.rnd)
     .map(d => d.entry);
 
   // Grow the review target when the due backlog is large (+10 per 100 due),

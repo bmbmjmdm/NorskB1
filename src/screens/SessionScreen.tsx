@@ -87,8 +87,6 @@ export function SessionScreen({
     <Screen>
       <ProgressHeader
         progress={progress}
-        newLearned={stats.newLearned}
-        newTarget={stats.newTarget}
         remaining={remaining}
         onUndo={session.undo}
         canUndo={session.canUndo}

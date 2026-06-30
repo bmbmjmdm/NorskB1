@@ -231,6 +231,56 @@ describe('buildSession', () => {
     expect(reviewIds).toEqual(['w3', 'w1', 'w4', 'w2', 'w0']);
   });
 
+  it('excludes trivial cards even when most overdue, if non-trivial fill the cap', () => {
+    const entries = makeEntries(60);
+    const cards: Record<string, CardState> = {};
+    // 35 non-trivial due (overdue by 1..35 days)
+    for (let i = 0; i < 35; i++) {
+      cards[`w${i}`] = {
+        id: `w${i}`, weight: 1, reps: 1, interval: 1,
+        due: NOW - (i + 1) * DAY, lastSeen: NOW, introduced: true, lastTrivial: false,
+      };
+    }
+    // 5 trivial due, FAR more overdue (1000 days)
+    for (let i = 35; i < 40; i++) {
+      cards[`w${i}`] = {
+        id: `w${i}`, weight: 0, reps: 2, interval: 120,
+        due: NOW - 1000 * DAY, lastSeen: NOW, introduced: true, lastTrivial: true,
+      };
+    }
+    const cfg = { ...DEFAULT_SETTINGS, newCardsPerSession: 0, maxReviewCards: 30 };
+    const built = buildSession({ entries, cards, now: NOW, cfg, rng: seeded(1) });
+    const reviewIds = built.queue.filter(i => i.origin === 'review').map(i => i.entry.id);
+    expect(reviewIds).toHaveLength(30);
+    const trivialIds = ['w35', 'w36', 'w37', 'w38', 'w39'];
+    expect(reviewIds.some(id => trivialIds.includes(id))).toBe(false);
+  });
+
+  it('includes trivial cards only to fill slots non-trivial cards leave open', () => {
+    const entries = makeEntries(30);
+    const cards: Record<string, CardState> = {};
+    for (let i = 0; i < 5; i++) {
+      cards[`w${i}`] = {
+        id: `w${i}`, weight: 1, reps: 1, interval: 1,
+        due: NOW - DAY, lastSeen: NOW, introduced: true, lastTrivial: false,
+      };
+    }
+    for (let i = 5; i < 10; i++) {
+      cards[`w${i}`] = {
+        id: `w${i}`, weight: 0, reps: 2, interval: 120,
+        due: NOW - 500 * DAY, lastSeen: NOW, introduced: true, lastTrivial: true,
+      };
+    }
+    const cfg = { ...DEFAULT_SETTINGS, newCardsPerSession: 0, maxReviewCards: 8 };
+    const built = buildSession({ entries, cards, now: NOW, cfg, rng: seeded(2) });
+    const reviewIds = built.queue.filter(i => i.origin === 'review').map(i => i.entry.id);
+    expect(reviewIds).toHaveLength(8);
+    // all 5 non-trivial included, plus 3 trivial to fill the remaining slots
+    for (let i = 0; i < 5; i++) expect(reviewIds).toContain(`w${i}`);
+    const trivialPicked = reviewIds.filter(id => Number(id.slice(1)) >= 5);
+    expect(trivialPicked).toHaveLength(3);
+  });
+
   it('never pulls not-yet-due cards into reviews', () => {
     const entries = makeEntries(50);
     const cards: Record<string, CardState> = {};
